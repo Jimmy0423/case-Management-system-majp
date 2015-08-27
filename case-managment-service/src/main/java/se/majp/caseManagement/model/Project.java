@@ -3,20 +3,27 @@ package se.majp.caseManagement.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_project")
 public class Project extends AbstractEntity
 {
+	@OneToOne
 	private Team team;
 
+	@OneToMany(mappedBy = "project")
 	private Collection<WorkItem> workItems;
 
+	@Column(name = "project_id")
+	private String projectId;
+	
 	private String name;
 	private String description;
-	private String projectId;
 
 	protected Project(){}
 
