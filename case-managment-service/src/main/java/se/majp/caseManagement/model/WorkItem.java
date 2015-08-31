@@ -56,11 +56,11 @@ public class WorkItem extends AbstractEntity {
 		this.teamMember = teamMember;
 	}
 
-	enum Priority {
+	public enum Priority {
 		VERY_HIGH, HIGH, NORMAL, LOW, VERY_LOW
 	}
 
-	enum Status {
+	public enum Status {
 		// add status
 		// example
 		INPROGRESS, DONE, TEST
