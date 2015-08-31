@@ -81,13 +81,11 @@ public class WorkItem extends AbstractEntity {
 		return true;
 	}
 
-	public enum Priority
-	{
+	public enum Priority {
 		VERY_HIGH, HIGH, NORMAL, LOW, VERY_LOW
 	}
 
-	public enum Status
-	{
+	public enum Status {
 		// add status
 		// example
 		INPROGRESS, DONE, TEST
