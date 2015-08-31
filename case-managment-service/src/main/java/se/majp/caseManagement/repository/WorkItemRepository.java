@@ -17,4 +17,7 @@ public interface WorkItemRepository extends CrudRepository<WorkItem, Long>
 	List<WorkItem> findByTeam(Team team);
 
 	List<WorkItem> findByDescriptionContain(String description);
+	
+	@Query("select w from WorkItem w where size(w.issues) > 0")
+	List<WorkItem> findWorkItemsWithIssues();
 }
