@@ -6,8 +6,8 @@ public class TeamMember extends AbstractEntity
 {
 	private final User user;
 	private final Role role;
-	private final Team team;
-	private final Collection<WorkItem> workItems;
+	private Team team;
+	private Collection<WorkItem> workItems;
 	
 	public TeamMember(User user, Role role)
 	{
