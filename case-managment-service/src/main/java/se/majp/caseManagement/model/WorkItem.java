@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_work_item")
-public class WorkItem {
+public class WorkItem extends AbstractEntity {
 
 	@Id
 	@GeneratedValue
