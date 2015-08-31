@@ -1,6 +1,7 @@
 package se.majp.caseManagement.model;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -9,8 +10,8 @@ public class Issue extends AbstractEntity
 {
 	private String issueId;
 	private String description;
-	// Relation
-	private User user;
+	@ManyToOne
+	private TeamMember teamMember;
 
 	public Issue(String issueId, String description)
 	{
@@ -28,9 +29,9 @@ public class Issue extends AbstractEntity
 		return description;
 	}
 
-	public User getUser()
+	public TeamMember getTeamMember()
 	{
-		return user;
+		return teamMember;
 	}
 
 	@Override
