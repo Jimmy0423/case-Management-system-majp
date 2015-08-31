@@ -60,7 +60,7 @@ public class TeamMember extends AbstractEntity
 		return false;
 	}
 	
-	enum Role
+	public enum Role
 	{
 		MEMBER, OWNER
 	}
