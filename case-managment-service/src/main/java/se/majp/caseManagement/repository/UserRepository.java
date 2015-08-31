@@ -9,7 +9,13 @@ import se.majp.caseManagement.model.User;
 
 public interface UserRepository extends CrudRepository<User, Long>
 {
-	List<User> findByUserID(String userId);
+	List<User> findByUserId(String userId);
+
+	List<User> findByfirstName(String firstName);
+
+	List<User> findByLastName(String lastName);
+
+	List<User> findByUserIdFirstNameOrLastName(String value);
 
 	List<User> findByTeam(Team team);
 
