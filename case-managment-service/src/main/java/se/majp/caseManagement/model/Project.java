@@ -99,7 +99,4 @@ public class Project extends AbstractEntity
 		
 		return false;
 	}
-
-	
-	
 }
