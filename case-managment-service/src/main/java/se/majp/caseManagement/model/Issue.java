@@ -10,6 +10,7 @@ public class Issue extends AbstractEntity
 {
 	private String issueId;
 	private String description;
+
 	@ManyToOne
 	private TeamMember teamMember;
 
@@ -39,22 +40,20 @@ public class Issue extends AbstractEntity
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((issueId == null) ? 0 : issueId.hashCode());
+		result *= prime + issueId.hashCode();
+
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
-		Issue other = (Issue) obj;
-		if (issueId == null)
+		if (obj instanceof Issue)
 		{
-			if (other.issueId != null) return false;
+			Issue other = (Issue) obj;
+			return issueId.equals(other.getIssueId());
 		}
-		else if (!issueId.equals(other.issueId)) return false;
-		return true;
+
+		return false;
 	}
 }

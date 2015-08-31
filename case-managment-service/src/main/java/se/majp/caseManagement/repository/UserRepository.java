@@ -17,5 +17,6 @@ public interface UserRepository extends CrudRepository<User, Long>
 
 	List<User> findByEmailOrFirstNameOrLastName(String email, String firstName, String lastName);
 
-	List<User> findByTeam(Team team);
+	// No team in user
+	//List<User> findByTeam(Team team);
 }

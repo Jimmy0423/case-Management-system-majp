@@ -9,5 +9,5 @@ import se.majp.caseManagement.model.TeamMember.Role;
 
 public interface TeamMemberRepository extends CrudRepository<TeamMember, Long>
 {
-	List<TeamMember> finByRole(Role role);
+	List<TeamMember> findByRole(Role role);
 }

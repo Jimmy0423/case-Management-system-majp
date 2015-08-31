@@ -13,27 +13,26 @@ import javax.persistence.Table;
 @Table(name = "tbl_project")
 public class Project extends AbstractEntity
 {
+	@Column(name = "project_id")
+	private String projectId;
+	private String name;
+	private String description;
+	
 	@OneToOne
 	private Team team;
 
 	@OneToMany(mappedBy = "project")
 	private Collection<WorkItem> workItems;
 
-	@Column(name = "project_id")
-	private String projectId;
-	
-	private String name;
-	private String description;
-
 	protected Project(){}
 
-	public Project(String name, String description, String projectId)
+	public Project(String projectId, String name, String description)
 	{
+		this.projectId = projectId;
 		this.name = name;
 		this.description = description;
 		team = new Team();
 		workItems = new ArrayList<>();
-		this.projectId = projectId;
 	}
 
 	public Team getTeam()
@@ -44,18 +43,6 @@ public class Project extends AbstractEntity
 	public Collection<WorkItem> getWorkItems()
 	{
 		return workItems;
-	}
-
-	public void addWorkItem(WorkItem workItem)
-	{
-		if (!workItems.contains(workItem))
-		{
-			workItems.add(workItem);			
-		}
-		else
-		{
-			throw new IllegalArgumentException("WorkItems already contains that workItem");
-		}
 	}
 
 	public String getName()
@@ -72,29 +59,39 @@ public class Project extends AbstractEntity
 	{
 		return projectId;
 	}
+	
+	public Project addWorkItem(WorkItem workItem)
+	{
+		if(workItems.contains(workItem))
+		{
+			throw new IllegalArgumentException("Work item already added");
+		}
+		
+		workItems.add(workItem);
+		return this;
+	}
 
 	@Override
 	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((projectId == null) ? 0 : projectId.hashCode());
+		result *= prime + description.hashCode();
+		result *= prime + name.hashCode();
+		result *= prime + projectId.hashCode();
+		
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (Project.class == obj.getClass()) 
+		if (obj instanceof Project) 
 		{
 			Project other = (Project) obj;
 			
-			return (this.name == other.name && this.description == other.description 
-				   && this.projectId == other.projectId);
+			return (name.equals(other.getName()) && description.equals(other.getDescription()) &&
+					projectId.equals(other.getProjectId()));
 		}
 		
 		return false;

@@ -72,7 +72,7 @@ public class Team extends AbstractEntity
 		if(obj instanceof Team)
 		{
 			Team other = (Team) obj;
-			return other.getTeamId().equals(getTeamId()) && other.getMembers().equals(getMembers());
+			return teamId.equals(other.getTeamId()) && members.equals(other.getMembers());
 		}
 		
 		return false;

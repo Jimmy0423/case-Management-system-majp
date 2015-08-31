@@ -2,90 +2,112 @@ package se.majp.caseManagement.model;
 
 import java.util.Collection;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_work_item")
-public class WorkItem extends AbstractEntity {
-
-	@Column(name = "workItemId")
+public class WorkItem extends AbstractEntity
+{
 	private String workItemId;
-
-	@Column(name = "description")
 	private String description;
-
-	@Column(name = "priority")
 	private Priority priority;
-
-	@Column(name = "status")
 	private Status status;
 
 	@ManyToOne
 	private TeamMember teamMember;
 
 	@OneToMany
+	@JoinTable(name = "tbl_workitem_issue")
 	private Collection<Issue> issues;
 
 	@ManyToOne
 	private Project project;
 
-	protected WorkItem() {
-	}
+	protected WorkItem(){}
 
-	public WorkItem(String workItemId, String description, Priority priority, Status status) {
-		this(workItemId, description, priority, status, null);
-
-	}
-
-	public WorkItem(String workItemId, String description, Priority priority, Status status, TeamMember teamMember) {
+	public WorkItem(String workItemId, String description, Priority priority, Status status, TeamMember teamMember)
+	{
 		this.workItemId = workItemId;
 		this.description = description;
 		this.priority = priority;
 		this.status = status;
 		this.teamMember = teamMember;
 	}
+	
+	public WorkItem(String workItemId, String description, Priority priority, Status status)
+	{
+		this(workItemId, description, priority, status, null);
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public String getWorkItemId()
+	{
+		return workItemId;
+	}
+
+	public Priority getPriority()
+	{
+		return priority;
+	}
+
+	public Status getStatus()
+	{
+		return status;
+	}
+
+	public TeamMember getTeamMember()
+	{
+		return teamMember;
+	}
+
+	public Collection<Issue> getIssues()
+	{
+		return issues;
+	}
+
+	public Project getProject()
+	{
+		return project;
+	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((workItemId == null) ? 0 : workItemId.hashCode());
+		result *= prime + description.hashCode();
+		result *= prime + workItemId.hashCode();
+
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		WorkItem other = (WorkItem) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (workItemId == null) {
-			if (other.workItemId != null)
-				return false;
-		} else if (!workItemId.equals(other.workItemId))
-			return false;
-		return true;
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof WorkItem)
+		{
+			WorkItem other = (WorkItem) obj;
+			return description.equals(other.getDescription()) && workItemId.equals(other.getWorkItemId());
+		}
+
+		return false;
 	}
 
-	public enum Priority {
+	public enum Priority
+	{
 		VERY_HIGH, HIGH, NORMAL, LOW, VERY_LOW
 	}
 
-	public enum Status {
+	public enum Status
+	{
 		// add status
 		// example
 		INPROGRESS, DONE, TEST
