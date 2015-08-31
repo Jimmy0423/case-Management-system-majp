@@ -56,5 +56,4 @@ public class Issue extends AbstractEntity
 		else if (!issueId.equals(other.issueId)) return false;
 		return true;
 	}
-
 }

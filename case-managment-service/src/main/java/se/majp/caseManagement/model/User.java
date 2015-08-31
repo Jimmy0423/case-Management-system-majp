@@ -1,5 +1,6 @@
 package se.majp.caseManagement.model;
 
+
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -7,6 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_user")
+
 public class User extends AbstractEntity
 {
 	private String userId;
@@ -82,5 +84,4 @@ public class User extends AbstractEntity
 		else if (!userId.equals(other.userId)) return false;
 		return true;
 	}
-
 }
