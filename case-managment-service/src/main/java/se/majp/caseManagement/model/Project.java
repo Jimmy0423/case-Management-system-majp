@@ -27,13 +27,13 @@ public class Project extends AbstractEntity
 
 	protected Project(){}
 
-	public Project(String name, String description)
+	public Project(String name, String description, String projectId)
 	{
 		this.name = name;
 		this.description = description;
 		team = new Team();
 		workItems = new ArrayList<>();
-		// TODO Generate projectId
+		this.projectId = projectId;
 	}
 
 	public Team getTeam()
