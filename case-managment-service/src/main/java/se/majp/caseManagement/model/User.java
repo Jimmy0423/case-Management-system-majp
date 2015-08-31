@@ -4,6 +4,7 @@ package se.majp.caseManagement.model;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +16,7 @@ public class User extends AbstractEntity
 	private String firstName;
 	private String lastName;
 	private String password;
-	// relation
+	@ManyToMany
 	private Collection<Project> projects;
 
 	protected User()
