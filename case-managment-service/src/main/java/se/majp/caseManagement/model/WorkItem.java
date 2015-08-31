@@ -50,11 +50,13 @@ public class WorkItem extends AbstractEntity {
 		this.status = status;
 	}
 
-	enum Priority {
+	public enum Priority
+	{
 		VERY_HIGH, HIGH, NORMAL, LOW, VERY_LOW
 	}
 
-	enum Status {
+	public enum Status
+	{
 		// add status
 		// example
 		INPROGRESS, DONE, TEST
