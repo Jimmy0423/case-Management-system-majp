@@ -10,7 +10,6 @@ import javax.persistence.Table;
 public class User extends AbstractEntity
 {
 	private String userId;
-	private UserType userType;
 	private String firstName;
 	private String lastName;
 	private String password;
@@ -21,10 +20,9 @@ public class User extends AbstractEntity
 	{
 	}
 
-	public User(String userId, UserType userType, String firstName, String lastName, String password)
+	public User(String userId, String firstName, String lastName, String password)
 	{
 		this.userId = userId;
-		this.userType = userType;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
@@ -33,11 +31,6 @@ public class User extends AbstractEntity
 	public String getUserId()
 	{
 		return userId;
-	}
-
-	public UserType getUserType()
-	{
-		return userType;
 	}
 
 	public String getFirstName()
@@ -88,11 +81,6 @@ public class User extends AbstractEntity
 		}
 		else if (!userId.equals(other.userId)) return false;
 		return true;
-	}
-
-	public enum UserType
-	{
-		OWNER, MEMBER
 	}
 
 }
