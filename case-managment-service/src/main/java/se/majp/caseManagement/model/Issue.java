@@ -1,6 +1,6 @@
 package se.majp.caseManagement.model;
 
-public class Issue
+public class Issue extends AbstractEntity
 {
 
 }
