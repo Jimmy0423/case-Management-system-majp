@@ -6,5 +6,5 @@ import se.majp.caseManagement.model.Issue;
 
 public interface IssueRepository extends CrudRepository<Issue, Long>
 {
-
+	
 }
