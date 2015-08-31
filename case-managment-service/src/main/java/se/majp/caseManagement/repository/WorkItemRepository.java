@@ -13,10 +13,10 @@ public interface WorkItemRepository extends CrudRepository<WorkItem, Long>
 {
 	List<WorkItem> findByStatus(Status status);
 
-	@Query("select w from tbl_work_item w where w.project.team = ?1")
+	@Query("select w from WorkItem w where w.project.team = ?1")
 	List<WorkItem> findByTeam(Team team);
 
-	List<WorkItem> findByDescriptionContain(String description);
+	List<WorkItem> findByDescriptionContaining(String description);
 	
 	@Query("select w from WorkItem w where size(w.issues) > 0")
 	List<WorkItem> findWorkItemsWithIssues();

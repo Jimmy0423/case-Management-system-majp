@@ -6,5 +6,4 @@ import se.majp.caseManagement.model.Team;
 
 public interface TeamRepository extends CrudRepository<Team, Long>
 {
-
 }

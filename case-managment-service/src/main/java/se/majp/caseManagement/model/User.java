@@ -3,6 +3,7 @@ package se.majp.caseManagement.model;
 
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -12,7 +13,9 @@ import javax.persistence.Table;
 
 public class User extends AbstractEntity
 {
-	private String userId;
+	@Column(unique = true)
+	private String email;
+
 	private String firstName;
 	private String lastName;
 	private String password;
@@ -25,7 +28,7 @@ public class User extends AbstractEntity
 
 	public User(String userId, String firstName, String lastName, String password)
 	{
-		this.userId = userId;
+		this.email = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
@@ -33,7 +36,7 @@ public class User extends AbstractEntity
 
 	public String getUserId()
 	{
-		return userId;
+		return email;
 	}
 
 	public String getFirstName()
@@ -62,7 +65,7 @@ public class User extends AbstractEntity
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		return result;
 	}
 
@@ -78,11 +81,11 @@ public class User extends AbstractEntity
 			if (other.password != null) return false;
 		}
 		else if (!password.equals(other.password)) return false;
-		if (userId == null)
+		if (email == null)
 		{
-			if (other.userId != null) return false;
+			if (other.email != null) return false;
 		}
-		else if (!userId.equals(other.userId)) return false;
+		else if (!email.equals(other.email)) return false;
 		return true;
 	}
 }
