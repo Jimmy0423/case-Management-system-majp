@@ -1,6 +1,5 @@
 package se.majp.caseManagement.model;
 
-
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -8,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -30,9 +30,9 @@ public class WorkItem extends AbstractEntity {
 
 	@Column(name = "status")
 	private Status status;
-
-	@ManyToMany
-	private Collection<User> users;
+	
+	@ManyToOne
+	private TeamMember teamMember;
 
 	@OneToMany
 	private Collection<Issue> issues;

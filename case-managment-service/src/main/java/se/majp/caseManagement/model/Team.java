@@ -5,10 +5,14 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Team extends AbstractEntity
 {
+	@OneToMany
+	@JoinTable(name = "member_in_team")
 	private final Collection<TeamMember> members = new ArrayList<>();
 
 	protected Team(){}
@@ -24,15 +28,13 @@ public class Team extends AbstractEntity
 		return this;
 	}
 
-	public Team addAll(List<TeamMember> members)
+	public void addAll(List<TeamMember> members)
 	{
 		this.members.addAll(members);
-		return this;
 	}
 
-	public Team removeUser(User user)
+	public void removeUser(TeamMember member)
 	{
-		members.remove(user);
-		return this;
+		members.remove(member);
 	}
 }
