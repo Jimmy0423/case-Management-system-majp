@@ -14,14 +14,14 @@ public interface StoryRepository extends CrudRepository<Story, Long>
 {
 	List<Story> findByStatus(Status status);
 
-	@Query("select t.stories from Team t where t = ?1")
+	@Query("select t.teamMembers.stories from Team t where t = ?1")
 	List<Story> findByTeam(Team team);
 	
-	@Query("select u.stories from User u where u = ?1")
-	List<Story> findByUser(User user);
-
-	List<Story> findByDescriptionContaining(String description);
-	
-	@Query("select s from Story s where size(s.issues) > 0")
-	List<Story> findStoriesWithIssues();
+//	@Query("select u.stories from User u where u = ?1")
+//	List<Story> findByUser(User user);
+//
+//	List<Story> findByDescriptionContaining(String description);
+//	
+//	@Query("select s from Story s where size(s.issues) > 0")
+//	List<Story> findStoriesWithIssues();
 }

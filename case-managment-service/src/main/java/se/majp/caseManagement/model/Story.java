@@ -1,5 +1,6 @@
 package se.majp.caseManagement.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ public class Story extends AbstractEntity
 
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tbl_story_issue")
-	private Collection<Issue> issues;
+	private Collection<Issue> issues = new ArrayList<>();
 
 	protected Story(){}
 
@@ -54,6 +55,12 @@ public class Story extends AbstractEntity
 	public Collection<Issue> getIssues()
 	{
 		return issues;
+	}
+	
+	public Story addIssue(Issue issue)
+	{
+		issues.add(issue);
+		return this;
 	}
 
 	@Override

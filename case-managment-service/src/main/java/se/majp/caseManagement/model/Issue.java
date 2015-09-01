@@ -8,21 +8,24 @@ import javax.persistence.Table;
 @Table(name = "tbl_issue")
 public class Issue extends AbstractEntity
 {
-	private String issueId;
+	private String title;
 	private String description;
 
 	@ManyToOne
 	private User user;
+	
+	protected Issue(){}
 
-	public Issue(String issueId, String description)
+	public Issue(String title, String description, User user)
 	{
-		this.issueId = issueId;
+		this.title = title;
 		this.description = description;
+		this.user = user;
 	}
 
-	public String getIssueId()
+	public String getTitle()
 	{
-		return issueId;
+		return title;
 	}
 
 	public String getDescription()
@@ -40,20 +43,20 @@ public class Issue extends AbstractEntity
 	{
 		final int prime = 31;
 		int result = 1;
-		result *= prime + issueId.hashCode();
+		result *= prime + title.hashCode();
 
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof Issue)
-		{
-			Issue other = (Issue) obj;
-			return issueId.equals(other.getIssueId());
-		}
-
-		return false;
-	}
+//	@Override
+//	public boolean equals(Object obj)
+//	{
+//		if (obj instanceof Issue)
+//		{
+//			Issue other = (Issue) obj;
+//			return title.equals(other.getIssueId());
+//		}
+//
+//		return false;
+//	}
 }

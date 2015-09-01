@@ -5,10 +5,9 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -16,14 +15,9 @@ import javax.persistence.Table;
 @Table(name = "tbl_team")
 public class Team extends AbstractEntity
 {
-	@ManyToMany
-	@JoinTable(name = "tbl_users_in_team")
-	private Collection<User> users = new ArrayList<>();
-	
-	@OneToMany
-	@JoinTable(name = "tbl_team_story", joinColumns = @JoinColumn(name = "team_id"), 
-										inverseJoinColumns = @JoinColumn(name = "story_id"))
-	private Collection<Story> stories = new ArrayList<>();
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tbl_team_members_in_team")
+	private Collection<TeamMember> teamMembers = new ArrayList<>();
 	
 	@OneToOne
 	private Project project;
@@ -35,46 +29,35 @@ public class Team extends AbstractEntity
 		this.project = project;
 	}
 	
-	public Collection<User> getUsers()
+	public Collection<TeamMember> getTeamMembers()
 	{
-		return users;
+		return teamMembers;
 	}
 	
 	public Project getProject()
 	{
 		return project;
 	}
-
-	public Team addUser(User user)
-	{
-		if (users.contains(user))
-		{
-			throw new IllegalArgumentException("User already in team");
-		}
-		
-		users.add(user);
-		return this;
-	}
-
-	public void addAll(List<User> users)
-	{
-		this.users.addAll(users);
-	}
-
-	public void removeUser(User user)
-	{
-		users.remove(user);
-	}
 	
-	public Team addStory(Story story)
+	public Team addTeamMember(TeamMember teamMember)
 	{
-		if(stories.contains(story))
+		if (teamMembers.contains(teamMember))
 		{
-			throw new IllegalArgumentException("Story already added");
+			throw new IllegalArgumentException("Team member already in team");
 		}
 		
-		stories.add(story);
+		teamMembers.add(teamMember);
 		return this;
+	}
+
+	public void addAll(List<TeamMember> teamMembers)
+	{
+		this.teamMembers.addAll(teamMembers);
+	}
+
+	public void removeTeamMember(TeamMember teamMember)
+	{
+		this.teamMembers.remove(teamMember);
 	}
 	
 	@Override
@@ -83,7 +66,7 @@ public class Team extends AbstractEntity
 		final int prime = 31;
 		int result = 1;
 		result += prime * project.hashCode();
-		result += prime * users.hashCode();
+		result += prime * teamMembers.hashCode();
 		
 		return result;
 	}
@@ -94,7 +77,7 @@ public class Team extends AbstractEntity
 		if(obj instanceof Team)
 		{
 			Team other = (Team) obj;
-			return project.equals(other.getProject()) && users.equals(other.getUsers());
+			return project.equals(other.getProject()) && teamMembers.equals(other.getTeamMembers());
 		}
 		
 		return false;

@@ -5,8 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,13 +18,9 @@ public class User extends AbstractEntity
 	private String firstName;
 	private String lastName;
 	private String password;
-
-	@ManyToMany(mappedBy = "users")
-	private Collection<Team> teams;
 	
-	@OneToMany
-	@JoinTable(name = "tbl_user_story")
-	private Collection<Story> stories = new ArrayList<>();
+	@OneToMany(fetch = FetchType.EAGER)
+	Collection<Project> projects = new ArrayList<>();
 
 	protected User(){}
 
@@ -56,15 +51,15 @@ public class User extends AbstractEntity
 	{
 		return password;
 	}
-
-	public Collection<Team> getTeams()
-	{
-		return teams;
-	}
 	
-	public User addStory(Story story)
+	public User addProject(Project project)
 	{
-		this.stories.add(story);
+		if (projects.contains(project))
+		{
+			throw new IllegalArgumentException("Project already exists in user");
+		}
+		
+		projects.add(project);
 		return this;
 	}
 
