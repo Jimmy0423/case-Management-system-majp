@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -18,7 +19,10 @@ public class User extends AbstractEntity
 	private String password;
 
 	@ManyToMany
-	private Collection<Project> projects;
+	private Collection<Team> teams;
+	
+	@OneToMany
+	private Collection<Story> stories;
 
 	protected User()
 	{
@@ -52,9 +56,9 @@ public class User extends AbstractEntity
 		return password;
 	}
 
-	public Collection<Project> getProjects()
+	public Collection<Team> getTeams()
 	{
-		return projects;
+		return teams;
 	}
 
 	@Override
