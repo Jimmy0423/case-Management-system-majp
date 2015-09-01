@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -18,10 +19,11 @@ public class User extends AbstractEntity
 	private String lastName;
 	private String password;
 
-	@ManyToMany
+	@ManyToMany(mappedBy = "users")
 	private Collection<Team> teams;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany
+	@JoinTable(name = "tbl_user_story")
 	private Collection<Story> stories;
 
 	protected User()

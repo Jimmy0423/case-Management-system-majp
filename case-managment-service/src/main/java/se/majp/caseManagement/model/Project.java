@@ -1,11 +1,8 @@
 package se.majp.caseManagement.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,11 +15,8 @@ public class Project extends AbstractEntity
 	private String name;
 	private String description;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Team team;
-
-	@OneToMany(mappedBy = "project")
-	private Collection<Story> stories;
 
 	protected Project(){}
 
@@ -31,18 +25,12 @@ public class Project extends AbstractEntity
 		this.projectId = projectId;
 		this.name = name;
 		this.description = description;
-		team = new Team();
-		stories = new ArrayList<>();
+		team = new Team(this);
 	}
 
 	public Team getTeam()
 	{
 		return team;
-	}
-
-	public Collection<Story> getStories()
-	{
-		return stories;
 	}
 
 	public String getName()
@@ -58,17 +46,6 @@ public class Project extends AbstractEntity
 	public String getProjectId()
 	{
 		return projectId;
-	}
-	
-	public Project addStory(Story story)
-	{
-		if(stories.contains(story))
-		{
-			throw new IllegalArgumentException("Story already added");
-		}
-		
-		stories.add(story);
-		return this;
 	}
 
 	@Override

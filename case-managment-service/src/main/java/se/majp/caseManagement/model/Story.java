@@ -3,9 +3,8 @@ package se.majp.caseManagement.model;
 import java.util.Collection;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -13,36 +12,23 @@ import javax.persistence.Table;
 @Table(name = "tbl_story")
 public class Story extends AbstractEntity
 {
-	private String workItemId;
+	private String storyId;
 	private String description;
 	private Priority priority;
 	private Status status;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
-
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tbl_story_issue")
 	private Collection<Issue> issues;
 
-	@ManyToOne
-	private Project project;
-
 	protected Story(){}
 
-	public Story(String workItemId, String description, Priority priority, Status status, User user)
+	public Story(String workItemId, String description, Priority priority, Status status)
 	{
-		this.workItemId = workItemId;
+		this.storyId = workItemId;
 		this.description = description;
 		this.priority = priority;
 		this.status = status;
-		this.user = user;
-	}
-	
-	public Story(String workItemId, String description, Priority priority, Status status)
-	{
-		this(workItemId, description, priority, status, null);
 	}
 
 	public String getDescription()
@@ -52,7 +38,7 @@ public class Story extends AbstractEntity
 
 	public String getWorkItemId()
 	{
-		return workItemId;
+		return storyId;
 	}
 
 	public Priority getPriority()
@@ -65,19 +51,9 @@ public class Story extends AbstractEntity
 		return status;
 	}
 
-	public User getUser()
-	{
-		return user;
-	}
-
 	public Collection<Issue> getIssues()
 	{
 		return issues;
-	}
-
-	public Project getProject()
-	{
-		return project;
 	}
 
 	@Override
@@ -86,7 +62,7 @@ public class Story extends AbstractEntity
 		final int prime = 31;
 		int result = 1;
 		result *= prime + description.hashCode();
-		result *= prime + workItemId.hashCode();
+		result *= prime + storyId.hashCode();
 
 		return result;
 	}
@@ -97,7 +73,7 @@ public class Story extends AbstractEntity
 		if (obj instanceof Story)
 		{
 			Story other = (Story) obj;
-			return description.equals(other.getDescription()) && workItemId.equals(other.getWorkItemId());
+			return description.equals(other.getDescription()) && storyId.equals(other.getWorkItemId());
 		}
 
 		return false;
@@ -105,9 +81,7 @@ public class Story extends AbstractEntity
 
 	public enum Status
 	{
-		// add status
-		// example
-		INPROGRESS, DONE, TEST
+		PENDING, INPROGRESS, DONE, ISSUED
 	}
 
 }

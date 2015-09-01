@@ -4,7 +4,14 @@ import java.util.Arrays;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import se.majp.caseManagement.model.Priority;
+import se.majp.caseManagement.model.Project;
+import se.majp.caseManagement.model.Story;
+import se.majp.caseManagement.model.Team;
 import se.majp.caseManagement.model.User;
+import se.majp.caseManagement.repository.ProjectRepository;
+import se.majp.caseManagement.repository.StoryRepository;
+import se.majp.caseManagement.repository.TeamRepository;
 import se.majp.caseManagement.repository.UserRepository;
 import se.majp.caseManagement.util.IdGenerator;
 
@@ -20,8 +27,21 @@ public class Main
 			context.refresh();
 			
 			UserRepository userRepository = context.getBean(UserRepository.class);
+			TeamRepository teamRepository = context.getBean(TeamRepository.class);
+			StoryRepository storyRepository = context.getBean(StoryRepository.class);
+			ProjectRepository projectRepository = context.getBean(ProjectRepository.class);
+			User user = new User("BoAhl@example.com", "Bo", "Ahl", "BoThaMaster");
+			Project project = new Project(generator.getNextId(), "Get shit done!", "Lets do this shit");
+			Story story = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
+			Story story2 = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
+			Team team = project.getTeam().addUser(user).addStory(story);
 			
-			userRepository.save(new User("BoAhl@example.com", "Bo", "Ahl", "BoThaMaster"));
+			userRepository.save(user);
+			storyRepository.save(story);
+			storyRepository.save(story2);
+			projectRepository.save(project);
+			
+			storyRepository.findByTeam(team.getId()).forEach(System.out::println);
 		}
 	}
 

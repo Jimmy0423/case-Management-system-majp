@@ -5,35 +5,44 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_team")
 public class Team extends AbstractEntity
 {
-	private String teamId;
+	@ManyToMany
+	@JoinTable(name = "tbl_users_in_team")
+	private Collection<User> users = new ArrayList<>();
 	
 	@OneToMany
-	@JoinTable(name = "member_in_team")
-	private final Collection<User> users = new ArrayList<>();
-
+	@JoinTable(name = "tbl_team_story", joinColumns = @JoinColumn(name = "team_id"), 
+										inverseJoinColumns = @JoinColumn(name = "story_id"))
+	private Collection<Story> stories = new ArrayList<>();
+	
+	@OneToOne
+	private Project project;
+	
 	protected Team(){}
 	
-	public Team(String teamId)
+	public Team(Project project)
 	{
-		this.teamId = teamId;
+		this.project = project;
 	}
 	
-	public String getTeamId()
-	{
-		return teamId;
-	}
-	
-	public Collection<User> getMembers()
+	public Collection<User> getUsers()
 	{
 		return users;
+	}
+	
+	public Project getProject()
+	{
+		return project;
 	}
 
 	public Team addUser(User user)
@@ -57,12 +66,23 @@ public class Team extends AbstractEntity
 		users.remove(user);
 	}
 	
+	public Team addStory(Story story)
+	{
+		if(stories.contains(story))
+		{
+			throw new IllegalArgumentException("Story already added");
+		}
+		
+		stories.add(story);
+		return this;
+	}
+	
 	@Override
 	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
-		result += prime * teamId.hashCode();
+		result += prime * project.hashCode();
 		result += prime * users.hashCode();
 		
 		return result;
@@ -74,7 +94,7 @@ public class Team extends AbstractEntity
 		if(obj instanceof Team)
 		{
 			Team other = (Team) obj;
-			return teamId.equals(other.getTeamId()) && users.equals(other.getMembers());
+			return project.equals(other.getProject()) && users.equals(other.getUsers());
 		}
 		
 		return false;
