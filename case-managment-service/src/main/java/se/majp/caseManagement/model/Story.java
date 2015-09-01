@@ -9,8 +9,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tbl_work_item")
-public class WorkItem extends AbstractEntity
+@Table(name = "tbl_story")
+public class Story extends AbstractEntity
 {
 	private String workItemId;
 	private String description;
@@ -21,15 +21,15 @@ public class WorkItem extends AbstractEntity
 	private TeamMember teamMember;
 
 	@OneToMany
-	@JoinTable(name = "tbl_workitem_issue")
+	@JoinTable(name = "tbl_story_issue")
 	private Collection<Issue> issues;
 
 	@ManyToOne
 	private Project project;
 
-	protected WorkItem(){}
+	protected Story(){}
 
-	public WorkItem(String workItemId, String description, Priority priority, Status status, TeamMember teamMember)
+	public Story(String workItemId, String description, Priority priority, Status status, TeamMember teamMember)
 	{
 		this.workItemId = workItemId;
 		this.description = description;
@@ -38,7 +38,7 @@ public class WorkItem extends AbstractEntity
 		this.teamMember = teamMember;
 	}
 	
-	public WorkItem(String workItemId, String description, Priority priority, Status status)
+	public Story(String workItemId, String description, Priority priority, Status status)
 	{
 		this(workItemId, description, priority, status, null);
 	}
@@ -92,9 +92,9 @@ public class WorkItem extends AbstractEntity
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj instanceof WorkItem)
+		if (obj instanceof Story)
 		{
-			WorkItem other = (WorkItem) obj;
+			Story other = (Story) obj;
 			return description.equals(other.getDescription()) && workItemId.equals(other.getWorkItemId());
 		}
 

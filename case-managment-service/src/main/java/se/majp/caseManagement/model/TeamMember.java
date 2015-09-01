@@ -17,7 +17,7 @@ public class TeamMember extends AbstractEntity
 	private Role role;
 	
 	@OneToMany(mappedBy = "teamMember")
-	private Collection<WorkItem> workItems;
+	private Collection<Story> stories;
 	
 	protected TeamMember(){}
 	

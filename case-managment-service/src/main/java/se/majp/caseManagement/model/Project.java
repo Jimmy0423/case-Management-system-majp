@@ -22,7 +22,7 @@ public class Project extends AbstractEntity
 	private Team team;
 
 	@OneToMany(mappedBy = "project")
-	private Collection<WorkItem> workItems;
+	private Collection<Story> stories;
 
 	protected Project(){}
 
@@ -32,7 +32,7 @@ public class Project extends AbstractEntity
 		this.name = name;
 		this.description = description;
 		team = new Team();
-		workItems = new ArrayList<>();
+		stories = new ArrayList<>();
 	}
 
 	public Team getTeam()
@@ -40,9 +40,9 @@ public class Project extends AbstractEntity
 		return team;
 	}
 
-	public Collection<WorkItem> getWorkItems()
+	public Collection<Story> getStories()
 	{
-		return workItems;
+		return stories;
 	}
 
 	public String getName()
@@ -60,14 +60,14 @@ public class Project extends AbstractEntity
 		return projectId;
 	}
 	
-	public Project addWorkItem(WorkItem workItem)
+	public Project addStory(Story story)
 	{
-		if(workItems.contains(workItem))
+		if(stories.contains(story))
 		{
-			throw new IllegalArgumentException("Work item already added");
+			throw new IllegalArgumentException("Story already added");
 		}
 		
-		workItems.add(workItem);
+		stories.add(story);
 		return this;
 	}
 
