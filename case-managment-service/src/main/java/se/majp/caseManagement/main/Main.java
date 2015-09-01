@@ -74,9 +74,13 @@ public class Main
 //			
 			storyRepository.findByTeam(team).forEach(System.out::println);
 			System.out.println("----------------");
-//			storyRepository.findByUser(user).forEach(System.out::println);
-//			System.out.println("----------------");
+			storyRepository.findByUser(user).forEach(System.out::println);
+			System.out.println("----------------");
 			projectRepository.findAllProjectsForUser(user).forEach(System.out::println);
+			System.out.println("----------------");
+			storyRepository.findStoriesWithIssues().forEach(System.out::println);
+			System.out.println("-----------------");
+			storyRepository.findByDescriptionContaining("shit").forEach(System.out::println);
 		}
 	}
 
