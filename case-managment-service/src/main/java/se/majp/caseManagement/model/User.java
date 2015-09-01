@@ -1,5 +1,6 @@
 package se.majp.caseManagement.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -24,11 +25,9 @@ public class User extends AbstractEntity
 	
 	@OneToMany
 	@JoinTable(name = "tbl_user_story")
-	private Collection<Story> stories;
+	private Collection<Story> stories = new ArrayList<>();
 
-	protected User()
-	{
-	}
+	protected User(){}
 
 	public User(String email, String firstName, String lastName, String password)
 	{
@@ -61,6 +60,12 @@ public class User extends AbstractEntity
 	public Collection<Team> getTeams()
 	{
 		return teams;
+	}
+	
+	public User addStory(Story story)
+	{
+		this.stories.add(story);
+		return this;
 	}
 
 	@Override

@@ -34,14 +34,19 @@ public class Main
 			Project project = new Project(generator.getNextId(), "Get shit done!", "Lets do this shit");
 			Story story = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
 			Story story2 = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
-			Team team = project.getTeam().addUser(user).addStory(story);
+			Team team = project.getTeam().addUser(user).addStory(story).addStory(story2);
 			
 			userRepository.save(user);
 			storyRepository.save(story);
 			storyRepository.save(story2);
 			projectRepository.save(project);
 			
-			storyRepository.findByTeam(team.getId()).forEach(System.out::println);
+			user.addStory(story);
+			userRepository.save(user);
+			
+			storyRepository.findByTeam(team).forEach(System.out::println);
+			System.out.println("----------------");
+			storyRepository.findByUser(user).forEach(System.out::println);
 		}
 	}
 
