@@ -5,8 +5,10 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tbl_team_member")
 public class TeamMember extends AbstractEntity
 {
 	@OneToOne

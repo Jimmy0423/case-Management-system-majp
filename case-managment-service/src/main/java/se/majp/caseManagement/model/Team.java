@@ -7,8 +7,10 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tbl_team")
 public class Team extends AbstractEntity
 {
 	private String teamId;
