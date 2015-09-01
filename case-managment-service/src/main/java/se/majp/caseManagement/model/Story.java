@@ -3,6 +3,7 @@ package se.majp.caseManagement.model;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,6 +19,7 @@ public class Story extends AbstractEntity
 	private Status status;
 
 	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	@OneToMany

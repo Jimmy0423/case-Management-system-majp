@@ -21,7 +21,7 @@ public class User extends AbstractEntity
 	@ManyToMany
 	private Collection<Team> teams;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "user")
 	private Collection<Story> stories;
 
 	protected User()
