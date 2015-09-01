@@ -101,11 +101,6 @@ public class Story extends AbstractEntity
 		return false;
 	}
 
-	public enum Priority
-	{
-		VERY_HIGH, HIGH, NORMAL, LOW, VERY_LOW
-	}
-
 	public enum Status
 	{
 		// add status
