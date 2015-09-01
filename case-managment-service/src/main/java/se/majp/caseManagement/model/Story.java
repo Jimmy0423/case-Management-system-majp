@@ -24,9 +24,9 @@ public class Story extends AbstractEntity
 
 	protected Story(){}
 
-	public Story(String workItemId, String description, Priority priority, Status status)
+	public Story(String storyId, String description, Priority priority, Status status)
 	{
-		this.storyId = workItemId;
+		this.storyId = storyId;
 		this.description = description;
 		this.priority = priority;
 		this.status = status;
@@ -37,7 +37,7 @@ public class Story extends AbstractEntity
 		return description;
 	}
 
-	public String getWorkItemId()
+	public String getStoryId()
 	{
 		return storyId;
 	}
@@ -80,7 +80,7 @@ public class Story extends AbstractEntity
 		if (obj instanceof Story)
 		{
 			Story other = (Story) obj;
-			return description.equals(other.getDescription()) && storyId.equals(other.getWorkItemId());
+			return description.equals(other.getDescription()) && storyId.equals(other.getStoryId());
 		}
 
 		return false;
