@@ -12,7 +12,7 @@ public class Issue extends AbstractEntity
 	private String description;
 
 	@ManyToOne
-	private TeamMember teamMember;
+	private User user;
 
 	public Issue(String issueId, String description)
 	{
@@ -30,9 +30,9 @@ public class Issue extends AbstractEntity
 		return description;
 	}
 
-	public TeamMember getTeamMember()
+	public User getUser()
 	{
-		return teamMember;
+		return user;
 	}
 
 	@Override

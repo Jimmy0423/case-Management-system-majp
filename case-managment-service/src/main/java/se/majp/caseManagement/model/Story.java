@@ -18,7 +18,7 @@ public class Story extends AbstractEntity
 	private Status status;
 
 	@ManyToOne
-	private TeamMember teamMember;
+	private User user;
 
 	@OneToMany
 	@JoinTable(name = "tbl_story_issue")
@@ -29,13 +29,13 @@ public class Story extends AbstractEntity
 
 	protected Story(){}
 
-	public Story(String workItemId, String description, Priority priority, Status status, TeamMember teamMember)
+	public Story(String workItemId, String description, Priority priority, Status status, User user)
 	{
 		this.workItemId = workItemId;
 		this.description = description;
 		this.priority = priority;
 		this.status = status;
-		this.teamMember = teamMember;
+		this.user = user;
 	}
 	
 	public Story(String workItemId, String description, Priority priority, Status status)
@@ -63,9 +63,9 @@ public class Story extends AbstractEntity
 		return status;
 	}
 
-	public TeamMember getTeamMember()
+	public User getUser()
 	{
-		return teamMember;
+		return user;
 	}
 
 	public Collection<Issue> getIssues()

@@ -17,7 +17,7 @@ public class Team extends AbstractEntity
 	
 	@OneToMany
 	@JoinTable(name = "member_in_team")
-	private final Collection<TeamMember> members = new ArrayList<>();
+	private final Collection<User> users = new ArrayList<>();
 
 	protected Team(){}
 	
@@ -31,30 +31,30 @@ public class Team extends AbstractEntity
 		return teamId;
 	}
 	
-	public Collection<TeamMember> getMembers()
+	public Collection<User> getMembers()
 	{
-		return members;
+		return users;
 	}
 
-	public Team addUser(TeamMember member)
+	public Team addUser(User user)
 	{
-		if (members.contains(member))
+		if (users.contains(user))
 		{
 			throw new IllegalArgumentException("User already in team");
 		}
 		
-		members.add(member);
+		users.add(user);
 		return this;
 	}
 
-	public void addAll(List<TeamMember> members)
+	public void addAll(List<User> users)
 	{
-		this.members.addAll(members);
+		this.users.addAll(users);
 	}
 
-	public void removeUser(TeamMember member)
+	public void removeUser(User user)
 	{
-		members.remove(member);
+		users.remove(user);
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ public class Team extends AbstractEntity
 		final int prime = 31;
 		int result = 1;
 		result += prime * teamId.hashCode();
-		result += prime * members.hashCode();
+		result += prime * users.hashCode();
 		
 		return result;
 	}
@@ -74,7 +74,7 @@ public class Team extends AbstractEntity
 		if(obj instanceof Team)
 		{
 			Team other = (Team) obj;
-			return teamId.equals(other.getTeamId()) && members.equals(other.getMembers());
+			return teamId.equals(other.getTeamId()) && users.equals(other.getMembers());
 		}
 		
 		return false;
