@@ -1,5 +1,6 @@
 package se.majp.caseManagement.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ public class Project extends AbstractEntity
 	private Team team;
 	
 	@OneToMany(fetch = FetchType.EAGER)
-	Collection<Story> stories;
+	Collection<Story> stories = new ArrayList<>();
 
 	protected Project(){}
 
@@ -50,6 +51,12 @@ public class Project extends AbstractEntity
 	public String getProjectId()
 	{
 		return projectId;
+	}
+	
+	public Project addStory(Story story)
+	{
+		stories.add(story);
+		return this;
 	}
 
 	@Override

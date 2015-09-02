@@ -5,12 +5,12 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Embeddable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 @Embeddable
 public class Team
 {
-	@OneToMany
+	@ManyToMany
 	private Collection<TeamMember> teamMembers = new ArrayList<>();
 	
 	protected Team(){}

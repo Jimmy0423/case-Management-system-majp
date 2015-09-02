@@ -58,6 +58,11 @@ public class Main
 			
 			project.getTeam().addTeamMember(teamMember);
 			project2.getTeam().addTeamMember(teamMember);
+			project.addStory(story);
+			project.addStory(story2);
+			
+			projectRepository.save(project);
+			projectRepository.save(project2);
 			
 			story.addIssue(issue);
 			storyRepository.save(story);
