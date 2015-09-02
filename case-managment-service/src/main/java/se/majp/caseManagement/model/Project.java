@@ -1,8 +1,12 @@
 package se.majp.caseManagement.model;
 
+import java.util.Collection;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,6 +21,9 @@ public class Project extends AbstractEntity
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Team team;
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	Collection<Story> stories;
 
 	protected Project(){}
 

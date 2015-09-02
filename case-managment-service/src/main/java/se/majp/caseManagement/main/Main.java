@@ -46,7 +46,6 @@ public class Main
 			
 			TeamMember teamMember = new TeamMember(user, Role.MEMBER, project.getTeam());
 			Issue issue = new Issue("Issue Ttitle", "You screwed up you idiot", user);
-//			Team team = project.getTeam().addTeamMember(new TeamMember(user, Role.MEMBER, team).addStory(story).addStory(story2));
 	
 			userRepository.save(user);
 			storyRepository.save(story);
@@ -71,7 +70,7 @@ public class Main
 			user.addProject(project);
 			user.addProject(project2);
 			userRepository.save(user);
-//			
+	
 			storyRepository.findByTeam(team).forEach(System.out::println);
 			System.out.println("----------------");
 			storyRepository.findByUser(user).forEach(System.out::println);
