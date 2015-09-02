@@ -11,7 +11,6 @@ import se.majp.caseManagement.model.User;
 public interface ProjectRepository extends CrudRepository<Project, Long>
 {
 	//Alla projekt som en viss user är med i teamet
-//	@Query("select t.project from Team t where ?1 member of t.users")
 	@Query("select u.projects from User u where u = ?1")
 	List<Project> findAllProjectsForUser(User user);
 }
