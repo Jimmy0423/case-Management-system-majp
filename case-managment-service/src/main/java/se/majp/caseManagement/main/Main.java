@@ -80,6 +80,8 @@ public class Main
 			storyRepository.findStoriesWithIssues().forEach(System.out::println);
 			System.out.println("-----------------");
 			storyRepository.findByDescriptionContaining("shit").forEach(System.out::println);
+			System.out.println("-----------------");
+			teamMemberRepository.findByTeam(team).forEach(System.out::println);
 		}
 	}
 
