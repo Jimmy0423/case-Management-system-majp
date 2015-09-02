@@ -16,7 +16,6 @@ import se.majp.caseManagement.repository.IssueRepository;
 import se.majp.caseManagement.repository.ProjectRepository;
 import se.majp.caseManagement.repository.StoryRepository;
 import se.majp.caseManagement.repository.TeamMemberRepository;
-import se.majp.caseManagement.repository.TeamRepository;
 import se.majp.caseManagement.repository.UserRepository;
 import se.majp.caseManagement.util.IdGenerator;
 
@@ -32,7 +31,6 @@ public class Main
 			context.refresh();
 			
 			UserRepository userRepository = context.getBean(UserRepository.class);
-			TeamRepository teamRepository = context.getBean(TeamRepository.class);
 			StoryRepository storyRepository = context.getBean(StoryRepository.class);
 			ProjectRepository projectRepository = context.getBean(ProjectRepository.class);
 			TeamMemberRepository teamMemberRepository = context.getBean(TeamMemberRepository.class);
@@ -44,7 +42,7 @@ public class Main
 			Story story = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
 			Story story2 = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
 			
-			TeamMember teamMember = new TeamMember(user, Role.MEMBER, project.getTeam());
+			TeamMember teamMember = new TeamMember(user, Role.MEMBER);
 			Issue issue = new Issue("Issue Ttitle", "You screwed up you idiot", user);
 	
 			userRepository.save(user);
@@ -58,11 +56,8 @@ public class Main
 			teamMember.addStory(story).addStory(story2);
 			teamMemberRepository.save(teamMember);
 			
-			Team team = project.getTeam().addTeamMember(teamMember);
-			teamRepository.save(team);
-			
-			Team team2 = project2.getTeam().addTeamMember(teamMember);
-			teamRepository.save(team2);
+			project.getTeam().addTeamMember(teamMember);
+			project2.getTeam().addTeamMember(teamMember);
 			
 			story.addIssue(issue);
 			storyRepository.save(story);
@@ -71,7 +66,7 @@ public class Main
 			user.addProject(project2);
 			userRepository.save(user);
 	
-			storyRepository.findByTeam(team).forEach(System.out::println);
+			storyRepository.findByProject(project).forEach(System.out::println);
 			System.out.println("----------------");
 			storyRepository.findByUser(user).forEach(System.out::println);
 			System.out.println("----------------");
@@ -81,7 +76,7 @@ public class Main
 			System.out.println("-----------------");
 			storyRepository.findByDescriptionContaining("shit").forEach(System.out::println);
 			System.out.println("-----------------");
-			teamMemberRepository.findByTeam(team).forEach(System.out::println);
+			teamMemberRepository.findByProject(project).forEach(System.out::println);
 		}
 	}
 

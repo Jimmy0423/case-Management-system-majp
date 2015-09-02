@@ -2,12 +2,10 @@ package se.majp.caseManagement.model;
 
 import java.util.Collection;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +17,6 @@ public class Project extends AbstractEntity
 	private String name;
 	private String description;
 	
-	@OneToOne(cascade = CascadeType.ALL)
 	private Team team;
 	
 	@OneToMany(fetch = FetchType.EAGER)
@@ -32,7 +29,7 @@ public class Project extends AbstractEntity
 		this.projectId = projectId;
 		this.name = name;
 		this.description = description;
-		team = new Team(this);
+		team = new Team();
 	}
 
 	public Team getTeam()

@@ -17,7 +17,6 @@ public class TeamMember extends AbstractEntity
 {
 	@OneToOne
 	private User user;
-	
 	private Role role;
 	
 	@OneToMany(fetch = FetchType.EAGER)
@@ -25,16 +24,12 @@ public class TeamMember extends AbstractEntity
 										inverseJoinColumns = @JoinColumn(name = "story_id"))
 	private Collection<Story> stories = new ArrayList<>();
 	
-	@OneToOne
-	private Team team;
-	
 	protected TeamMember(){}
 
-	public TeamMember(User user, Role role, Team team)
+	public TeamMember(User user, Role role)
 	{
 		this.user = user;
 		this.role = role;
-		this.team = team;
 	}
 	
 	public User getUser()
@@ -52,11 +47,6 @@ public class TeamMember extends AbstractEntity
 		return stories;
 	}
 
-	public Team getTeam()
-	{
-		return team;
-	}
-
 	public TeamMember addStory(Story story)
 	{
 		if(stories.contains(story))
@@ -67,5 +57,4 @@ public class TeamMember extends AbstractEntity
 		stories.add(story);
 		return this;
 	}
-	
 }
