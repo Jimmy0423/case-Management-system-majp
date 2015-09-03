@@ -9,7 +9,6 @@ import se.majp.caseManagement.model.Priority;
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Role;
 import se.majp.caseManagement.model.Story;
-import se.majp.caseManagement.model.Team;
 import se.majp.caseManagement.model.TeamMember;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.repository.IssueRepository;
@@ -17,6 +16,7 @@ import se.majp.caseManagement.repository.ProjectRepository;
 import se.majp.caseManagement.repository.StoryRepository;
 import se.majp.caseManagement.repository.TeamMemberRepository;
 import se.majp.caseManagement.repository.UserRepository;
+import se.majp.caseManagement.service.TeamMemberService;
 import se.majp.caseManagement.util.IdGenerator;
 
 public class Main
@@ -35,17 +35,22 @@ public class Main
 			ProjectRepository projectRepository = context.getBean(ProjectRepository.class);
 			TeamMemberRepository teamMemberRepository = context.getBean(TeamMemberRepository.class);
 			IssueRepository issueRepository = context.getBean(IssueRepository.class);
+			TeamMemberService teamMemberService = context.getBean(TeamMemberService.class);
 			
 			User user = new User("BoAhl@example.com", "Bo", "Ahl", "BoThaMaster");
 			Project project = new Project(generator.getNextId(), "Get shit done!", "Lets do this shit");
 			Project project2 = new Project(generator.getNextId(), "Get more shit done", "Lets never do this");
-			Story story = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
-			Story story2 = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
+			Story story = new Story(generator.getNextId(), "Do shit", Priority.LOW, Story.Status.PENDING);
+			Story story2 = new Story(generator.getNextId(), "Do shit!!", Priority.HIGH, Story.Status.PENDING);
+			Story story3 = new Story(generator.getNextId(), "Do shit!!!!!", Priority.VERYHIGH, Story.Status.PENDING);
 			
 			TeamMember teamMember = new TeamMember(user, Role.MEMBER);
 			Issue issue = new Issue("Issue Ttitle", "You screwed up you idiot", user);
+			
 	
 			userRepository.save(user);
+			teamMemberService.add(teamMember, story3);
+
 			storyRepository.save(story);
 			storyRepository.save(story2);
 			projectRepository.save(project);
@@ -56,6 +61,7 @@ public class Main
 			teamMember.addStory(story).addStory(story2);
 			teamMemberRepository.save(teamMember);
 			
+
 			project.getTeam().addTeamMember(teamMember);
 			project2.getTeam().addTeamMember(teamMember);
 			project.addStory(story);
@@ -70,6 +76,9 @@ public class Main
 			user.addProject(project);
 			user.addProject(project2);
 			userRepository.save(user);
+			
+			teamMemberService.remove(teamMember, story);
+			teamMemberService.updateRole(teamMember, Role.OWNER);
 	
 			storyRepository.findByProject(project).forEach(System.out::println);
 			System.out.println("----------------");

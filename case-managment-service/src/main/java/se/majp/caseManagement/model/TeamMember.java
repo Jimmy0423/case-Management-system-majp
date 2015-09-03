@@ -42,6 +42,11 @@ public class TeamMember extends AbstractEntity
 		return role;
 	}
 
+	public void setRole(Role role)
+	{
+		this.role = role;
+	}
+
 	public Collection<Story> getStories()
 	{
 		return stories;
@@ -55,6 +60,12 @@ public class TeamMember extends AbstractEntity
 		}
 		
 		stories.add(story);
+		return this;
+	}
+
+	public TeamMember removeStory(Story story)
+	{
+		stories.remove(story);
 		return this;
 	}
 }

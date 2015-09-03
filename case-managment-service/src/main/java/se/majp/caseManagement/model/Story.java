@@ -63,6 +63,11 @@ public class Story extends AbstractEntity
 		return this;
 	}
 
+	public void setStatus(Status status)
+	{
+		this.status = status;
+	}
+
 	@Override
 	public int hashCode()
 	{
