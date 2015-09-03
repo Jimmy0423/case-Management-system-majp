@@ -3,6 +3,7 @@ package se.majp.caseManagement.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,7 +31,7 @@ public class Story extends AbstractEntity
 	@ManyToOne
 	private User user;
 
-	@OneToMany(mappedBy = "story", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "story", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Collection<Issue> issues;
 
 	protected Story(){}

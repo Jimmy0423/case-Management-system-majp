@@ -43,4 +43,9 @@ public class Team
 	{
 		users.putAll(usersToAdd);
 	}
+
+	public Role getRole(User user)
+	{
+		return users.get(user);
+	}
 }

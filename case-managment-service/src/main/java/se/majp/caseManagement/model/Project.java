@@ -3,6 +3,7 @@ package se.majp.caseManagement.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -17,7 +18,7 @@ public class Project extends AbstractEntity
 	private String description;
 	private Team team;
 
-	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Collection<Story> backlog;
 
 	protected Project(){}
@@ -30,10 +31,20 @@ public class Project extends AbstractEntity
 		this.team = new Team();
 		this.backlog = new ArrayList<>();
 	}
+	
+	public Project(String name, String description)
+	{
+		this(null, name, description);
+	}
 
 	public String getProjectId()
 	{
 		return projectId;
+	}
+	
+	public void setProjectId(String projectId)
+	{
+		this.projectId = projectId;
 	}
 
 	public String getName()
