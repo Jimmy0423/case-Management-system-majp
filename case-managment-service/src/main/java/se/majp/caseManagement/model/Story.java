@@ -60,6 +60,12 @@ public class Story extends AbstractEntity
 		return status;
 	}
 	
+	public Story changeStatus(Status status)
+	{
+		this.status = status;
+		return this;
+	}
+	
 	public Project getProject()
 	{
 		return project;
