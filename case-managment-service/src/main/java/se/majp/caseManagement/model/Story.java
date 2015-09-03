@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -13,23 +15,39 @@ import javax.persistence.Table;
 @Table(name = "tbl_story")
 public class Story extends AbstractEntity
 {
-	private String storyId;
+	private String name;
 	private String description;
-	private Priority priority;
+	
+	@Enumerated(EnumType.STRING)
 	private Status status;
+	
+	@Enumerated(EnumType.STRING)
+	private Priority priority;
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tbl_story_issue")
-	private Collection<Issue> issues = new ArrayList<>();
+	@ManyToOne
+	private Project project;
+	
+	@ManyToOne
+	private User user;
+
+	@OneToMany(mappedBy = "story", fetch = FetchType.EAGER)
+	private Collection<Issue> issues;
 
 	protected Story(){}
 
-	public Story(String storyId, String description, Priority priority, Status status)
+	public Story(String name, String description, Project project, Status status, Priority priority)
 	{
-		this.storyId = storyId;
+		this.name = name;
 		this.description = description;
-		this.priority = priority;
+		this.project = project;
 		this.status = status;
+		this.priority = priority;
+		this.issues = new ArrayList<>();
+	}
+
+	public String getName()
+	{
+		return name;
 	}
 
 	public String getDescription()
@@ -37,19 +55,14 @@ public class Story extends AbstractEntity
 		return description;
 	}
 
-	public String getStoryId()
-	{
-		return storyId;
-	}
-
-	public Priority getPriority()
-	{
-		return priority;
-	}
-
 	public Status getStatus()
 	{
 		return status;
+	}
+	
+	public Project getProject()
+	{
+		return project;
 	}
 
 	public Collection<Issue> getIssues()
@@ -57,43 +70,19 @@ public class Story extends AbstractEntity
 		return issues;
 	}
 	
+	public User getUser()
+	{
+		return user;
+	}
+	
+	public void setUser(User user)
+	{
+		this.user = user;
+	}
+
 	public Story addIssue(Issue issue)
 	{
 		issues.add(issue);
 		return this;
 	}
-
-	public void setStatus(Status status)
-	{
-		this.status = status;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result *= prime + description.hashCode();
-		result *= prime + storyId.hashCode();
-
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof Story)
-		{
-			Story other = (Story) obj;
-			return description.equals(other.getDescription()) && storyId.equals(other.getStoryId());
-		}
-
-		return false;
-	}
-
-	public enum Status
-	{
-		PENDING, INPROGRESS, DONE, ISSUED
-	}
-
 }

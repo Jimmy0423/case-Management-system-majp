@@ -1,43 +1,46 @@
 package se.majp.caseManagement.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
-import javax.persistence.ManyToMany;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyJoinColumn;
 
 @Embeddable
 public class Team
 {
-	@ManyToMany
-	private Collection<TeamMember> teamMembers = new ArrayList<>();
-	
-	protected Team(){}
-	
-	public Collection<TeamMember> getTeamMembers()
+	@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+	@MapKeyJoinColumn(name = "user_id")
+	@CollectionTable(name = "tbl_project_user", joinColumns = @JoinColumn(name = "project_id"))
+	@Column(name = "role")
+	@Enumerated(EnumType.STRING)
+	private Map<User, Role> users = new HashMap<>();
+
+	public Map<User, Role> getUsers()
 	{
-		return teamMembers;
+		return users;
 	}
-	
-	public Team addTeamMember(TeamMember teamMember)
+
+	public Team addUser(User user, Role role)
 	{
-		if (teamMembers.contains(teamMember))
-		{
-			throw new IllegalArgumentException("Team member already in team");
-		}
-		
-		teamMembers.add(teamMember);
+		users.put(user, role);
 		return this;
 	}
 
-	public void addAll(List<TeamMember> teamMembers)
+	public void removeUser(User user)
 	{
-		this.teamMembers.addAll(teamMembers);
+		users.remove(user);
 	}
 
-	public void removeTeamMember(TeamMember teamMember)
+	public void addAllUsers(Map<User, Role> usersToAdd)
 	{
-		this.teamMembers.remove(teamMember);
+		users.putAll(usersToAdd);
 	}
 }

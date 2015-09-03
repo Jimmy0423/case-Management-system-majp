@@ -3,8 +3,6 @@ package se.majp.caseManagement.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -14,15 +12,13 @@ import javax.persistence.Table;
 @Table(name = "tbl_project")
 public class Project extends AbstractEntity
 {
-	@Column(name = "project_id")
 	private String projectId;
 	private String name;
 	private String description;
-	
 	private Team team;
-	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	Collection<Story> stories = new ArrayList<>();
+
+	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+	private Collection<Story> backlog;
 
 	protected Project(){}
 
@@ -31,12 +27,13 @@ public class Project extends AbstractEntity
 		this.projectId = projectId;
 		this.name = name;
 		this.description = description;
-		team = new Team();
+		this.team = new Team();
+		this.backlog = new ArrayList<>();
 	}
 
-	public Team getTeam()
+	public String getProjectId()
 	{
-		return team;
+		return projectId;
 	}
 
 	public String getName()
@@ -48,15 +45,20 @@ public class Project extends AbstractEntity
 	{
 		return description;
 	}
-	
-	public String getProjectId()
+
+	public Team getTeam()
 	{
-		return projectId;
+		return team;
+	}
+
+	public Collection<Story> getBacklog()
+	{
+		return backlog;
 	}
 	
-	public Project addStory(Story story)
+	public Project addStoryToBacklog(Story story)
 	{
-		stories.add(story);
+		backlog.add(story);
 		return this;
 	}
 
@@ -65,24 +67,23 @@ public class Project extends AbstractEntity
 	{
 		final int prime = 31;
 		int result = 1;
-		result *= prime + description.hashCode();
-		result *= prime + name.hashCode();
 		result *= prime + projectId.hashCode();
-		
+		result *= prime + name.hashCode();
+
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj instanceof Project) 
+		if (obj instanceof Project && obj != null)
 		{
 			Project other = (Project) obj;
-			
-			return (name.equals(other.getName()) && description.equals(other.getDescription()) &&
-					projectId.equals(other.getProjectId()));
+
+			return projectId.equals(other.getProjectId()) && name.equals(other.getName());
 		}
-		
+
 		return false;
 	}
+
 }

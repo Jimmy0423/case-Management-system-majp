@@ -12,15 +12,15 @@ public class Issue extends AbstractEntity
 	private String description;
 
 	@ManyToOne
-	private User user;
-	
+	private Story story;
+
 	protected Issue(){}
 
-	public Issue(String title, String description, User user)
+	public Issue(String title, String description, Story story)
 	{
 		this.title = title;
 		this.description = description;
-		this.user = user;
+		this.story = story;
 	}
 
 	public String getTitle()
@@ -33,30 +33,8 @@ public class Issue extends AbstractEntity
 		return description;
 	}
 
-	public User getUser()
+	public Story getStory()
 	{
-		return user;
+		return story;
 	}
-
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result *= prime + title.hashCode();
-
-		return result;
-	}
-
-//	@Override
-//	public boolean equals(Object obj)
-//	{
-//		if (obj instanceof Issue)
-//		{
-//			Issue other = (Issue) obj;
-//			return title.equals(other.getIssueId());
-//		}
-//
-//		return false;
-//	}
 }

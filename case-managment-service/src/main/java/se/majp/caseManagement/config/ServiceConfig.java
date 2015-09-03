@@ -3,15 +3,15 @@ package se.majp.caseManagement.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import se.majp.caseManagement.service.TeamMemberService;
+import se.majp.caseManagement.service.UserService;
 
 @Configuration
 public class ServiceConfig
 {
 	@Bean
-	public TeamMemberService teamMemberService()
+	public UserService userService()
 	{
-		return new TeamMemberService();
+		return new UserService();
 	}
 
 }

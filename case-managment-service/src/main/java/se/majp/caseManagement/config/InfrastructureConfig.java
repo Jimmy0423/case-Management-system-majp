@@ -26,10 +26,9 @@ public class InfrastructureConfig
 	@Bean
 	public DataSource dataSource()
 	{
-
 		HikariConfig config = new HikariConfig();
 		config.setDriverClassName("com.mysql.jdbc.Driver");
-		config.setJdbcUrl("jdbc:mysql://localhost:3306/majp");
+		config.setJdbcUrl("jdbc:mysql://localhost:3307/majp");
 		config.setUsername("root");
 		config.setPassword("");
 
@@ -47,7 +46,6 @@ public class InfrastructureConfig
 	{
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
 		adapter.setDatabase(Database.MYSQL);
-		adapter.setGenerateDdl(true);
 
 		return adapter;
 	}

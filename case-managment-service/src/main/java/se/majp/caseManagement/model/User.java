@@ -13,28 +13,47 @@ import javax.persistence.Table;
 @Table(name = "tbl_user")
 public class User extends AbstractEntity
 {
+	private String userId;
+	
 	@Column(unique = true)
 	private String email;
+
+	private String password;
 	private String firstName;
 	private String lastName;
-	private String password;
 	
-	@OneToMany(fetch = FetchType.EAGER)
-	Collection<Project> projects = new ArrayList<>();
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	private Collection<Story> stories = new ArrayList<>();
 
 	protected User(){}
 
-	public User(String email, String firstName, String lastName, String password)
+	public User(String userId, String email, String password, String firstName, String lastName)
 	{
+		this.userId = userId;
 		this.email = email;
+		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.password = password;
+	}
+	
+	public User(String email, String password, String firstName, String lastName)
+	{
+		this(null, email, password, firstName, lastName);
+	}
+
+	public String getUserId()
+	{
+		return userId;
 	}
 
 	public String getEmail()
 	{
 		return email;
+	}
+
+	public String getPassword()
+	{
+		return password;
 	}
 
 	public String getFirstName()
@@ -47,19 +66,25 @@ public class User extends AbstractEntity
 		return lastName;
 	}
 
-	public String getPassword()
+	public void setPassword(String password)
 	{
-		return password;
+		this.password = password;
 	}
 	
-	public User addProject(Project project)
+	public Collection<Story> getStories()
 	{
-		if (projects.contains(project))
-		{
-			throw new IllegalArgumentException("Project already exists in user");
-		}
-		
-		projects.add(project);
+		return stories;
+	}
+	
+	public User addStory(Story story)
+	{
+		stories.add(story);
+		return this;
+	}
+
+	public User removeStory(Story story)
+	{
+		stories.remove(story);
 		return this;
 	}
 
@@ -68,8 +93,8 @@ public class User extends AbstractEntity
 	{
 		final int prime = 31;
 		int result = 1;
-		result *= prime + password.hashCode();
 		result *= prime + email.hashCode();
+		result *= prime + password.hashCode();
 
 		return result;
 	}
@@ -77,12 +102,14 @@ public class User extends AbstractEntity
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj instanceof User)
+		if (obj instanceof User && obj != null)
 		{
 			User other = (User) obj;
-			return password.equals(other.getPassword()) && email.equals(other.getEmail());
+
+			return email.equals(other.getEmail()) && password.equals(other.getPassword());
 		}
 
 		return false;
 	}
+
 }
