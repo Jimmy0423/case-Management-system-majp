@@ -20,6 +20,9 @@ public class Story extends AbstractEntity
 	
 	@Enumerated(EnumType.STRING)
 	private Status status;
+	
+	@Enumerated(EnumType.STRING)
+	private Priority priority;
 
 	@ManyToOne
 	private Project project;
@@ -32,12 +35,13 @@ public class Story extends AbstractEntity
 
 	protected Story(){}
 
-	public Story(String name, String description, Project project, Status status)
+	public Story(String name, String description, Project project, Status status, Priority priority)
 	{
 		this.name = name;
 		this.description = description;
 		this.project = project;
 		this.status = status;
+		this.priority = priority;
 		this.issues = new ArrayList<>();
 	}
 

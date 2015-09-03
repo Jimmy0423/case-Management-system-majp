@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import se.majp.caseManagement.model.Issue;
+import se.majp.caseManagement.model.Priority;
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Role;
 import se.majp.caseManagement.model.Status;
@@ -35,8 +36,8 @@ public class Main
 			User user = new User(generator.getNextId(), "BoAhl@example.com", "Bo", "Ahl", "BoThaMaster");
 			Project project = new Project(generator.getNextId(), "Get shit done!", "Lets do this shit");
 			Project project2 = new Project(generator.getNextId(), "Get more shit done", "Lets never do this");
-			Story story = new Story(generator.getNextId(), "Do shit", project, Status.PENDING);
-			Story story2 = new Story(generator.getNextId(), "Do shit", project2, Status.PENDING);
+			Story story = new Story(generator.getNextId(), "Do shit", project, Status.PENDING, Priority.HIGH);
+			Story story2 = new Story(generator.getNextId(), "Do shit", project2, Status.PENDING, Priority.LOW);
 			user.addStory(story);
 			story.setUser(user);
 			

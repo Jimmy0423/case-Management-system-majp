@@ -2,5 +2,5 @@ package se.majp.caseManagement.model;
 
 public enum Status
 {
-	PENDING, DONE
+	PENDING, ISSUED, INPROGRESS, DONE
 }
