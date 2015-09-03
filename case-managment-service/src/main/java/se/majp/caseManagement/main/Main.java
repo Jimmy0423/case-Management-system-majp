@@ -5,17 +5,14 @@ import java.util.Arrays;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import se.majp.caseManagement.model.Issue;
-import se.majp.caseManagement.model.Priority;
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Role;
+import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
-import se.majp.caseManagement.model.Team;
-import se.majp.caseManagement.model.TeamMember;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.repository.IssueRepository;
 import se.majp.caseManagement.repository.ProjectRepository;
 import se.majp.caseManagement.repository.StoryRepository;
-import se.majp.caseManagement.repository.TeamMemberRepository;
 import se.majp.caseManagement.repository.UserRepository;
 import se.majp.caseManagement.util.IdGenerator;
 
@@ -33,55 +30,47 @@ public class Main
 			UserRepository userRepository = context.getBean(UserRepository.class);
 			StoryRepository storyRepository = context.getBean(StoryRepository.class);
 			ProjectRepository projectRepository = context.getBean(ProjectRepository.class);
-			TeamMemberRepository teamMemberRepository = context.getBean(TeamMemberRepository.class);
 			IssueRepository issueRepository = context.getBean(IssueRepository.class);
 			
-			User user = new User("BoAhl@example.com", "Bo", "Ahl", "BoThaMaster");
+			User user = new User(generator.getNextId(), "BoAhl@example.com", "Bo", "Ahl", "BoThaMaster");
 			Project project = new Project(generator.getNextId(), "Get shit done!", "Lets do this shit");
 			Project project2 = new Project(generator.getNextId(), "Get more shit done", "Lets never do this");
-			Story story = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
-			Story story2 = new Story(generator.getNextId(), "Do shit", Priority.VERYHIGH, Story.Status.PENDING);
+			Story story = new Story(generator.getNextId(), "Do shit", project, Status.PENDING);
+			Story story2 = new Story(generator.getNextId(), "Do shit", project2, Status.PENDING);
+			user.addStory(story);
+			story.setUser(user);
 			
-			TeamMember teamMember = new TeamMember(user, Role.MEMBER);
-			Issue issue = new Issue("Issue Ttitle", "You screwed up you idiot", user);
+			Issue issue = new Issue("Issue Ttitle", "You screwed up you idiot", story);
 	
 			userRepository.save(user);
-			storyRepository.save(story);
-			storyRepository.save(story2);
 			projectRepository.save(project);
 			projectRepository.save(project2);
-			teamMemberRepository.save(teamMember);
+			storyRepository.save(story);
+			storyRepository.save(story2);
 			issueRepository.save(issue);
 			
-			teamMember.addStory(story).addStory(story2);
-			teamMemberRepository.save(teamMember);
-			
-			project.getTeam().addTeamMember(teamMember);
-			project2.getTeam().addTeamMember(teamMember);
-			project.addStory(story);
-			project.addStory(story2);
+			project.getTeam().addUser(user, Role.OWNER);
+			project2.getTeam().addUser(user, Role.OWNER);
+			project.addStoryToBacklog(story);
+			project.addStoryToBacklog(story2);
 			
 			projectRepository.save(project);
 			projectRepository.save(project2);
 			
 			story.addIssue(issue);
 			storyRepository.save(story);
-			
-			user.addProject(project);
-			user.addProject(project2);
-			userRepository.save(user);
 	
-			storyRepository.findByProject(project).forEach(System.out::println);
-			System.out.println("----------------");
-			storyRepository.findByUser(user).forEach(System.out::println);
-			System.out.println("----------------");
+			System.out.println("Find story by Project \n-------------------------");
+			storyRepository.findByProject(project.getProjectId()).forEach(System.out::println);
+			System.out.println("Find story by User \n-------------------------");
+			storyRepository.findByUser(user.getUserId()).forEach(System.out::println);
+			System.out.println("Find projects by User \n-------------------------");
 			projectRepository.findAllProjectsForUser(user).forEach(System.out::println);
-			System.out.println("----------------");
+			System.out.println("Find story with Issue \n-------------------------");
 			storyRepository.findStoriesWithIssues().forEach(System.out::println);
-			System.out.println("-----------------");
+			System.out.println("Find story by Description \n-------------------------");
 			storyRepository.findByDescriptionContaining("shit").forEach(System.out::println);
 			System.out.println("-----------------");
-			teamMemberRepository.findByProject(project).forEach(System.out::println);
 		}
 	}
 

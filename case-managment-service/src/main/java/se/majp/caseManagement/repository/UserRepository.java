@@ -2,19 +2,18 @@ package se.majp.caseManagement.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import se.majp.caseManagement.model.User;
 
 public interface UserRepository extends CrudRepository<User, Long>
 {
-	List<User> findByEmail(String email);
-
-	List<User> findByfirstName(String firstName);
-
-	List<User> findByLastName(String lastName);
-
-	List<User> findByEmailOrFirstNameOrLastName(String email, String firstName, String lastName);
-
-	//List<User> findByTeam(Team team);
+	@Query("select u from User u where firstName = ?1 or lastName = ?1 or email = ?1")
+	List<User> findByFirstNameOrLastNameOrEmail(String value);
+	
+	List<User> findByUserId(String userId);
+	
+	@Query("select indices(p.team.users) from Project p where p.projectId = ?1")
+	List<User> findByProject(String projectId);
 }
