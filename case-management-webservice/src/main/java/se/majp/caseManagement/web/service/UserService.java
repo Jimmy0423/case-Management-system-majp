@@ -1,20 +1,33 @@
 package se.majp.caseManagement.web.service;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("users")
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+import se.majp.caseManagement.model.User;
+
+@Component
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Path("users")
 public class UserService
 {
+	@Autowired
+	@Qualifier("userService")
+	se.majp.caseManagement.service.UserService userService;
 	
+	@GET
 	public Response addUser()
-	{
-		
-		return Response.ok().build();
+	{	
+		User user = userService.addUser(new User("userId", "email", "pass", "Marcus", "Svensson"));
+//		return Response.ok(user.getEmail()).build();
+		return Response.ok("Bajs").build();
 	}
 }
