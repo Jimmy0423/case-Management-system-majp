@@ -5,8 +5,13 @@
 	id="WebApp_ID" version="3.1">
 	
 	<context-param>
+	    <param-name>contextClass</param-name>
+	    <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+	
+	<context-param>
 	    <param-name>contextConfigLocation</param-name>
-	    <param-value>se.majp.caseManagement.web.config.ServiceConfigXML</param-value>
+	    <param-value>src/main/java/se/majp/caseManagement/web/config/ServiceConfig.java</param-value>
 	</context-param>
 	
 	<listener>
@@ -15,7 +20,7 @@
 
     <servlet>
         <servlet-name>JAX-RS-Application</servlet-name>
-        <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>se.majp.caseManagement</param-value>

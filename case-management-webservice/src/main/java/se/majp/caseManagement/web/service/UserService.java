@@ -8,7 +8,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import se.majp.caseManagement.model.User;
@@ -20,14 +19,12 @@ import se.majp.caseManagement.model.User;
 public class UserService
 {
 	@Autowired
-	@Qualifier("userService")
 	se.majp.caseManagement.service.UserService userService;
 	
 	@GET
 	public Response addUser()
-	{	
+	{		
 		User user = userService.addUser(new User("userId", "email", "pass", "Marcus", "Svensson"));
-//		return Response.ok(user.getEmail()).build();
-		return Response.ok("Bajs").build();
+		return Response.ok(user.getEmail()).build();
 	}
 }
