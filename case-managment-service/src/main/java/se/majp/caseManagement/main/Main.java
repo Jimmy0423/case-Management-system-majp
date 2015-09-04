@@ -54,10 +54,11 @@ public class Main
 			storyRepository.save(story);
 			storyRepository.save(story2);
 			issueRepository.save(issue);
+			user = userService.addStory(user, story2);
 			user = userService.addStory(user, story);
 			
 			project.getTeam().addUser(user, Role.OWNER);
-			project2.getTeam().addUser(user, Role.OWNER);
+			project2.getTeam().addUser(user, Role.MEMBER);
 			project.addStoryToBacklog(story);
 			project.addStoryToBacklog(story2);
 			
@@ -66,7 +67,7 @@ public class Main
 			
 			story.addIssue(issue);
 			storyRepository.save(story);
-			// userService.removeUser(user);
+			userService.removeUser(user);
 	
 			System.out.println("Find story by Project \n-------------------------");
 			storyRepository.findByProject(project.getProjectId()).forEach(System.out::println);

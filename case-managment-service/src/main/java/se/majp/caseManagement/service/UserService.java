@@ -34,14 +34,16 @@ public class UserService
 
 	public void removeUser(User user)
 	{
-		user.getStories().forEach(story -> {
-			story.setUser(null);
-		});
 		projectRepository.findAllProjectsForUser(user).forEach(project -> {
 			project.getTeam().removeUser(user);
+			projectRepository.save(project);
 		});
-		storyRepository.save(user.getStories());
-		userRepository.delete(user);
+
+		user.getStories().forEach(story -> {
+			removeStory(story);
+		});
+
+		userRepository.delete(user.getId());
 	}
 
 	public User updateUser(User user)
@@ -51,7 +53,6 @@ public class UserService
 			throw new IllegalArgumentException("user does not exist, can't update user");
 		}
 		return userRepository.save(user);
-
 	}
 
 	public User addStory(User user, Story story)
@@ -59,9 +60,11 @@ public class UserService
 		story.setUser(user);
 		storyRepository.save(story);
 
-		return story.getUser();
+		user.addStory(story);
+		return userRepository.save(user);
 	}
 
+	// to verify
 	public void removeStory(Story story)
 	{
 		if (story.getUser() == null)
