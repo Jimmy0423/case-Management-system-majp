@@ -55,9 +55,14 @@ public class ProjectService
 		throw new PermissionDeniedException("User is not a owner");
 	}
 	
-	private boolean isOwner(User user, Project project)
+	public Project addTeamMember(User user, Role role, Project project)
 	{
-		return project.getTeam().getRole(user) == null && project.getTeam().getRole(user).equals(Role.OWNER);
+		project.getTeam().addUser(user, role);
+		return project;
 	}
 	
+	private boolean isOwner(User user, Project project)
+	{
+		return project.getTeam().getRole(user) != null && project.getTeam().getRole(user).equals(Role.OWNER);
+	}
 }
