@@ -27,6 +27,39 @@ public class ProjectService
 		
 		throw new PermissionDeniedException("Permission denied");
 	}
+	
+	public Project removeProject(User user, Project project)
+	{
+		if(userIsOwner(user, project))
+		{
+			projectRepository.delete(project);
+			return project;
+		}
+		
+		throw new PermissionDeniedException("Permission denied");
+	}
+	
+	public Project updateProject(Project project)
+	{
+		return projectRepository.save(project);
+	}
+	
+	public Project addOrUpdateTeamMember(User user, Role role, Project project)
+	{
+		if(user.getUserId() == null) 
+		{
+			throw new IllegalArgumentException("User not saved in DB");
+		}
+		
+		project.getTeam().addUser(user, role);
+		return projectRepository.save(project);
+	}
+	
+	public Project removeTeamMember(User user, Project project)
+	{
+		project.getTeam().removeUser(user);
+		return projectRepository.save(project);
+	}
 
 	private boolean userIsOwner(User user, Project project)
 	{

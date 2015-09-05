@@ -1,7 +1,5 @@
 package se.majp.caseManagement.main;
 
-import java.util.Arrays;
-
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import se.majp.caseManagement.model.Issue;
@@ -38,7 +36,6 @@ public class Main
 			Project project2 = new Project(generator.getNextId(), "Get more shit done", "Lets never do this");
 			Story story = new Story(generator.getNextId(), "Do shit", project, Status.PENDING, Priority.HIGH);
 			Story story2 = new Story(generator.getNextId(), "Do shit", project2, Status.PENDING, Priority.LOW);
-			user.addStory(story);
 			story.setUser(user);
 			
 			Issue issue = new Issue("Issue Ttitle", "You screwed up you idiot", story);
@@ -72,35 +69,36 @@ public class Main
 			System.out.println("Find story by Description \n-------------------------");
 			storyRepository.findByDescriptionContaining("shit").forEach(System.out::println);
 			System.out.println("-----------------");
+			userRepository.findByProject(project.getProjectId()).forEach(System.out::println);
 		}
 	}
-
-	private static void testIds(IdGenerator generator)
-	{
-		String[] generatedIds = new String[10000000];
-
-		for (int i = 0; i < generatedIds.length; i++)
-		{
-			generatedIds[i] = generator.getNextId();
-		}
-
-		System.out.println("Sorting");
-		Arrays.sort(generatedIds);
-		System.out.println("Done sorting");
-		String lastId = "";
-		int i = 0;
-
-		for (String id : generatedIds)
-		{
-			if (id.equals(lastId))
-			{
-				System.out.println("id: " + id + "\nlast id: " + lastId);
-				i++;
-			}
-
-			lastId = id;
-		}
-
-		System.out.println(i);
-	}
+//
+//	private static void testIds(IdGenerator generator)
+//	{
+//		String[] generatedIds = new String[10000000];
+//
+//		for (int i = 0; i < generatedIds.length; i++)
+//		{
+//			generatedIds[i] = generator.getNextId();
+//		}
+//
+//		System.out.println("Sorting");
+//		Arrays.sort(generatedIds);
+//		System.out.println("Done sorting");
+//		String lastId = "";
+//		int i = 0;
+//
+//		for (String id : generatedIds)
+//		{
+//			if (id.equals(lastId))
+//			{
+//				System.out.println("id: " + id + "\nlast id: " + lastId);
+//				i++;
+//			}
+//
+//			lastId = id;
+//		}
+//
+//		System.out.println(i);
+//	}
 }

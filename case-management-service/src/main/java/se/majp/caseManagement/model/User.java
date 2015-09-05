@@ -65,12 +65,6 @@ public class User extends AbstractEntity
 	{
 		return stories;
 	}
-	
-	public User addStory(Story story)
-	{
-		stories.add(story);
-		return this;
-	}
 
 	@Override
 	public int hashCode()
