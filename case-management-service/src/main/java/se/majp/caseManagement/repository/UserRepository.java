@@ -12,7 +12,7 @@ public interface UserRepository extends CrudRepository<User, Long>
 	@Query("select u from User u where firstName = ?1 or lastName = ?1 or email = ?1")
 	List<User> findByFirstNameOrLastNameOrEmail(String value);
 	
-	List<User> findByUserId(String userId);
+	User findByUserId(String userId);
 	
 	@Query("select indices(p.team.users) from Project p where p.projectId = ?1")
 	List<User> findByProject(String projectId);
