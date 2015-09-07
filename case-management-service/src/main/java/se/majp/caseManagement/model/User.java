@@ -37,6 +37,11 @@ public class User extends AbstractEntity
 		this.lastName = lastName;
 	}
 	
+	public User(String email, String password, String firstName, String lastName) 
+	{
+		this(null, email, password, firstName, lastName);
+	}
+	
 	public String getUserId()
 	{
 		return userId;
