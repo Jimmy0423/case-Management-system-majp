@@ -28,50 +28,65 @@ public class StoryService
 	{
 		switch(story.getStatus())
 		{
+		case PENDING:
+			switch(status)
+			{
+			case INPROGRESS:
+				story.changeStatus(status);
+				break;
+			default:
+				throw new IllegalArgumentException("status can only be changed to INPROGRESS");
+			}
+			break;
+		
+		case ISSUED:
+			switch(status)
+			{
+			case TEST:
+				story.setUser(null);
+				story.changeStatus(status);
+				break;
+			default:
+				throw new IllegalArgumentException("Status can only be changed to TEST");
+			}
+			break;
+		
+		case INPROGRESS:
+			switch(status)
+			{
+			case TEST:
+				story.setUser(null);
+				story.changeStatus(status);
+				break;
+			default:
+				throw new IllegalArgumentException("Status can only be changed to TEST");
+			}
+			break;
+		
+		case TEST:
+			switch(status)
+			{
+			case DONE: 
+				story.setUser(null);
+				story.changeStatus(status);
+				break;
+			case ISSUED:
+				story.setUser(null);
+				story.changeStatus(status);
+				break;
+			default:
+				throw new IllegalArgumentException("Status can only be changed to TEST or ISSUED");
+			}
+			break;
+		
 		case DONE:
-			switch (status)
+			switch(status)
 			{
 			case ISSUED:
 				story.changeStatus(status);
 				break;
 			default:
 				throw new IllegalArgumentException("Status can only be changed to ISSUED");
-			}
-			break;
-			
-		case INPROGRESS:
-			switch (status)
-			{
-			case DONE:
-				story.changeStatus(status);
-				break;
-			case PENDING:
-				story.changeStatus(status);
-				break;
-			default:
-				throw new IllegalArgumentException("Status can only be changed to DONE or PENDING");
-			}
-			break;
-			
-		case ISSUED:
-			switch (status)
-			{
-			case INPROGRESS:
-				story.changeStatus(status);
-				break;
-			default:
-				throw new IllegalArgumentException("Status can only be changed to INPROGRESS");
-			}
-			break;
-			
-		case PENDING:
-			switch (status)
-			{
-			case INPROGRESS:
-				story.changeStatus(status);
-				break;
-			default:
-				throw new IllegalArgumentException("Status can only be changed to INPROGRESS");
 			}
 			break;
 			
