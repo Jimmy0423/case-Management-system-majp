@@ -22,6 +22,11 @@ public class Issue extends AbstractEntity
 		this.description = description;
 		this.story = story;
 	}
+	
+	public Issue(String title, String description)
+	{
+		this(title, description, null);
+	}
 
 	public String getTitle()
 	{

@@ -34,8 +34,8 @@ public class Main
 			User user = new User(generator.getNextId(), "BoAhl@example.com", "Bo", "Ahl", "BoThaMaster");
 			Project project = new Project(generator.getNextId(), "Get shit done!", "Lets do this shit");
 			Project project2 = new Project(generator.getNextId(), "Get more shit done", "Lets never do this");
-			Story story = new Story(generator.getNextId(), "Do shit", project, Status.PENDING, Priority.HIGH);
-			Story story2 = new Story(generator.getNextId(), "Do shit", project2, Status.PENDING, Priority.LOW);
+			Story story = new Story(generator.getNextId(), "Repository", "Do shit", project, Status.PENDING, Priority.HIGH);
+			Story story2 = new Story(generator.getNextId(), "Service", "Do shit", project2, Status.PENDING, Priority.LOW);
 			story.setUser(user);
 			
 			Issue issue = new Issue("Issue Ttitle", "You screwed up you idiot", story);
@@ -49,14 +49,9 @@ public class Main
 			
 			project.getTeam().addUser(user, Role.OWNER);
 			project2.getTeam().addUser(user, Role.OWNER);
-			project.addStoryToBacklog(story);
-			project.addStoryToBacklog(story2);
 			
 			projectRepository.save(project);
 			projectRepository.save(project2);
-			
-			story.addIssue(issue);
-			storyRepository.save(story);
 	
 			System.out.println("Find story by Project \n-------------------------");
 			storyRepository.findByProject(project.getProjectId()).forEach(System.out::println);

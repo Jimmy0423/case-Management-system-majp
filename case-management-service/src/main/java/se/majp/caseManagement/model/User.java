@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "tbl_user")
 public class User extends AbstractEntity
 {
+	@Column(unique = true)
 	private String userId;
 	
 	@Column(unique = true)

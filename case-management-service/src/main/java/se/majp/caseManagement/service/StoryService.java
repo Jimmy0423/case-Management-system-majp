@@ -1,14 +1,27 @@
 package se.majp.caseManagement.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import se.majp.caseManagement.model.Issue;
-import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.Status;
+import se.majp.caseManagement.model.Story;
+import se.majp.caseManagement.repository.IssueRepository;
+import se.majp.caseManagement.repository.StoryRepository;
 
 public class StoryService
-{
+{	
+	@Autowired
+	StoryRepository storyRepository;
+	
+	@Autowired
+	IssueRepository issueRepository;
+	
 	public Story addIssue(Story story, Issue issue)
 	{
-		return story.addIssue(issue);
+		Issue issueToSave = new Issue(issue.getTitle(), issue.getDescription(), story);
+		issueRepository.save(issueToSave);
+		
+		return storyRepository.findByStoryId(story.getStoryId());
 	}
 	
 	public Story changeStatus(Story story, Status status)
@@ -66,6 +79,6 @@ public class StoryService
 			throw new IllegalArgumentException("Not a valid status");
 		}
 		
-		return story;
+		return storyRepository.save(story);
 	}
 }

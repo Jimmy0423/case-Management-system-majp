@@ -13,8 +13,6 @@ public interface StoryRepository extends CrudRepository<Story, Long>
 	@Query("select s from Story s where s.project.projectId = ?1")
 	List<Story> findByProject(String projectId);
 	
-	List<Story> findByStatus(Status status);
-	
 	@Query("select s from Story s where s.user.userId = ?1")
 	List<Story> findByUser(String userId);
 	
@@ -24,5 +22,12 @@ public interface StoryRepository extends CrudRepository<Story, Long>
 	@Query("select s from Story s where size(s.issues) > 0")
 	List<Story> findStoriesWithIssues();
 	
+	@Query("select s from Story s where s.project.projectId = ?1 and s.user is null")
+	List<Story> findBacklogForProject(String projectId);
+	
 	List<Story> findByDescriptionContaining(String description);
+	
+	List<Story> findByStatus(Status status);
+	
+	Story findByStoryId(String storyId);
 }

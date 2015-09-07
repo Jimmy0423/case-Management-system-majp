@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,6 +17,9 @@ import javax.persistence.Table;
 @Table(name = "tbl_story")
 public class Story extends AbstractEntity
 {
+	@Column(unique = true)
+	private String storyId;
+	
 	private String name;
 	private String description;
 	
@@ -36,14 +40,25 @@ public class Story extends AbstractEntity
 
 	protected Story(){}
 
-	public Story(String name, String description, Project project, Status status, Priority priority)
+	public Story(String storyId, String name, String description, Project project, Status status, Priority priority)
 	{
+		this.storyId = storyId;
 		this.name = name;
 		this.description = description;
 		this.project = project;
 		this.status = status;
 		this.priority = priority;
 		this.issues = new ArrayList<>();
+	}
+	
+	public Story(String name, String description, Status status, Priority priority)
+	{
+		this(null, name, description, null, status, priority);
+	}
+	
+	public String getStoryId()
+	{
+		return storyId;
 	}
 
 	public String getName()
@@ -54,6 +69,11 @@ public class Story extends AbstractEntity
 	public String getDescription()
 	{
 		return description;
+	}
+	
+	public Project getProject()
+	{
+		return project;
 	}
 
 	public Status getStatus()
@@ -67,9 +87,9 @@ public class Story extends AbstractEntity
 		return this;
 	}
 	
-	public Project getProject()
+	public Priority getPriority()
 	{
-		return project;
+		return priority;
 	}
 
 	public Collection<Issue> getIssues()
@@ -85,11 +105,5 @@ public class Story extends AbstractEntity
 	public void setUser(User user)
 	{
 		this.user = user;
-	}
-
-	public Story addIssue(Issue issue)
-	{
-		issues.add(issue);
-		return this;
 	}
 }

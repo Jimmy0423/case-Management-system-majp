@@ -14,5 +14,5 @@ public interface ProjectRepository extends CrudRepository<Project, Long>
 	List<Project> findAllProjectsForUser(User user);
 	
 	@Query("select p from Project p where p.projectId = ?1")
-	List<Project> findByProjectId(String projectId);
+	Project findByProjectId(String projectId);
 }

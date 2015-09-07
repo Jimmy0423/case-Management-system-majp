@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @Table(name = "tbl_project")
 public class Project extends AbstractEntity
 {
+	@Column(unique = true)
 	private String projectId;
 	private String name;
 	private String description;
@@ -65,12 +67,6 @@ public class Project extends AbstractEntity
 	public Collection<Story> getBacklog()
 	{
 		return backlog;
-	}
-	
-	public Project addStoryToBacklog(Story story)
-	{
-		backlog.add(story);
-		return this;
 	}
 
 	@Override
