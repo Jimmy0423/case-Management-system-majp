@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import se.majp.caseManagement.exception.EntityNotFoundException;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.repository.ProjectRepository;
@@ -59,7 +60,7 @@ public class UserService
 		{
 			return dbUser.get(0);
 		}
-		throw new IllegalArgumentException("can't find user");
+		throw new EntityNotFoundException("user not found");
 	}
 
 	public User findByUserId(String userId)
@@ -69,7 +70,7 @@ public class UserService
 		{
 			return dbUser.get(0);
 		}
-		throw new IllegalArgumentException("can't find user");
+		throw new EntityNotFoundException("user not found");
 	}
 
 	public User findByProject(String projectId)
@@ -79,7 +80,7 @@ public class UserService
 		{
 			return dbUser.get(0);
 		}
-		throw new IllegalArgumentException("can't find user");
+		throw new EntityNotFoundException("user not found");
 	}
 
 	public User addStory(User user, Story story)
