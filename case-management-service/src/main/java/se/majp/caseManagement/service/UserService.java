@@ -83,6 +83,26 @@ public class UserService
 		throw new EntityNotFoundException("user not found");
 	}
 
+	public Story findAllStories(String userId)
+	{
+		if (findByUserId(userId) != null)
+		{
+			List<Story> dbStory = storyRepository.findByUser(userId);
+			return dbStory.get(0);
+		}
+		throw new EntityNotFoundException("user not found");
+	}
+
+	public Story findAllStoriesByProject(String userId, String projectId)
+	{
+		if (findByUserId(userId) != null)
+		{
+			List<Story> dbStory = storyRepository.findByUserAndProject(userId, projectId);
+			return dbStory.get(0);
+		}
+		throw new EntityNotFoundException("user not found");
+	}
+
 	public User addStory(User user, Story story)
 	{
 		story.setUser(user);
