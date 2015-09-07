@@ -29,17 +29,27 @@ public class ProjectService
 		projectToSave.getTeam().addUser(user, Role.OWNER);
 		return projectRepository.save(projectToSave);
 	}
-	
+
 	public Project findByProjectId(String projectId)
 	{
 		List<Project> projects = projectRepository.findByProjectId(projectId);
-		
-		if(projects.size() == 0)
+
+		if (projects.size() == 0)
 		{
 			throw new IllegalArgumentException("Project not found in DB");
 		}
-		
+
 		return projects.get(0);
+	}
+
+	public List<Story> findBacklog(String projectId)
+	{
+		return storyRepository.findBacklogForProject(projectId);
+	}
+
+	public List<Story> findAllStoriesInProject(String projectId)
+	{
+		return storyRepository.findByProject(projectId);
 	}
 
 	public Project updateProject(Project project)
@@ -60,30 +70,39 @@ public class ProjectService
 
 	public Project removeTeamMember(User user, Project project)
 	{
-		if(project.getProjectId() != null)
+		if (project.getProjectId() != null)
 		{
 			project.getTeam().removeUser(user);
 			return projectRepository.save(project);
 		}
-		
+
 		throw new IllegalArgumentException("Project not in DB");
 	}
 
-	public Project addStoryToBacklog(Project project, Story story)
+	public Project addStoryToBacklog(User user, Project project, Story story)
 	{
-		Story storyToSave = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
-		storyRepository.save(storyToSave);
+		if(userIsOwner(user, project))
+		{
+			Story storyToSave = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
+			storyRepository.save(storyToSave);
 
-		return findByProjectId(project.getProjectId());
+			return findByProjectId(project.getProjectId());
+		}
+		
+		throw new PermissionDeniedException("User is not an owner");
 	}
 
-	public Project removeStoryFromBacklog(Project project, Story story)
+	public Project removeStoryFromBacklog(User user, Project project, Story story)
 	{
-		storyRepository.delete(story);
-
-		return findByProjectId(project.getProjectId());
+		if(userIsOwner(user, project))
+		{
+			storyRepository.delete(story);
+			return findByProjectId(project.getProjectId());
+		}
+		
+		throw new PermissionDeniedException("User is not an owner");
 	}
-	
+
 	public Project removeProject(User user, Project project)
 	{
 		if (userIsOwner(user, project))
