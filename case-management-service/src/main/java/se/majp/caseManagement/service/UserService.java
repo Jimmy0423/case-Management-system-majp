@@ -36,7 +36,6 @@ public class UserService
 		{
 			return userRepository.save(user);
 		}
-
 	}
 
 	public void removeUser(User user)

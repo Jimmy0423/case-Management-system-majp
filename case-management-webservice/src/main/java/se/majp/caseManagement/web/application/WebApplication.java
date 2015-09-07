@@ -1,4 +1,4 @@
-package se.majp.caseManagement.web.service.application;
+package se.majp.caseManagement.web.application;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.scope.RequestContextFilter;

@@ -28,7 +28,7 @@ public class InfrastructureConfig
 	{
 		HikariConfig config = new HikariConfig();
 		config.setDriverClassName("com.mysql.jdbc.Driver");
-		config.setJdbcUrl("jdbc:mysql://localhost:3306/majp");
+		config.setJdbcUrl("jdbc:mysql://localhost:3307/majp");
 		config.setUsername("root");
 		config.setPassword("");
 
