@@ -2,6 +2,8 @@ package se.majp.caseManagement.service;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.exception.PermissionDeniedException;
@@ -23,11 +25,15 @@ public class ProjectService
 
 	IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
 
-	public Project addProject(User user, Project project)
+	public Project addOrUpdateProject(User user, Project project)
 	{
-		Project projectToSave = new Project(idGenerator.getNextId(), project.getName(), project.getDescription());
-		projectToSave.getTeam().addUser(user, Role.OWNER);
-		return projectRepository.save(projectToSave);
+		if(project.getProjectId() == null)
+		{
+			project = new Project(idGenerator.getNextId(), project.getName(), project.getDescription());
+			project.getTeam().addUser(user, Role.OWNER);
+		}
+		
+		return projectRepository.save(project);
 	}
 
 	public Project findByProjectId(String projectId)
@@ -36,7 +42,7 @@ public class ProjectService
 
 		if (projects.size() == 0)
 		{
-			throw new IllegalArgumentException("Project not found in DB");
+			throw new EntityNotFoundException("Project not found in DB");
 		}
 
 		return projects.get(0);
@@ -44,24 +50,29 @@ public class ProjectService
 
 	public List<Story> findBacklog(String projectId)
 	{
-		return storyRepository.findBacklogForProject(projectId);
+		if(projectRepository.findByProjectId(projectId) != null)
+		{
+			return storyRepository.findBacklogForProject(projectId);
+		}
+		
+		throw new EntityNotFoundException("Project not in DB");
 	}
 
 	public List<Story> findAllStoriesInProject(String projectId)
 	{
-		return storyRepository.findByProject(projectId);
-	}
-
-	public Project updateProject(Project project)
-	{
-		return projectRepository.save(project);
+		if(projectRepository.findByProjectId(projectId) != null)
+		{
+			return storyRepository.findByProject(projectId);
+		}
+		
+		throw new EntityNotFoundException("Project not in DB");
 	}
 
 	public Project addOrUpdateTeamMember(User user, Role role, Project project)
 	{
 		if (user.getUserId() == null)
 		{
-			throw new IllegalArgumentException("User not saved in DB");
+			throw new EntityNotFoundException("User not saved in DB");
 		}
 
 		project.getTeam().addUser(user, role);
@@ -76,7 +87,7 @@ public class ProjectService
 			return projectRepository.save(project);
 		}
 
-		throw new IllegalArgumentException("Project not in DB");
+		throw new EntityNotFoundException("Project not in DB");
 	}
 
 	public Project addStoryToBacklog(User user, Project project, Story story)
