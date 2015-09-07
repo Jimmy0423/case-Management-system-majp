@@ -1,5 +1,7 @@
 package se.majp.caseManagement.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.model.Story;
@@ -50,12 +52,42 @@ public class UserService
 		userRepository.delete(user.getId());
 	}
 
+	public User findByFirstNameOrLastNameOrEmail(String value)
+	{
+		List<User> dbUser = userRepository.findByFirstNameOrLastNameOrEmail(value);
+		if (dbUser.size() == 1)
+		{
+			return dbUser.get(0);
+		}
+		throw new IllegalArgumentException("can't find user");
+	}
+
+	public User findByUserId(String userId)
+	{
+		List<User> dbUser = userRepository.findByUserId(userId);
+		if (dbUser.size() == 1)
+		{
+			return dbUser.get(0);
+		}
+		throw new IllegalArgumentException("can't find user");
+	}
+
+	public User findByProject(String projectId)
+	{
+		List<User> dbUser = userRepository.findByUserId(projectId);
+		if (dbUser.size() == 1)
+		{
+			return dbUser.get(0);
+		}
+		throw new IllegalArgumentException("can't find user");
+	}
+
 	public User addStory(User user, Story story)
 	{
 		story.setUser(user);
 		storyRepository.save(story);
 
-		return userRepository.findByUserId(user.getUserId());
+		return userRepository.findByUserId(user.getUserId()).get(0);
 	}
 
 	public void removeStoryFromUser(Story story)
