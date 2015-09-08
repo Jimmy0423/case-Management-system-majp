@@ -38,14 +38,14 @@ public class ProjectService
 
 	public Project findByProjectId(String projectId)
 	{
-		List<Project> projects = projectRepository.findByProjectId(projectId);
-
-		if (projects.size() == 0)
+		Project project = projectRepository.findByProjectId(projectId);
+		
+		if (project == null)
 		{
 			throw new EntityNotFoundException("Project not found in DB");
 		}
 
-		return projects.get(0);
+		return project; 
 	}
 
 	public List<Story> findBacklog(String projectId)
@@ -114,12 +114,11 @@ public class ProjectService
 		throw new PermissionDeniedException("User is not an owner");
 	}
 
-	public Project removeProject(User user, Project project)
+	public void removeProject(User user, Project project)
 	{
 		if (userIsOwner(user, project))
 		{
 			projectRepository.delete(project);
-			return project;
 		}
 
 		throw new PermissionDeniedException("Permission denied");

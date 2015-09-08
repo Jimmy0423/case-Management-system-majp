@@ -10,6 +10,7 @@ import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.repository.IssueRepository;
 import se.majp.caseManagement.repository.StoryRepository;
+import se.majp.caseManagement.repository.UserRepository;
 
 public class StoryService
 {	
@@ -18,6 +19,9 @@ public class StoryService
 	
 	@Autowired
 	IssueRepository issueRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	public Story addIssue(Story story, Issue issue)
 	{
@@ -131,5 +135,27 @@ public class StoryService
 		}
 		
 		return story;
+	}
+	
+	public List<Story> findAllStoriesAssignedToUser(String userId)
+	{
+		if (userRepository.findByUserId(userId) != null)
+		{
+			List<Story> stories = storyRepository.findByUser(userId);
+			return stories;
+		}
+
+		throw new EntityNotFoundException("user not found");
+	}
+
+	public List<Story> findAllStoriesByUserAndProject(String userId, String projectId)
+	{
+		if (userRepository.findByUserId(userId) != null)
+		{
+			List<Story> stories = storyRepository.findByUserAndProject(userId, projectId);
+			return stories;
+		}
+
+		throw new EntityNotFoundException("user not found");
 	}
 }

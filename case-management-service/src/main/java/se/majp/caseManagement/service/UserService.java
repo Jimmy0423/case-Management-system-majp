@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.exception.EntityNotFoundException;
+import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.repository.ProjectRepository;
@@ -25,17 +26,14 @@ public class UserService
 	@Autowired
 	private ProjectRepository projectRepository;
 
-	public User addUser(User user)
+	public User addOrUpdateUser(User user)
 	{
 		if (user.getUserId() == null)
 		{
-			User userToSave = new User(idGenerator.getNextId(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
-			return userRepository.save(userToSave);
+			user = new User(idGenerator.getNextId(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
 		}
-		else
-		{
-			return userRepository.save(user);
-		}
+
+		return userRepository.save(user);
 	}
 
 	public void removeUser(User user)
@@ -52,54 +50,40 @@ public class UserService
 		userRepository.delete(user.getId());
 	}
 
-	public User findByFirstNameOrLastNameOrEmail(String value)
+	public List<User> findByFirstNameOrLastNameOrEmail(String value)
 	{
-		List<User> dbUser = userRepository.findByFirstNameOrLastNameOrEmail(value);
-		if (dbUser.size() == 1)
+		List<User> users = userRepository.findByFirstNameOrLastNameOrEmail(value);
+
+		if (users.size() > 0)
 		{
-			return dbUser.get(0);
+			return users;
 		}
-		throw new EntityNotFoundException("user not found");
+
+		throw new EntityNotFoundException("No user matching that value");
 	}
 
 	public User findByUserId(String userId)
 	{
-		List<User> dbUser = userRepository.findByUserId(userId);
-		if (dbUser.size() == 1)
+		User user = userRepository.findByUserId(userId);
+
+		if (user == null)
 		{
-			return dbUser.get(0);
+			throw new EntityNotFoundException("user not found");
 		}
-		throw new EntityNotFoundException("user not found");
+
+		return user;
 	}
 
-	public User findByProject(String projectId)
+	public List<User> findByProject(String projectId)
 	{
-		List<User> dbUser = userRepository.findByUserId(projectId);
-		if (dbUser.size() == 1)
-		{
-			return dbUser.get(0);
-		}
-		throw new EntityNotFoundException("user not found");
-	}
+		Project project = projectRepository.findByProjectId(projectId);
 
-	public Story findAllStories(String userId)
-	{
-		if (findByUserId(userId) != null)
+		if (project == null)
 		{
-			List<Story> dbStory = storyRepository.findByUser(userId);
-			return dbStory.get(0);
+			throw new EntityNotFoundException("project not found");
 		}
-		throw new EntityNotFoundException("user not found");
-	}
 
-	public Story findAllStoriesByProject(String userId, String projectId)
-	{
-		if (findByUserId(userId) != null)
-		{
-			List<Story> dbStory = storyRepository.findByUserAndProject(userId, projectId);
-			return dbStory.get(0);
-		}
-		throw new EntityNotFoundException("user not found");
+		return userRepository.findByProject(projectId);
 	}
 
 	public User addStory(User user, Story story)
@@ -107,14 +91,14 @@ public class UserService
 		story.setUser(user);
 		storyRepository.save(story);
 
-		return userRepository.findByUserId(user.getUserId()).get(0);
+		return userRepository.findByUserId(user.getUserId());
 	}
 
-	public void removeStoryFromUser(Story story)
+	private void removeStoryFromUser(Story story)
 	{
 		if (story.getUser() == null)
 		{
-			throw new IllegalArgumentException("this story is already not asigned to any user");
+			throw new IllegalArgumentException("this story is not asigned to any user");
 		}
 
 		story.setUser(null);
