@@ -36,8 +36,15 @@ public class UserService
 		return userRepository.save(user);
 	}
 
-	public void removeUser(User user)
+	public void removeUser(String userId)
 	{
+		User user = userRepository.findByUserId(userId);
+		
+		if(user == null)
+		{
+			throw new EntityNotFoundException("No user found with userId: " + userId);
+		}
+		
 		projectRepository.findAllProjectsForUser(user).forEach(project -> {
 			project.getTeam().removeUser(user);
 			projectRepository.save(project);

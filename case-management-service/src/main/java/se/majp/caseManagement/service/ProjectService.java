@@ -9,19 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.majp.caseManagement.exception.PermissionDeniedException;
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Role;
-import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.repository.ProjectRepository;
-import se.majp.caseManagement.repository.StoryRepository;
+import se.majp.caseManagement.repository.UserRepository;
 import se.majp.caseManagement.util.IdGenerator;
 
 public class ProjectService
 {
 	@Autowired
-	ProjectRepository projectRepository;
-
+	private ProjectRepository projectRepository;
+	
 	@Autowired
-	StoryRepository storyRepository;
+	private UserRepository userRepository;
 
 	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
 
@@ -47,25 +46,17 @@ public class ProjectService
 
 		return project; 
 	}
-
-	public List<Story> findBacklog(String projectId)
+	
+	public List<Project> findAllProjectsByUser(String userId)
 	{
-		if(projectRepository.findByProjectId(projectId) != null)
+		User user = userRepository.findByUserId(userId);
+		
+		if(user == null)
 		{
-			return storyRepository.findBacklogForProject(projectId);
+			throw new EntityNotFoundException("User not found with a userId: " + userId);
 		}
 		
-		throw new EntityNotFoundException("Project not in DB");
-	}
-
-	public List<Story> findAllStoriesInProject(String projectId)
-	{
-		if(projectRepository.findByProjectId(projectId) != null)
-		{
-			return storyRepository.findByProject(projectId);
-		}
-		
-		throw new EntityNotFoundException("Project not in DB");
+		return projectRepository.findAllProjectsForUser(user);
 	}
 
 	public Project addOrUpdateTeamMember(User user, Role role, Project project)

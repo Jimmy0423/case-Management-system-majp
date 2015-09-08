@@ -13,6 +13,7 @@ import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.repository.IssueRepository;
+import se.majp.caseManagement.repository.ProjectRepository;
 import se.majp.caseManagement.repository.StoryRepository;
 import se.majp.caseManagement.repository.UserRepository;
 import se.majp.caseManagement.util.IdGenerator;
@@ -20,13 +21,16 @@ import se.majp.caseManagement.util.IdGenerator;
 public class StoryService
 {	
 	@Autowired
-	StoryRepository storyRepository;
+	private StoryRepository storyRepository;
 	
 	@Autowired
-	IssueRepository issueRepository;
+	private IssueRepository issueRepository;
 	
 	@Autowired
-	UserRepository userRepository;
+	private ProjectRepository projectRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
 	
@@ -142,6 +146,26 @@ public class StoryService
 		}
 		
 		return stories;
+	}
+	
+	public List<Story> findBacklogForProject(String projectId)
+	{
+		if(projectRepository.findByProjectId(projectId) != null)
+		{
+			return storyRepository.findBacklogForProject(projectId);
+		}
+		
+		throw new EntityNotFoundException("Project not in DB");
+	}
+
+	public List<Story> findAllStoriesInProject(String projectId)
+	{
+		if(projectRepository.findByProjectId(projectId) != null)
+		{
+			return storyRepository.findByProject(projectId);
+		}
+		
+		throw new EntityNotFoundException("Project not in DB");
 	}
 	
 	public List<Story> findAllStoriesByStatus(Status status)
