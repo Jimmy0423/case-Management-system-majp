@@ -8,7 +8,6 @@ import se.majp.caseManagement.exception.EntityNotFoundException;
 import se.majp.caseManagement.model.Issue;
 import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
-import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.repository.IssueRepository;
 import se.majp.caseManagement.repository.StoryRepository;
 
@@ -103,19 +102,13 @@ public class StoryService
 	
 	public List<Story> findAllStoriesWithIssues()
 	{
-		List<Story> stories = storyRepository.findStoriesWithIssues();
-		if (stories == null || stories.isEmpty())
-		{
-			throw new EntityNotFoundException("No stories with issues");
-		}
-		
-		return stories;
+		return storyRepository.findStoriesWithIssues();
 	}
 	
 	public List<Story> findByDescriptionContaining(String description)
 	{
 		List<Story> stories = storyRepository.findByDescriptionContaining(description);
-		if (stories == null || stories.isEmpty())
+		if (stories.isEmpty())
 		{
 			throw new EntityNotFoundException("No stories matching description");
 		}
@@ -125,33 +118,18 @@ public class StoryService
 	
 	public List<Story> findAllStoriesByStatus(Status status)
 	{
-		List<Story> stories = storyRepository.findByStatus(status);
-		if (stories == null || stories.isEmpty())
-		{
-			throw new EntityNotFoundException("No stories with matching status");
-		}
-		
-		return stories;
+		return storyRepository.findByStatus(status);
 	}
 	
 	public Story findByStoryId(String storyId)
 	{
 		Story story = storyRepository.findByStoryId(storyId);
+		
 		if (story == null)
 		{
 			throw new EntityNotFoundException("No story with matching storyId");
 		}
 		
 		return story;
-	}
-	
-	// TODO re think logic, how should it work
-	public void removeStory(User user, Story story)
-	{
-		if (story.getUser() == user)
-		{
-//			user.getStories().remove(story);
-			storyRepository.delete(story);
-		}
 	}
 }
