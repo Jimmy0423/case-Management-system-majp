@@ -8,7 +8,7 @@ import javax.ws.rs.ext.Provider;
 import se.majp.caseManagement.exception.PermissionDeniedException;
 
 @Provider
-public class WebServicePermissionDeniedException implements ExceptionMapper<PermissionDeniedException>
+public class PermissionDeniedExceptionMapper implements ExceptionMapper<PermissionDeniedException>
 {
 	@Override
 	public Response toResponse(PermissionDeniedException exception)

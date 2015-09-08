@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.exception.EntityNotFoundException;
+import se.majp.caseManagement.exception.UniqueConstraintException;
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
@@ -30,6 +31,11 @@ public class UserService
 	{
 		if (user.getUserId() == null)
 		{
+			if(userRepository.findByFirstNameOrLastNameOrEmail(user.getEmail()) != null)
+			{
+				throw new UniqueConstraintException("User with that email already exists");
+			}
+			
 			user = new User(idGenerator.getNextId(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
 		}
 

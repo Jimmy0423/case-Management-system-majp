@@ -5,13 +5,13 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import se.majp.caseManagement.exception.EntityNotFoundException;
+import se.majp.caseManagement.exception.UniqueConstraintException;
 
 @Provider
-public class WebServiceEntityNotFoundException implements ExceptionMapper<EntityNotFoundException>
+public class UniqueConstraintExceptionMapper implements ExceptionMapper<UniqueConstraintException>
 {
 	@Override
-	public Response toResponse(EntityNotFoundException exception)
+	public Response toResponse(UniqueConstraintException exception)
 	{
 		return Response.status(Status.BAD_REQUEST).entity(exception.getMessage()).build();
 	}
