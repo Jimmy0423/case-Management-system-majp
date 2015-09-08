@@ -5,12 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.exception.EntityNotFoundException;
+import se.majp.caseManagement.exception.PermissionDeniedException;
 import se.majp.caseManagement.model.Issue;
+import se.majp.caseManagement.model.Project;
+import se.majp.caseManagement.model.Role;
 import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
+import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.repository.IssueRepository;
 import se.majp.caseManagement.repository.StoryRepository;
 import se.majp.caseManagement.repository.UserRepository;
+import se.majp.caseManagement.util.IdGenerator;
 
 public class StoryService
 {	
@@ -22,6 +27,25 @@ public class StoryService
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
+	
+	public Story addStoryToBacklog(User user, Project project, Story story)
+	{
+		if(userIsOwner(user, project))
+		{
+			story = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
+			return storyRepository.save(story);
+		}
+		
+		throw new PermissionDeniedException("User is not an owner");
+	}
+	
+	public Story addStoryToUser(User user, Story story)
+	{
+		story.setUser(user);
+		return storyRepository.save(story);
+	}
 	
 	public Story addIssue(Story story, Issue issue)
 	{
@@ -157,5 +181,20 @@ public class StoryService
 		}
 
 		throw new EntityNotFoundException("user not found");
+	}
+	
+	public void removeStoryFromBacklog(User user, Project project, Story story)
+	{
+		if(userIsOwner(user, project))
+		{
+			storyRepository.delete(story);
+		}
+		
+		throw new PermissionDeniedException("User is not an owner");
+	}
+	
+	private boolean userIsOwner(User user, Project project)
+	{
+		return project.getTeam().getRole(user).equals(Role.OWNER);
 	}
 }

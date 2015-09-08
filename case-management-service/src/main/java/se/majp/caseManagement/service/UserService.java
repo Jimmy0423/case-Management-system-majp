@@ -15,8 +15,6 @@ import se.majp.caseManagement.util.IdGenerator;
 
 public class UserService
 {
-	private IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
-
 	@Autowired
 	private StoryRepository storyRepository;
 
@@ -25,6 +23,8 @@ public class UserService
 
 	@Autowired
 	private ProjectRepository projectRepository;
+	
+	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
 
 	public User addOrUpdateUser(User user)
 	{
@@ -84,14 +84,6 @@ public class UserService
 		}
 
 		return userRepository.findByProject(projectId);
-	}
-
-	public User addStory(User user, Story story)
-	{
-		story.setUser(user);
-		storyRepository.save(story);
-
-		return userRepository.findByUserId(user.getUserId());
 	}
 
 	private void removeStoryFromUser(Story story)

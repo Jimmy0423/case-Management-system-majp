@@ -23,7 +23,7 @@ public class ProjectService
 	@Autowired
 	StoryRepository storyRepository;
 
-	IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
+	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
 
 	public Project addOrUpdateProject(User user, Project project)
 	{
@@ -88,30 +88,6 @@ public class ProjectService
 		}
 
 		throw new EntityNotFoundException("Project not in DB");
-	}
-
-	public Project addStoryToBacklog(User user, Project project, Story story)
-	{
-		if(userIsOwner(user, project))
-		{
-			Story storyToSave = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
-			storyRepository.save(storyToSave);
-
-			return findByProjectId(project.getProjectId());
-		}
-		
-		throw new PermissionDeniedException("User is not an owner");
-	}
-
-	public Project removeStoryFromBacklog(User user, Project project, Story story)
-	{
-		if(userIsOwner(user, project))
-		{
-			storyRepository.delete(story);
-			return findByProjectId(project.getProjectId());
-		}
-		
-		throw new PermissionDeniedException("User is not an owner");
 	}
 
 	public void removeProject(User user, Project project)
