@@ -1,7 +1,5 @@
 package se.majp.caseManagement.config;
 
-import java.util.Properties;
-
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -46,6 +44,7 @@ public class InfrastructureConfig
 	{
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
 		adapter.setDatabase(Database.MYSQL);
+		adapter.setGenerateDdl(true);
 
 		return adapter;
 	}
@@ -56,16 +55,8 @@ public class InfrastructureConfig
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setDataSource(dataSource());
 		factory.setJpaVendorAdapter(jpaVendorAdapter());
-		factory.setJpaProperties(additionalProperties());
 		factory.setPackagesToScan("se.majp.caseManagement.model");
 
 		return factory;
-	}
-
-	private Properties additionalProperties()
-	{
-		Properties properties = new Properties();
-		properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
-		return properties;
 	}
 }

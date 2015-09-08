@@ -51,12 +51,6 @@ public final class UserWebService
 	}
 	
 	@GET
-	public Response hello()
-	{
-		return Response.ok("Hello").build();
-	}
-	
-	@GET
 	@Path("{userId}")
 	public Response getUserByUserId(@PathParam("userId") final String userId)
 	{
