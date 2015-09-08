@@ -92,17 +92,11 @@ public class ProjectService
 
 	public void removeProject(User user, Project project)
 	{
-		if (userIsOwner(user, project))
+		if (project.getTeam().userHasRole(user, Role.OWNER))
 		{
 			projectRepository.delete(project);
 		}
 
 		throw new PermissionDeniedException("Permission denied");
 	}
-
-	private boolean userIsOwner(User user, Project project)
-	{
-		return project.getTeam().getRole(user).equals(Role.OWNER);
-	}
-
 }

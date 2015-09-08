@@ -48,4 +48,9 @@ public class Team
 	{
 		return users.get(user);
 	}
+	
+	public boolean userHasRole(User user, Role role)
+	{
+		return users.get(user).equals(role);
+	}
 }

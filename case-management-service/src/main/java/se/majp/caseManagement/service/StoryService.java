@@ -32,7 +32,7 @@ public class StoryService
 	
 	public Story addStoryToBacklog(User user, Project project, Story story)
 	{
-		if(userIsOwner(user, project))
+		if(project.getTeam().userHasRole(user, Role.OWNER))
 		{
 			story = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
 			return storyRepository.save(story);
@@ -185,16 +185,11 @@ public class StoryService
 	
 	public void removeStoryFromBacklog(User user, Project project, Story story)
 	{
-		if(userIsOwner(user, project))
+		if(project.getTeam().userHasRole(user, Role.OWNER))
 		{
 			storyRepository.delete(story);
 		}
 		
 		throw new PermissionDeniedException("User is not an owner");
-	}
-	
-	private boolean userIsOwner(User user, Project project)
-	{
-		return project.getTeam().getRole(user).equals(Role.OWNER);
 	}
 }
