@@ -74,7 +74,7 @@
 				</exclusion>
 				<exclusion>
 					<artifactId>jersey-server</artifactId>
-					<groupId>org.glassfish.jersey.core</groupId>
+					<groupId>org.glassfish.jersey</groupId>
 				</exclusion>
 				<exclusion>
 					<artifactId>jersey-container-servlet-core</artifactId>
