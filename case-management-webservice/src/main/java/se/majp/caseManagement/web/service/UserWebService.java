@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -63,7 +64,9 @@ public final class UserWebService
 	public Response getAllProjectsForUser(@PathParam("userId") final String userId)
 	{
 		List<Project> projects = projectService.findAllProjectsByUser(userId);
-		return Response.ok(projects).build();
+		GenericEntity<List<Project>> entity = new GenericEntity<List<Project>>(projects){};
+		
+		return Response.ok(entity).build();
 	}
 	
 	@GET
@@ -71,7 +74,9 @@ public final class UserWebService
 	public Response getAllStoriesForUser(@PathParam("userId") final String userId)
 	{
 		List<Story> stories = storyService.findAllStoriesAssignedToUser(userId);
-		return Response.ok(stories).build();
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
+		
+		return Response.ok(entity).build();
 	}
 	
 	@DELETE
