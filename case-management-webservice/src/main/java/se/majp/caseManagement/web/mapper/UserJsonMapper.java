@@ -31,9 +31,9 @@ import com.google.gson.stream.JsonWriter;
 
 import se.majp.caseManagement.model.User;
 
-@Provider
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Provider
 public final class UserJsonMapper implements MessageBodyReader<User>, MessageBodyWriter<User>
 {
 	private Gson gson;
@@ -52,7 +52,7 @@ public final class UserJsonMapper implements MessageBodyReader<User>, MessageBod
 	@Override
 	public long getSize(User t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
-		return -1;
+		return 0;
 	}
 
 	@Override
@@ -82,7 +82,6 @@ public final class UserJsonMapper implements MessageBodyReader<User>, MessageBod
 	
 	private static final class UserAdapter implements JsonSerializer<User>, JsonDeserializer<User>
 	{
-
 		@Override
 		public User deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 		{
