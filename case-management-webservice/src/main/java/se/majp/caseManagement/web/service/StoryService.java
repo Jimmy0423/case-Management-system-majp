@@ -17,6 +17,7 @@ public class StoryService
 	@GET
 	public Response hello()
 	{
+		userService.findAllStories("");
 		return Response.status(200).entity("hello").build();
 	}
 
