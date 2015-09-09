@@ -26,7 +26,7 @@ public class ProjectService
 	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
 
 	public Project addOrUpdateProject(User user, Project project)
-	{
+	{	
 		if(project.getProjectId() == null)
 		{
 			project = new Project(idGenerator.getNextId(), project.getName(), project.getDescription());

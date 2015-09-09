@@ -37,21 +37,22 @@ public class ProjectWebService
 	@Context
 	private UriInfo uriInfo;
 	
-	@POST
-	public Response addProject(Project project, User user)
-	{
-		Project projectFromDb = projectService.addOrUpdateProject(user, project);
-		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
-		
-		return Response.created(location).build();
-	}
+//	@POST
+//	public Response addProject(Project project, User user)
+//	{
+//		Project projectFromDb = projectService.addOrUpdateProject(user, project);
+//		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
+//		
+//		return Response.created(location).build();
+//	}
 	
-	@POST
-	@Path("{projectId}/users")
-	public Response addStoryToProject(@PathParam("projectId") final String projectId, User user, Story story)
-	{
-		storyService.addStoryToBacklog(user, projectId, story);
-	}
+//	@POST
+//	@Path("{projectId}/users")
+//	public Response addStoryToProject(@PathParam("projectId") final String projectId, User user, Story story)
+//	{
+//		storyService.addStoryToBacklog(user, projectId, story);
+//		return null;
+//	}
 	
 	@GET
 	public Response getAllProjects()

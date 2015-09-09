@@ -7,7 +7,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -33,7 +32,7 @@ import se.majp.caseManagement.model.Project;
 public final class ProjectListJsonMapper implements MessageBodyWriter<ArrayList<Project>>
 {
 	private Gson gson;
-	
+
 	public ProjectListJsonMapper()
 	{
 		gson = new GsonBuilder().registerTypeAdapter(ArrayList.class, new ProjectListAdapter()).create();
@@ -42,17 +41,17 @@ public final class ProjectListJsonMapper implements MessageBodyWriter<ArrayList<
 	@Override
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
-		if(type.isAssignableFrom(ArrayList.class) && genericType instanceof ParameterizedType)
+		if (type.isAssignableFrom(ArrayList.class) && genericType instanceof ParameterizedType)
 		{
 			ParameterizedType parameterizedType = (ParameterizedType) genericType;
 			Type[] actualTypeArgs = parameterizedType.getActualTypeArguments();
-			
-			if(actualTypeArgs.length == 1 && actualTypeArgs[0].equals(Project.class))
+
+			if (actualTypeArgs.length == 1 && actualTypeArgs[0].equals(Project.class))
 			{
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -63,27 +62,28 @@ public final class ProjectListJsonMapper implements MessageBodyWriter<ArrayList<
 	}
 
 	@Override
-	public void writeTo(ArrayList<Project> projects, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders,
+	public void writeTo(ArrayList<Project> projects, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+			MultivaluedMap<String, Object> httpHeaders,
 			OutputStream entityStream) throws IOException, WebApplicationException
 	{
 		try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(entityStream)))
 		{
-			gson.toJson(projects, List.class, writer);
+			gson.toJson(projects, ArrayList.class, writer);
 		}
 	}
-	
+
 	private static final class ProjectListAdapter implements JsonSerializer<ArrayList<Project>>
 	{
 		@Override
 		public JsonElement serialize(ArrayList<Project> projects, Type typeOfSrc, JsonSerializationContext context)
 		{
 			JsonArray jsonProjects = new JsonArray();
-			
+
 			projects.forEach(project -> {
 				JsonObject jsonProject = new JsonObject();
 				JsonArray jsonBacklog = new JsonArray();
 				JsonArray jsonTeam = new JsonArray();
-				
+
 				project.getBacklog().forEach(story -> {
 					JsonObject jsonStory = new JsonObject();
 					jsonStory.add("name", new JsonPrimitive(story.getName()));
@@ -92,26 +92,26 @@ public final class ProjectListJsonMapper implements MessageBodyWriter<ArrayList<
 					jsonStory.add("priority", new JsonPrimitive(String.valueOf(story.getPriority())));
 					jsonBacklog.add(jsonStory);
 				});
-				
+
 				project.getTeam().getUsers().forEach((user, role) -> {
 					JsonObject jsonUser = new JsonObject();
 					jsonUser.add("email", new JsonPrimitive(user.getEmail()));
 					jsonUser.add("role", new JsonPrimitive(String.valueOf(role)));
 					jsonTeam.add(jsonUser);
 				});
-				
+
 				jsonProject.add("projectId", new JsonPrimitive(project.getProjectId()));
 				jsonProject.add("name", new JsonPrimitive(project.getName()));
 				jsonProject.add("description", new JsonPrimitive(project.getDescription()));
 				jsonProject.add("team", jsonTeam);
 				jsonProject.add("backlog", jsonBacklog);
-				
+
 				jsonProjects.add(jsonProject);
 			});
-			
+
 			return jsonProjects;
 		}
-		
+
 	}
-	
+
 }
