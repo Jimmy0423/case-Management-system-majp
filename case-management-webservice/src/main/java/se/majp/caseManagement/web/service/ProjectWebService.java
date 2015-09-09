@@ -7,7 +7,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import se.majp.caseManagement.service.ProjectService;
+import se.majp.caseManagement.service.ProjectServiceImp;
 
 @Path("projects")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -15,5 +15,5 @@ import se.majp.caseManagement.service.ProjectService;
 public class ProjectWebService
 {
 	@Autowired
-	private ProjectService projectService;
+	private ProjectServiceImp projectService;
 }
