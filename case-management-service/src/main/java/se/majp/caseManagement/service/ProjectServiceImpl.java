@@ -7,7 +7,6 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import se.majp.caseManagement.exception.PermissionDeniedException;
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Role;
 import se.majp.caseManagement.model.User;
@@ -19,21 +18,20 @@ public class ProjectServiceImpl implements ProjectService
 {
 	@Autowired
 	private ProjectRepository projectRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
 	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
 
 	@Override
-	public Project addOrUpdateProject(User user, Project project)
+	public Project addOrUpdateProject(Project project)
 	{
-		if(project.getProjectId() == null)
+		if (project.getProjectId() == null)
 		{
 			project = new Project(idGenerator.getNextId(), project.getName(), project.getDescription());
-			project.getTeam().addUser(user, Role.OWNER);
 		}
-		
+
 		return projectRepository.save(project);
 	}
 
@@ -41,43 +39,46 @@ public class ProjectServiceImpl implements ProjectService
 	public Project findByProjectId(String projectId)
 	{
 		Project project = projectRepository.findByProjectId(projectId);
-		
+
 		if (project == null)
 		{
 			throw new EntityNotFoundException("Project not found in DB");
 		}
 
-		return project; 
+		return project;
 	}
-	
+
 	@Override
 	public List<Project> findAllProjects()
-	{	
+	{
 		List<Project> projects = new ArrayList<>();
 		projectRepository.findAll().forEach(project -> {
 			projects.add(project);
 		});
-		
+
 		return projects;
 	}
-	
+
 	@Override
 	public List<Project> findAllProjectsByUser(String userId)
 	{
 		User user = userRepository.findByUserId(userId);
-		
-		if(user == null)
+
+		if (user == null)
 		{
 			throw new EntityNotFoundException("User not found with a userId: " + userId);
 		}
-		
+
 		return projectRepository.findAllProjectsForUser(user);
 	}
 
 	@Override
-	public Project addOrUpdateTeamMember(User user, Role role, Project project)
+	public Project addOrUpdateTeamMember(String projectId, String userId, Role role)
 	{
-		if (user.getUserId() == null)
+		Project project = projectRepository.findByProjectId(projectId);
+		User user = userRepository.findByUserId(userId);
+		
+		if (user == null)
 		{
 			throw new EntityNotFoundException("User not saved in DB");
 		}
@@ -87,25 +88,22 @@ public class ProjectServiceImpl implements ProjectService
 	}
 
 	@Override
-	public Project removeTeamMember(User user, Project project)
+	public Project removeTeamMember(String projectId, User user)
 	{
-		if (project.getProjectId() != null)
+		Project project = projectRepository.findByProjectId(projectId);
+		
+		if (project == null)
 		{
-			project.getTeam().removeUser(user);
-			return projectRepository.save(project);
+			throw new EntityNotFoundException("Project not in DB");
 		}
 
-		throw new EntityNotFoundException("Project not in DB");
+		project.getTeam().removeUser(user);
+		return projectRepository.save(project);
 	}
 
 	@Override
-	public void removeProject(User user, Project project)
+	public void removeProject(Project project)
 	{
-		if (project.getTeam().userHasRole(user, Role.OWNER))
-		{
-			projectRepository.delete(project);
-		}
-
-		throw new PermissionDeniedException("Permission denied");
+		projectRepository.delete(project);
 	}
 }

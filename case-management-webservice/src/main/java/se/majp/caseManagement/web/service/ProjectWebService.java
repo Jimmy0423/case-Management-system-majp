@@ -22,10 +22,12 @@ import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.service.ProjectService;
 import se.majp.caseManagement.service.StoryService;
+import se.majp.caseManagement.web.auth.Authorize;
 
 @Path("projects")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Authorize
 public class ProjectWebService
 {
 	@Autowired
@@ -37,22 +39,22 @@ public class ProjectWebService
 	@Context
 	private UriInfo uriInfo;
 	
-//	@POST
-//	public Response addProject(Project project, User user)
-//	{
-//		Project projectFromDb = projectService.addOrUpdateProject(user, project);
-//		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
-//		
-//		return Response.created(location).build();
-//	}
+	@POST
+	public Response addProject(Project project)
+	{
+		Project projectFromDb = projectService.addOrUpdateProject(project);
+		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
+		
+		return Response.created(location).build();
+	}
 	
-//	@POST
-//	@Path("{projectId}/users")
-//	public Response addStoryToProject(@PathParam("projectId") final String projectId, User user, Story story)
-//	{
-//		storyService.addStoryToBacklog(user, projectId, story);
-//		return null;
-//	}
+	@POST
+	@Path("{projectId}/stories")
+	public Response addStoryToProject(@PathParam("projectId") final String projectId, User user, Story story)
+	{
+		storyService.addStoryToBacklog(user, projectId, story);
+		return null;
+	}
 	
 	@GET
 	public Response getAllProjects()

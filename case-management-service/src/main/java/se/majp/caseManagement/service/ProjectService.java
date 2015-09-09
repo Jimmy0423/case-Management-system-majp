@@ -8,7 +8,7 @@ import se.majp.caseManagement.model.User;
 
 public interface ProjectService
 {
-	Project addOrUpdateProject(User user, Project project);
+	Project addOrUpdateProject(Project project);
 
 	Project findByProjectId(String projectId);
 
@@ -16,9 +16,9 @@ public interface ProjectService
 	
 	List<Project> findAllProjects();
 
-	Project addOrUpdateTeamMember(User user, Role role, Project project);
+	Project addOrUpdateTeamMember(String projectId, String userId, Role role);
 
-	Project removeTeamMember(User user, Project project);
+	Project removeTeamMember(String projectId, User user);
 
-	void removeProject(User user, Project project);
+	void removeProject(Project project);
 }

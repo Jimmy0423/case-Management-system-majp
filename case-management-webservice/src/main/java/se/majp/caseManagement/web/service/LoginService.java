@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.service.UserService;
 import se.majp.caseManagement.web.auth.AuthProvider;
+import se.majp.caseManagement.web.exception.AuthorizationException;
 
 @Path("login")
 public class LoginService
@@ -29,6 +30,6 @@ public class LoginService
 			return Response.accepted().header("token", token).build();
 		}
 		
-		return null;
+		throw new AuthorizationException("wrong username or password");
 	}
 }
