@@ -1,11 +1,9 @@
 package se.majp.caseManagement.web.service;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -22,6 +20,7 @@ import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.service.ProjectService;
 import se.majp.caseManagement.service.StoryService;
+import se.majp.caseManagement.service.UserService;
 
 @Path("projects")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -34,6 +33,9 @@ public class ProjectWebService
 	@Autowired
 	private StoryService storyService;
 	
+	@Autowired
+	private UserService userService;
+
 	@Context
 	private UriInfo uriInfo;
 	
@@ -62,4 +64,39 @@ public class ProjectWebService
 		
 		return Response.ok(entity).build();
 	}
+
+	@GET
+	@Path("{projectId}")
+	public Response findByProjectId(@PathParam("projectId") final String projectId)
+	{
+		Project project = projectService.findByProjectId(projectId);
+		return Response.ok(project).build();
+	}
+
+	@GET
+	@Path("{projectId}/stories")
+	public Response findAllStoriesInProject(@PathParam("projectId") final String projectId)
+	{
+		List<Story> stories = storyService.findAllStoriesInProject(projectId);
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
+		{
+		};
+
+		return Response.ok(entity).build();
+	}
+
+	@GET
+	@Path("{projectId}/users")
+	public Response findAllUserssInProject(@PathParam("projectId") final String projectId)
+	{
+		List<User> users = userService.findByProject(projectId);
+		GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users)
+		{
+		};
+
+		return Response.ok(entity).build();
+		
+	}
+
+
 }
