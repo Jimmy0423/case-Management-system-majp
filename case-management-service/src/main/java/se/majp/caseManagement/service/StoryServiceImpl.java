@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import se.majp.caseManagement.exception.BadRequestException;
 import se.majp.caseManagement.exception.EntityNotFoundException;
 import se.majp.caseManagement.model.Issue;
 import se.majp.caseManagement.model.Project;
@@ -77,13 +78,23 @@ public class StoryServiceImpl implements StoryService
 	}
 
 	@Override
-	public Story changeStatus(String storyId, Status status)
+	public Story changeStatus(String storyId, String stringStatus)
 	{
 		Story story = storyRepository.findByStoryId(storyId);
+		Status status = null;
 
 		if (story == null)
 		{
 			throw new EntityNotFoundException("No story found with that storyId");
+		}
+		
+		if (isValidStatus(stringStatus))
+		{
+			status = Status.valueOf(stringStatus);
+		}
+		else
+		{
+			throw new BadRequestException("Not a valid status");
 		}
 
 		switch (story.getStatus())
@@ -198,9 +209,14 @@ public class StoryServiceImpl implements StoryService
 	}
 
 	@Override
-	public List<Story> findAllStoriesByStatus(Status status)
+	public List<Story> findAllStoriesByStatus(String status)
 	{
-		return storyRepository.findByStatus(status);
+		if (isValidStatus(status))
+		{
+			return storyRepository.findByStatus(Status.valueOf(status));			
+		}
+		
+		throw new BadRequestException("Not a valid status");
 	}
 
 	@Override
@@ -238,5 +254,18 @@ public class StoryServiceImpl implements StoryService
 		}
 		
 		storyRepository.delete(story);
+	}
+	
+	private boolean isValidStatus(String stringStatus)
+	{
+		for (Status status : Status.values())
+		{
+			if (status.toString().equals(stringStatus))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

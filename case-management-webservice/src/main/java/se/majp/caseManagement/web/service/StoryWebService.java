@@ -1,6 +1,5 @@
 package se.majp.caseManagement.web.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -17,26 +16,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.hibernate.procedure.ParameterMisuseException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
-import se.majp.caseManagement.service.ProjectService;
 import se.majp.caseManagement.service.StoryService;
-import se.majp.caseManagement.service.UserService;
 
 @Path("stories")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class StoryWebService
-{
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private ProjectService projectService;
-	
+{	
 	@Autowired
 	private StoryService storyService;
 	
@@ -44,8 +33,7 @@ public class StoryWebService
 	private UriInfo uriInfo;
 	
 	@GET
-	public Response getStoriesByDescription(
-			@DefaultValue("") @QueryParam("description") final String description)
+	public Response getStoriesByDescription(@DefaultValue("") @QueryParam("description") final String description)
 	{
 		List<Story> stories = storyService.findByDescriptionContaining(description);
 		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
@@ -75,9 +63,9 @@ public class StoryWebService
 	
 	@PUT
 	@Path("{storyId}")
-	public Response updateStatus(@PathParam("storyId") final Long storyId, String status)
+	public Response updateStatus(@PathParam("storyId") final String storyId, String status)
 	{
-//		storyService.changeStatus(storyId, status);
-		return null;
+		Story story = storyService.changeStatus(storyId, status);
+		return Response.ok(story).build();
 	}
 }
