@@ -87,22 +87,24 @@ public class ProjectServiceImpl implements ProjectService
 	}
 
 	@Override
-	public Project removeTeamMember(String projectId, TeamMember teamMember)
+	public Project removeTeamMember(String projectId, String userId)
 	{
 		Project project = projectRepository.findByProjectId(projectId);
-
-		if (project == null)
+		User user = userRepository.findByUserId(userId);
+		
+		if (project == null || user == null)
 		{
-			throw new EntityNotFoundException("Project not in DB");
+			throw new EntityNotFoundException("Project or user not found");
 		}
 
-		project.getTeam().removeUser(teamMember.getUser());
+		project.getTeam().removeUser(user);
 		return projectRepository.save(project);
 	}
 
 	@Override
-	public void removeProject(Project project)
+	public void removeProject(String projectId)
 	{
+		Project project = projectRepository.findByProjectId(projectId);
 		projectRepository.delete(project);
 	}
 }

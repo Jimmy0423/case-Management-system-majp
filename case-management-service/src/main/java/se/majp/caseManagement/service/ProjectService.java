@@ -17,7 +17,7 @@ public interface ProjectService
 
 	Project addOrUpdateTeamMember(String projectId, TeamMember teamMember);
 
-	Project removeTeamMember(String projectId, TeamMember teamMember);
+	Project removeTeamMember(String projectId, String userId);
 
-	void removeProject(Project project);
+	void removeProject(String projectId);
 }

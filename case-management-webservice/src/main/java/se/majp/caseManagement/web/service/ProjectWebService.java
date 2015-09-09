@@ -4,8 +4,10 @@ import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -19,11 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Story;
+import se.majp.caseManagement.model.TeamMember;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.service.ProjectService;
 import se.majp.caseManagement.service.StoryService;
 import se.majp.caseManagement.service.UserService;
-
 
 @Path("projects")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -55,8 +57,10 @@ public class ProjectWebService
 	@Path("{projectId}/stories")
 	public Response addStoryToProject(@PathParam("projectId") final String projectId, Story story)
 	{
-		storyService.addStoryToBacklog(projectId, story);
-		return null;
+		story = storyService.addStoryToBacklog(projectId, story);
+		URI location = uriInfo.getAbsolutePathBuilder().path(story.getStoryId()).build();
+		
+		return Response.created(location).build();
 	}
 	
 	@GET
@@ -100,6 +104,29 @@ public class ProjectWebService
 		return Response.ok(entity).build();
 		
 	}
-
-
+	
+	@PUT
+	@Path("{projectId}/users")
+	public Response addTeamMember(@PathParam("projectId") final String projectId, TeamMember teamMember)
+	{
+		Project project = projectService.addOrUpdateTeamMember(projectId, teamMember);	
+		return Response.ok(project).build();
+	}
+	
+	@PUT
+	@Path("{projectId}/users/{userId}")
+	public Response removeTeamMember(@PathParam("projectId") final String projectId, 
+									 @PathParam("userId") final String userId)
+	{
+		Project project = projectService.removeTeamMember(projectId, userId);
+		return Response.ok(project).build();
+	}
+	
+	@DELETE
+	@Path("{projectId}")
+	public Response removeProject(@PathParam("projectId") final String projectId)
+	{
+		projectService.removeProject(projectId);
+		return Response.noContent().build();
+	}
 }
