@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import se.majp.caseManagement.exception.BadRequestException;
 import se.majp.caseManagement.exception.EntityNotFoundException;
 import se.majp.caseManagement.exception.PermissionDeniedException;
 import se.majp.caseManagement.model.Issue;
@@ -168,9 +169,27 @@ public class StoryService
 		throw new EntityNotFoundException("Project not in DB");
 	}
 	
-	public List<Story> findAllStoriesByStatus(Status status)
+	public List<Story> findAllStoriesByStatus(String status)
 	{
-		return storyRepository.findByStatus(status);
+		if (isValidStatus(status))
+		{
+			return storyRepository.findByStatus(Status.valueOf(status));			
+		}
+		
+		throw new BadRequestException("Not a valid status");
+	}
+	
+	private boolean isValidStatus(String stringStatus)
+	{
+		for (Status status : Status.values())
+		{
+			if (status.toString().equals(stringStatus))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public Story findByStoryId(String storyId)
