@@ -7,43 +7,14 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import se.majp.caseManagement.model.Project;
-import se.majp.caseManagement.model.Role;
 import se.majp.caseManagement.model.User;
-import se.majp.caseManagement.repository.ProjectRepository;
-import se.majp.caseManagement.repository.UserRepository;
+import se.majp.caseManagement.test.config.IntegrationTestBaseClass;
 
 public class UserRepositoryIntegrationTest extends IntegrationTestBaseClass
-{
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private ProjectRepository projectRepository;
-	
-	@Before
-	public void setUp()
-	{
-		User user = new User("a", "email", "password", "firstName", "lastName");
-		Project project = new Project("p", "name", "description");
-		project.getTeam().addUser(user, Role.OWNER);
-		userRepository.save(user);
-		projectRepository.save(project);
-	}
-	
-	@After
-	public void tearDown()
-	{
-		projectRepository.deleteAll();
-		userRepository.deleteAll();
-	}
-	
+{	
 	@Test
 	public void findByFirstNameOrLastNameOrEmail_NoMatch_shouldReturnEmptyList()
 	{
@@ -57,7 +28,7 @@ public class UserRepositoryIntegrationTest extends IntegrationTestBaseClass
 		List<User> users = userRepository.findByFirstNameOrLastNameOrEmail("firstName");
 		assertThat(users.size(), is(1));
 		assertThat(users.get(0), allOf(
-					hasProperty("userId", is("a")),
+					hasProperty("userId", is("userId")),
 					hasProperty("email", is("email")),
 					hasProperty("password", is("password")),
 					hasProperty("firstName", is("firstName")),
@@ -75,8 +46,8 @@ public class UserRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByUserId_Match_shouldReturnUser()
 	{
-		User user = userRepository.findByUserId("a");
-		assertThat(user.getUserId(), is("a"));
+		User user = userRepository.findByUserId("userId");
+		assertThat(user.getUserId(), is("userId"));
 	}
 	
 	@Test
@@ -103,10 +74,10 @@ public class UserRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByProject_OneMatch_shouldReturnListOfSizeOne()
 	{
-		List<User> users = userRepository.findByProject("p");
+		List<User> users = userRepository.findByProject("projectId");
 		assertThat(users.size(), is(1));
 		assertThat(users.get(0), allOf(
-				hasProperty("userId", is("a")),
+				hasProperty("userId", is("userId")),
 				hasProperty("email", is("email")),
 				hasProperty("password", is("password")),
 				hasProperty("firstName", is("firstName")),

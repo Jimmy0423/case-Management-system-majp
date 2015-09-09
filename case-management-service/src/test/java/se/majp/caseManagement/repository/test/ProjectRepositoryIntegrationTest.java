@@ -6,44 +6,15 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.model.Project;
-import se.majp.caseManagement.model.Role;
 import se.majp.caseManagement.model.User;
-import se.majp.caseManagement.repository.ProjectRepository;
-import se.majp.caseManagement.repository.UserRepository;
+import se.majp.caseManagement.test.config.IntegrationTestBaseClass;
 
 public class ProjectRepositoryIntegrationTest extends IntegrationTestBaseClass
-{
-	@Autowired
-	private ProjectRepository projectRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Before
-	public void setUp()
-	{
-		Project project = new Project("p", "name", "description");
-		User user = new User("userId", "email", "password", "firstName", "lastName");
-		project.getTeam().addUser(user, Role.OWNER);
-		
-		userRepository.save(user);
-		projectRepository.save(project);
-	}
-	
-	@After
-	public void tearDown()
-	{
-		projectRepository.deleteAll();
-		userRepository.deleteAll();
-	}
-	
+{	
 	@Test
 	public void findByProjectId_NoMatch_ShouldReturnNull()
 	{
@@ -54,9 +25,9 @@ public class ProjectRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByProjectId_Match_ShouldReturnProject()
 	{
-		Project project = projectRepository.findByProjectId("p");
+		Project project = projectRepository.findByProjectId("projectId");
 		Assert.assertThat(project, allOf(
-									hasProperty("projectId", is("p")),
+									hasProperty("projectId", is("projectId")),
 									hasProperty("name", is("name")),
 									hasProperty("description", is("description"))
 									));
@@ -69,7 +40,7 @@ public class ProjectRepositoryIntegrationTest extends IntegrationTestBaseClass
 		List<Project> projects = projectRepository.findAllProjectsForUser(user);
 		Assert.assertThat(projects.size(), is(1));
 		Assert.assertThat(projects.get(0), allOf(
-											hasProperty("projectId", is("p")),
+											hasProperty("projectId", is("projectId")),
 											hasProperty("name", is("name")),
 											hasProperty("description", is("description"))
 											));

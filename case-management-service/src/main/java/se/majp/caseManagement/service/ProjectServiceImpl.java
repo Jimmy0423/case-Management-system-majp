@@ -3,10 +3,9 @@ package se.majp.caseManagement.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
+import se.majp.caseManagement.exception.EntityNotFoundException;
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.TeamMember;
 import se.majp.caseManagement.model.User;
