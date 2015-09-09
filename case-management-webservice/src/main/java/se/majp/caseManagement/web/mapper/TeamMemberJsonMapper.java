@@ -13,6 +13,10 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import se.majp.caseManagement.model.Role;
+import se.majp.caseManagement.model.TeamMember;
+import se.majp.caseManagement.model.User;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -21,15 +25,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import se.majp.caseManagement.model.Role;
-import se.majp.caseManagement.model.TeamMember;
-import se.majp.caseManagement.model.User;
-
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
 public class TeamMemberJsonMapper implements MessageBodyReader<TeamMember> 
 {
-
 	private Gson gson;
 
 	public TeamMemberJsonMapper() 
@@ -49,20 +48,16 @@ public class TeamMemberJsonMapper implements MessageBodyReader<TeamMember>
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 					throws IOException, WebApplicationException 
 	{
-
 		TeamMember teamMember = gson.fromJson(new InputStreamReader(entityStream), TeamMember.class);
-
 		return teamMember;
 	}
 
 	private static final class TeamMemberAdapter implements JsonDeserializer<TeamMember> 
 	{
-
 		@Override
 		public TeamMember deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException 
 		{
-
 			JsonObject jsonTeamMember = json.getAsJsonObject();
 			JsonObject jsonUser = jsonTeamMember.get("user").getAsJsonObject();
 
@@ -76,7 +71,6 @@ public class TeamMemberJsonMapper implements MessageBodyReader<TeamMember>
 
 			return new TeamMember(new User(userId, email, password, firstName, lastName), role);
 		}
-
 	}
 
 }
