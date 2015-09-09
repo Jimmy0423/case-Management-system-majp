@@ -24,7 +24,6 @@ import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.service.ProjectService;
 import se.majp.caseManagement.service.StoryService;
 import se.majp.caseManagement.service.UserService;
-import se.majp.caseManagement.web.auth.Authorize;
 
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -54,7 +53,6 @@ public final class UserWebService
 	
 	@GET
 	@Path("{userId}")
-	@Authorize
 	public Response getUserByUserId(@PathParam("userId") final String userId)
 	{
 		User user = userService.findByUserId(userId);
@@ -63,7 +61,6 @@ public final class UserWebService
 	
 	@GET
 	@Path("{userId}/projects")
-	@Authorize
 	public Response getAllProjectsForUser(@PathParam("userId") final String userId)
 	{
 		List<Project> projects = projectService.findAllProjectsByUser(userId);
@@ -74,7 +71,6 @@ public final class UserWebService
 	
 	@GET
 	@Path("{userId}/stories")
-	@Authorize
 	public Response getAllStoriesForUser(@PathParam("userId") final String userId)
 	{
 		List<Story> stories = storyService.findAllStoriesAssignedToUser(userId);
@@ -85,7 +81,6 @@ public final class UserWebService
 	
 	@DELETE
 	@Path("{userId}")
-	@Authorize
 	public Response removeUser(@PathParam("userId") final String userId)
 	{
 		userService.removeUser(userId);
