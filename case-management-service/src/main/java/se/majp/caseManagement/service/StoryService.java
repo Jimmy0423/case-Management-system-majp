@@ -3,7 +3,6 @@ package se.majp.caseManagement.service;
 import java.util.List;
 
 import se.majp.caseManagement.model.Issue;
-import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
 
 public interface StoryService
