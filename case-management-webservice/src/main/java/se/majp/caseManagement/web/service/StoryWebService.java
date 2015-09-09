@@ -77,6 +77,7 @@ public class StoryWebService
 	@Path("{storyId}")
 	public Response updateStatus(@PathParam("storyId") final Long storyId, String status)
 	{
-		storyService.changeStatus(storyId, status);
+//		storyService.changeStatus(storyId, status);
+		return null;
 	}
 }
