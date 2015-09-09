@@ -50,9 +50,9 @@ public class ProjectWebService
 	
 	@POST
 	@Path("{projectId}/stories")
-	public Response addStoryToProject(@PathParam("projectId") final String projectId, User user, Story story)
+	public Response addStoryToProject(@PathParam("projectId") final String projectId, Story story)
 	{
-		storyService.addStoryToBacklog(user, projectId, story);
+		storyService.addStoryToBacklog(projectId, story);
 		return null;
 	}
 	

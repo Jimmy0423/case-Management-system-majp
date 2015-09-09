@@ -3,8 +3,7 @@ package se.majp.caseManagement.service;
 import java.util.List;
 
 import se.majp.caseManagement.model.Project;
-import se.majp.caseManagement.model.Role;
-import se.majp.caseManagement.model.User;
+import se.majp.caseManagement.model.TeamMember;
 
 public interface ProjectService
 {
@@ -16,9 +15,9 @@ public interface ProjectService
 	
 	List<Project> findAllProjects();
 
-	Project addOrUpdateTeamMember(String projectId, String userId, Role role);
+	Project addOrUpdateTeamMember(String projectId, TeamMember teamMember);
 
-	Project removeTeamMember(String projectId, User user);
+	Project removeTeamMember(String projectId, TeamMember teamMember);
 
 	void removeProject(Project project);
 }

@@ -8,7 +8,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.model.Project;
-import se.majp.caseManagement.model.Role;
+import se.majp.caseManagement.model.TeamMember;
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.repository.ProjectRepository;
 import se.majp.caseManagement.repository.UserRepository;
@@ -27,11 +27,11 @@ public class ProjectServiceImpl implements ProjectService
 	@Override
 	public Project addOrUpdateProject(Project project)
 	{
-		if (project.getProjectId() == null)
+		if(project.getProjectId() == null)
 		{
 			project = new Project(idGenerator.getNextId(), project.getName(), project.getDescription());
 		}
-
+		
 		return projectRepository.save(project);
 	}
 
@@ -73,31 +73,30 @@ public class ProjectServiceImpl implements ProjectService
 	}
 
 	@Override
-	public Project addOrUpdateTeamMember(String projectId, String userId, Role role)
+	public Project addOrUpdateTeamMember(String projectId, TeamMember teamMember)
 	{
 		Project project = projectRepository.findByProjectId(projectId);
-		User user = userRepository.findByUserId(userId);
 		
-		if (user == null)
+		if(project == null)
 		{
-			throw new EntityNotFoundException("User not saved in DB");
+			throw new EntityNotFoundException("No project found with projectId: " + projectId);
 		}
 
-		project.getTeam().addUser(user, role);
+		project.getTeam().addUser(teamMember.getUser(), teamMember.getRole());
 		return projectRepository.save(project);
 	}
 
 	@Override
-	public Project removeTeamMember(String projectId, User user)
+	public Project removeTeamMember(String projectId, TeamMember teamMember)
 	{
 		Project project = projectRepository.findByProjectId(projectId);
-		
+
 		if (project == null)
 		{
 			throw new EntityNotFoundException("Project not in DB");
 		}
 
-		project.getTeam().removeUser(user);
+		project.getTeam().removeUser(teamMember.getUser());
 		return projectRepository.save(project);
 	}
 
