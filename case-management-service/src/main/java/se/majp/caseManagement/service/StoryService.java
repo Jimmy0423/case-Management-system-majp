@@ -34,8 +34,15 @@ public class StoryService
 	
 	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
 	
-	public Story addStoryToBacklog(User user, Project project, Story story)
+	public Story addStoryToBacklog(User user, String projectId, Story story)
 	{
+		Project project = projectRepository.findByProjectId(projectId);
+		
+		if(project == null)
+		{
+			throw new EntityNotFoundException("Project doesn't exist");
+		}
+		
 		if(project.getTeam().userHasRole(user, Role.OWNER))
 		{
 			story = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());

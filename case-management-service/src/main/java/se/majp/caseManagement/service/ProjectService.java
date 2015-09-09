@@ -1,5 +1,6 @@
 package se.majp.caseManagement.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -45,6 +46,16 @@ public class ProjectService
 		}
 
 		return project; 
+	}
+	
+	public List<Project> findAllProjects()
+	{
+		List<Project> projects = new ArrayList<>();
+		projectRepository.findAll().forEach(project -> {
+			projects.add(project);
+		});
+		
+		return projects;
 	}
 	
 	public List<Project> findAllProjectsByUser(String userId)
