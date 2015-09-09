@@ -10,9 +10,7 @@ import java.util.List;
 import org.junit.Test;
 
 import se.majp.caseManagement.model.Issue;
-import se.majp.caseManagement.model.Priority;
 import se.majp.caseManagement.model.Project;
-import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.test.config.IntegrationTestBaseClass;
 
@@ -28,7 +26,7 @@ public class StoryRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByProject_Match_shouldReturnListOfSizeOne()
 	{
-		List<Story> stories = storyRepository.findByProject("projectId");
+		List<Story> stories = storyRepository.findByProject(PROJECT_PROJECTID);
 		checkSizeOneAndStoryProperties(stories);
 	}
 	
@@ -42,7 +40,7 @@ public class StoryRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByUser_Match_shouldReturnListOfSizeOne()
 	{
-		List<Story> stories = storyRepository.findByUser("userId");
+		List<Story> stories = storyRepository.findByUser(USER_USERID);
 		checkSizeOneAndStoryProperties(stories);
 	}
 	
@@ -56,14 +54,14 @@ public class StoryRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByUserAndProject_Match_shouldReturnListOfSizeOne()
 	{
-		List<Story> stories = storyRepository.findByUserAndProject("userId", "projectId");
+		List<Story> stories = storyRepository.findByUserAndProject(USER_USERID, PROJECT_PROJECTID);
 		checkSizeOneAndStoryProperties(stories);
 	}
 	
 	@Test
 	public void findStoriesWithIssues_Match_shouldReturnListOfSizeOne()
 	{
-		Story story = storyRepository.findByStoryId("storyId");
+		Story story = storyRepository.findByStoryId(STORY_STORYID);
 		Issue issue = new Issue("name", "description", story);
 		issueRepository.save(issue);
 		
@@ -81,26 +79,26 @@ public class StoryRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findBacklogForProject_Match_shouldReturnListOfSizeOne()
 	{
-		Story story = storyRepository.findByStoryId("storyId");
+		Story story = storyRepository.findByStoryId(STORY_STORYID);
 		story.setUser(null);
 		storyRepository.save(story);
 		
-		List<Story> stories = storyRepository.findBacklogForProject("projectId");
+		List<Story> stories = storyRepository.findBacklogForProject(PROJECT_PROJECTID);
 		checkSizeOneAndStoryProperties(stories);
 	}
 	
 	private void checkSizeOneAndStoryProperties(List<Story> stories)
 	{
-		Project project = projectRepository.findByProjectId("projectId");
+		Project project = projectRepository.findByProjectId(PROJECT_PROJECTID);
 		
 		assertThat(stories.size(), is(1));
 		assertThat(stories.get(0), allOf(
-									hasProperty("storyId", is("storyId")),
-									hasProperty("name", is("name")),
-									hasProperty("description", is("description")),
+									hasProperty("storyId", is(STORY_STORYID)),
+									hasProperty("name", is(STORY_NAME)),
+									hasProperty("description", is(STORY_DESCRIPTION)),
 									hasProperty("project", is(project)),
-									hasProperty("status", is(Status.PENDING)),
-									hasProperty("priority", is(Priority.LOW))
+									hasProperty("status", is(STORY_STATUS)),
+									hasProperty("priority", is(STORY_PRIORITY))
 								));
 	}
 }

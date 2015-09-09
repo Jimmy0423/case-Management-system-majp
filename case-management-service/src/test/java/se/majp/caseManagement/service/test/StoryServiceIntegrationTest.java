@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.majp.caseManagement.exception.BadRequestException;
 import se.majp.caseManagement.exception.EntityNotFoundException;
 import se.majp.caseManagement.model.Issue;
-import se.majp.caseManagement.model.Priority;
 import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
@@ -29,7 +28,7 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
-	private Story storyToSave = new Story("name", "description", Status.PENDING, Priority.LOW);
+	private Story storyToSave = new Story(STORY_NAME, STORY_DESCRIPTION, STORY_STATUS, STORY_PRIORITY);
 	
 	@Test
 	public void addStoryToBacklog_shouldThrowEntityNotFoundException()
@@ -43,7 +42,7 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void addStoryToBacklog_shouldReturnStoryWithStoryId()
 	{
-		storyToSave = storyService.addStoryToBacklog("projectId", storyToSave);
+		storyToSave = storyService.addStoryToBacklog(PROJECT_PROJECTID, storyToSave);
 		assertNotNull(storyToSave.getId());
 	}
 	
@@ -59,8 +58,8 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void addStoryToUser_shouldReturnStoryWithUser()
 	{
-		Story story = storyService.addStoryToUser("userId", storyToSave);
-		User user = userRepository.findByUserId("userId");
+		Story story = storyService.addStoryToUser(USER_USERID, storyToSave);
+		User user = userRepository.findByUserId(USER_USERID);
 		assertThat(story.getUser(), is(user));
 	}
 	
@@ -77,7 +76,7 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 	public void addIssue_shouldReturnStoryWithIssue()
 	{
 		Issue issue = new Issue("title", "description");
-		Story story = storyService.addIssue("storyId", issue);
+		Story story = storyService.addIssue(STORY_STORYID, issue);
 		
 		assertThat(story.getIssues().size(), is(1));
 		assertThat((Issue) story.getIssues().toArray()[0], allOf(
@@ -92,7 +91,7 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 		exception.expect(BadRequestException.class);
 		exception.expectMessage("Not a valid status");
 		
-		storyService.changeStatus("storyId", "NO MATCH");
+		storyService.changeStatus(STORY_STORYID, "NO MATCH");
 	}
 	
 	@Test
@@ -110,13 +109,13 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 		exception.expect(IllegalArgumentException.class);
 		exception.expectMessage("status can only be changed");
 		
-		storyService.changeStatus("storyId", "TEST");
+		storyService.changeStatus(STORY_STORYID, "TEST");
 	}
 	
 	@Test
 	public void changeStatus_shouldReturnStoryWithNewStatus()
 	{
-		Story story = storyService.changeStatus("storyId", "INPROGRESS");
+		Story story = storyService.changeStatus(STORY_STORYID, "INPROGRESS");
 		
 		assertThat(story.getStatus(), is(Status.INPROGRESS));
 	}

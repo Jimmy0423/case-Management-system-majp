@@ -35,6 +35,21 @@ import se.majp.caseManagement.repository.UserRepository;
 @RunWith(SpringJUnit4ClassRunner.class)
 public abstract class IntegrationTestBaseClass
 {
+	protected static final String USER_USERID = "a1fRhW43p";
+	protected static final String USER_EMAIL = "email@example.com";
+	protected static final String USER_ANOTHER_EMAIL = "another@example.com";
+	protected static final String USER_PASSWORD = "password";
+	protected static final String USER_FIRSTNAME = "John";
+	protected static final String USER_LASTNAME = "Doe";
+	protected static final String PROJECT_PROJECTID = "gHjMnB7Y";
+	protected static final String PROJECT_NAME = "Great system";
+	protected static final String PROJECT_DESCRIPTION = "Let's build a great system";
+	protected static final String STORY_STORYID = "aHjJj43p";
+	protected static final String STORY_NAME = "Do stuff";
+	protected static final String STORY_DESCRIPTION = "Make it great!";
+	protected static final Status STORY_STATUS = Status.PENDING;
+	protected static final Priority STORY_PRIORITY = Priority.LOW;
+	
 	@Autowired
 	protected StoryRepository storyRepository;
 
@@ -50,9 +65,9 @@ public abstract class IntegrationTestBaseClass
 	@Before
 	public void setUp()
 	{
-		Project project = new Project("projectId", "name", "description");
-		User user = new User("userId", "email", "password", "firstName", "lastName");
-		Story story = new Story("storyId", "name", "description", project, Status.PENDING, Priority.LOW);
+		Project project = new Project(PROJECT_PROJECTID, PROJECT_NAME, PROJECT_DESCRIPTION);
+		User user = new User(USER_USERID, USER_EMAIL, USER_PASSWORD, USER_FIRSTNAME, USER_LASTNAME);
+		Story story = new Story(STORY_STORYID, STORY_NAME, STORY_DESCRIPTION, project, STORY_STATUS, STORY_PRIORITY);
 		story.setUser(user);
 		project.getTeam().addUser(user, Role.OWNER);
 

@@ -20,7 +20,7 @@ public class UserServiceIntegrationTest extends IntegrationTestBaseClass
 	@Autowired
 	private UserService userService;
 	
-	private User userToSave = new User("email2", "password", "firstName", "lastName");
+	private User userToSave = new User(USER_ANOTHER_EMAIL, USER_PASSWORD, USER_FIRSTNAME, USER_LASTNAME);
 	
 	@Test
 	public void addOrUpdateUser_shouldThrowUniqueConstraintException()
@@ -28,7 +28,7 @@ public class UserServiceIntegrationTest extends IntegrationTestBaseClass
 		exception.expect(UniqueConstraintException.class);
 		exception.expectMessage("email already exist");
 		
-		User user = new User("email", "password", "firstName", "lastName");
+		User user = new User(USER_EMAIL, USER_PASSWORD, USER_FIRSTNAME, USER_LASTNAME);
 		
 		userService.addOrUpdateUser(user);
 	}
@@ -43,7 +43,7 @@ public class UserServiceIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void removeUser_shouldNotThrowException()
 	{
-		userService.removeUser("userId");
+		userService.removeUser(USER_USERID);
 	}
 	
 }

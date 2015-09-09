@@ -25,14 +25,14 @@ public class UserRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByFirstNameOrLastNameOrEmail_OneMatch_shouldReturnListOfSizeOne()
 	{
-		List<User> users = userRepository.findByFirstNameOrLastNameOrEmail("firstName");
+		List<User> users = userRepository.findByFirstNameOrLastNameOrEmail(USER_FIRSTNAME);
 		assertThat(users.size(), is(1));
 		assertThat(users.get(0), allOf(
-					hasProperty("userId", is("userId")),
-					hasProperty("email", is("email")),
-					hasProperty("password", is("password")),
-					hasProperty("firstName", is("firstName")),
-					hasProperty("lastName", is("lastName"))
+					hasProperty("userId", is(USER_USERID)),
+					hasProperty("email", is(USER_EMAIL)),
+					hasProperty("password", is(USER_PASSWORD)),
+					hasProperty("firstName", is(USER_FIRSTNAME)),
+					hasProperty("lastName", is(USER_LASTNAME))
 				));
 	}
 	
@@ -46,8 +46,8 @@ public class UserRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByUserId_Match_shouldReturnUser()
 	{
-		User user = userRepository.findByUserId("userId");
-		assertThat(user.getUserId(), is("userId"));
+		User user = userRepository.findByUserId(USER_USERID);
+		assertThat(user.getUserId(), is(USER_USERID));
 	}
 	
 	@Test
@@ -60,8 +60,8 @@ public class UserRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByEmail_Match_shouldReturnUser()
 	{
-		User user = userRepository.findByEmail("email");
-		assertThat(user.getEmail(), is("email"));
+		User user = userRepository.findByEmail(USER_EMAIL);
+		assertThat(user.getEmail(), is(USER_EMAIL));
 	}
 	
 	@Test
@@ -74,14 +74,14 @@ public class UserRepositoryIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void findByProject_OneMatch_shouldReturnListOfSizeOne()
 	{
-		List<User> users = userRepository.findByProject("projectId");
+		List<User> users = userRepository.findByProject(PROJECT_PROJECTID);
 		assertThat(users.size(), is(1));
 		assertThat(users.get(0), allOf(
-				hasProperty("userId", is("userId")),
-				hasProperty("email", is("email")),
-				hasProperty("password", is("password")),
-				hasProperty("firstName", is("firstName")),
-				hasProperty("lastName", is("lastName"))
+				hasProperty("userId", is(USER_USERID)),
+				hasProperty("email", is(USER_EMAIL)),
+				hasProperty("password", is(USER_PASSWORD)),
+				hasProperty("firstName", is(USER_FIRSTNAME)),
+				hasProperty("lastName", is(USER_LASTNAME))
 			));
 	}
 }
