@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.service.UserService;
+import se.majp.caseManagement.web.auth.AuthProvider;
 
 @Path("login")
 public class LoginService
@@ -23,11 +24,11 @@ public class LoginService
 		if(user.getPassword().equals(userFromDb.getPassword()))
 		{
 			AuthProvider provider = new AuthProvider();
-			final String token = provider.addToken(userFromDb.getId());
+			final String token = provider.addToken(userFromDb.getUserId());
 			
 			return Response.accepted().header("token", token).build();
 		}
 		
-		throw new AuthorizationException("Wrong username or password");
+		return null;
 	}
 }

@@ -13,6 +13,8 @@ public interface ProjectService
 	Project findByProjectId(String projectId);
 
 	List<Project> findAllProjectsByUser(String userId);
+	
+	List<Project> findAllProjects();
 
 	Project addOrUpdateTeamMember(User user, Role role, Project project);
 
