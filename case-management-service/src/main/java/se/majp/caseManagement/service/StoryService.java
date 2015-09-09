@@ -14,7 +14,7 @@ public interface StoryService
 
 	Story addIssue(String storyId, Issue issue);
 
-	Story changeStatus(String storyId, Status status);
+	Story changeStatus(String storyId, String status);
 
 	List<Story> findAllStoriesWithIssues();
 
@@ -24,9 +24,7 @@ public interface StoryService
 
 	List<Story> findAllStoriesInProject(String projectId);
 
-	List<Story> findAllStoriesByStatus(Status status);
-
-	Story findByStoryId(String storyId);
+	List<Story> findAllStoriesByStatus(String status);
 
 	List<Story> findAllStoriesAssignedToUser(String userId);
 
