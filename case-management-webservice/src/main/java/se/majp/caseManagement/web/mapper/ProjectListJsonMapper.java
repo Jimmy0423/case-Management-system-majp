@@ -15,6 +15,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import se.majp.caseManagement.model.Project;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -24,8 +26,6 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonWriter;
-
-import se.majp.caseManagement.model.Project;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
