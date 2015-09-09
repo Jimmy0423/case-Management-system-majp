@@ -86,6 +86,18 @@ public class UserService
 
 		return user;
 	}
+	
+	public User findByEmail(String email)
+	{
+		User user = userRepository.findByEmail(email);
+		
+		if(user == null)
+		{
+			throw new EntityNotFoundException("No user with that email");
+		}
+		
+		return user;
+	}
 
 	public List<User> findByProject(String projectId)
 	{
