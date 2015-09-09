@@ -16,4 +16,6 @@ public interface UserRepository extends CrudRepository<User, Long>
 	
 	@Query("select indices(p.team.users) from Project p where p.projectId = ?1")
 	List<User> findByProject(String projectId);
+	
+	User findByEmail(String email);
 }

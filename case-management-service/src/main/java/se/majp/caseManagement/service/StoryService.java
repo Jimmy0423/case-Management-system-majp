@@ -7,8 +7,6 @@ import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
-
-
 public interface StoryService
 {
 	Story addStoryToBacklog(User user, Project project, Story story);
