@@ -14,7 +14,7 @@ import se.majp.caseManagement.repository.StoryRepository;
 import se.majp.caseManagement.repository.UserRepository;
 import se.majp.caseManagement.util.IdGenerator;
 
-public class UserServiceImp implements UserService
+public class UserServiceImpl implements UserService
 {
 	@Autowired
 	private StoryRepository storyRepository;

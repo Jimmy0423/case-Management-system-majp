@@ -14,7 +14,7 @@ import se.majp.caseManagement.repository.ProjectRepository;
 import se.majp.caseManagement.repository.UserRepository;
 import se.majp.caseManagement.util.IdGenerator;
 
-public class ProjectServiceImp implements ProjectService
+public class ProjectServiceImpl implements ProjectService
 {
 	@Autowired
 	private ProjectRepository projectRepository;
