@@ -4,8 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import se.majp.caseManagement.service.ProjectService;
 import se.majp.caseManagement.service.ProjectServiceImp;
+import se.majp.caseManagement.service.StoryService;
 import se.majp.caseManagement.service.StoryServiceImp;
+import se.majp.caseManagement.service.UserService;
 import se.majp.caseManagement.service.UserServiceImp;
 
 @Configuration
@@ -13,19 +16,19 @@ import se.majp.caseManagement.service.UserServiceImp;
 public class ServiceConfig
 {
 	@Bean
-	public UserServiceImp userService()
+	public UserService userService()
 	{
 		return new UserServiceImp();
 	}
 
 	@Bean
-	public ProjectServiceImp projectService()
+	public ProjectService projectService()
 	{
 		return new ProjectServiceImp();
 	}
 	
 	@Bean
-	public StoryServiceImp storyService()
+	public StoryService storyService()
 	{
 		return new StoryServiceImp();
 	}

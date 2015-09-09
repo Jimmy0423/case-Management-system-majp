@@ -21,9 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
-import se.majp.caseManagement.service.ProjectServiceImp;
-import se.majp.caseManagement.service.StoryServiceImp;
-import se.majp.caseManagement.service.UserServiceImp;
+import se.majp.caseManagement.service.ProjectService;
+import se.majp.caseManagement.service.StoryService;
+import se.majp.caseManagement.service.UserService;
 
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,13 +31,13 @@ import se.majp.caseManagement.service.UserServiceImp;
 public final class UserWebService
 {
 	@Autowired
-	private UserServiceImp userService;
+	private UserService userService;
 	
 	@Autowired
-	private ProjectServiceImp projectService;
+	private ProjectService projectService;
 	
 	@Autowired
-	private StoryServiceImp storyService;
+	private StoryService storyService;
 	
 	@Context
 	private UriInfo uriInfo;
