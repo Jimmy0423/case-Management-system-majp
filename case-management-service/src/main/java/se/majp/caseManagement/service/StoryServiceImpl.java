@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.exception.EntityNotFoundException;
-import se.majp.caseManagement.exception.PermissionDeniedException;
 import se.majp.caseManagement.model.Issue;
 import se.majp.caseManagement.model.Project;
-import se.majp.caseManagement.model.Role;
 import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.User;
@@ -19,56 +17,79 @@ import se.majp.caseManagement.repository.UserRepository;
 import se.majp.caseManagement.util.IdGenerator;
 
 public class StoryServiceImpl implements StoryService
-{	
+{
 	@Autowired
 	private StoryRepository storyRepository;
-	
+
 	@Autowired
 	private IssueRepository issueRepository;
-	
+
 	@Autowired
 	private ProjectRepository projectRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
-	
+
 	@Override
-	public Story addStoryToBacklog(User user, Project project, Story story)
+	public Story addStoryToBacklog(String projectId, Story story)
 	{
-		if(project.getTeam().userHasRole(user, Role.OWNER))
+		Project project = projectRepository.findByProjectId(projectId);
+		
+		if(project == null)
 		{
-			story = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
-			return storyRepository.save(story);
+			throw new EntityNotFoundException("No project found with that id");
 		}
 		
-		throw new PermissionDeniedException("User is not an owner");
+		story = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
+		return storyRepository.save(story);
 	}
-	
+
 	@Override
-	public Story addStoryToUser(User user, Story story)
+	public Story addStoryToUser(String userId, Story story)
 	{
+		User user = userRepository.findByUserId(userId);
+		
+		if(user == null)
+		{
+			throw new EntityNotFoundException("No user found with that id");
+		}
+		
 		story.setUser(user);
 		return storyRepository.save(story);
 	}
-	
+
 	@Override
-	public Story addIssue(Story story, Issue issue)
+	public Story addIssue(String storyId, Issue issue)
 	{
+		Story story = storyRepository.findByStoryId(storyId);
+
+		if (story == null)
+		{
+			throw new EntityNotFoundException("No story found with that storyId");
+		}
+
 		Issue issueToSave = new Issue(issue.getTitle(), issue.getDescription(), story);
 		issueRepository.save(issueToSave);
-		
-		return storyRepository.findByStoryId(story.getStoryId());
+
+		return storyRepository.findByStoryId(storyId);
 	}
-	
+
 	@Override
-	public Story changeStatus(Story story, Status status)
+	public Story changeStatus(String storyId, Status status)
 	{
-		switch(story.getStatus())
+		Story story = storyRepository.findByStoryId(storyId);
+
+		if (story == null)
+		{
+			throw new EntityNotFoundException("No story found with that storyId");
+		}
+
+		switch (story.getStatus())
 		{
 		case PENDING:
-			switch(status)
+			switch (status)
 			{
 			case INPROGRESS:
 				story.changeStatus(status);
@@ -77,9 +98,9 @@ public class StoryServiceImpl implements StoryService
 				throw new IllegalArgumentException("status can only be changed to INPROGRESS");
 			}
 			break;
-		
+
 		case ISSUED:
-			switch(status)
+			switch (status)
 			{
 			case TEST:
 				story.setUser(null);
@@ -89,9 +110,9 @@ public class StoryServiceImpl implements StoryService
 				throw new IllegalArgumentException("Status can only be changed to TEST");
 			}
 			break;
-		
+
 		case INPROGRESS:
-			switch(status)
+			switch (status)
 			{
 			case TEST:
 				story.setUser(null);
@@ -101,11 +122,11 @@ public class StoryServiceImpl implements StoryService
 				throw new IllegalArgumentException("Status can only be changed to TEST");
 			}
 			break;
-		
+
 		case TEST:
-			switch(status)
+			switch (status)
 			{
-			case DONE: 
+			case DONE:
 				story.setUser(null);
 				story.changeStatus(status);
 				break;
@@ -117,9 +138,9 @@ public class StoryServiceImpl implements StoryService
 				throw new IllegalArgumentException("Status can only be changed to TEST or ISSUED");
 			}
 			break;
-		
+
 		case DONE:
-			switch(status)
+			switch (status)
 			{
 			case ISSUED:
 				story.changeStatus(status);
@@ -128,20 +149,20 @@ public class StoryServiceImpl implements StoryService
 				throw new IllegalArgumentException("Status can only be changed to ISSUED");
 			}
 			break;
-			
+
 		default:
 			throw new IllegalArgumentException("Not a valid status");
 		}
-		
+
 		return storyRepository.save(story);
 	}
-	
+
 	@Override
 	public List<Story> findAllStoriesWithIssues()
 	{
 		return storyRepository.findStoriesWithIssues();
 	}
-	
+
 	@Override
 	public List<Story> findByDescriptionContaining(String description)
 	{
@@ -150,51 +171,51 @@ public class StoryServiceImpl implements StoryService
 		{
 			throw new EntityNotFoundException("No stories matching description");
 		}
-		
+
 		return stories;
 	}
-	
+
 	@Override
 	public List<Story> findBacklogForProject(String projectId)
 	{
-		if(projectRepository.findByProjectId(projectId) != null)
+		if (projectRepository.findByProjectId(projectId) != null)
 		{
 			return storyRepository.findBacklogForProject(projectId);
 		}
-		
+
 		throw new EntityNotFoundException("Project not in DB");
 	}
 
 	@Override
 	public List<Story> findAllStoriesInProject(String projectId)
 	{
-		if(projectRepository.findByProjectId(projectId) != null)
+		if (projectRepository.findByProjectId(projectId) != null)
 		{
 			return storyRepository.findByProject(projectId);
 		}
-		
+
 		throw new EntityNotFoundException("Project not in DB");
 	}
-	
+
 	@Override
 	public List<Story> findAllStoriesByStatus(Status status)
 	{
 		return storyRepository.findByStatus(status);
 	}
-	
+
 	@Override
 	public Story findByStoryId(String storyId)
 	{
 		Story story = storyRepository.findByStoryId(storyId);
-		
+
 		if (story == null)
 		{
 			throw new EntityNotFoundException("No story with matching storyId");
 		}
-		
+
 		return story;
 	}
-	
+
 	@Override
 	public List<Story> findAllStoriesAssignedToUser(String userId)
 	{
@@ -218,15 +239,17 @@ public class StoryServiceImpl implements StoryService
 
 		throw new EntityNotFoundException("user not found");
 	}
-	
+
 	@Override
-	public void removeStoryFromBacklog(User user, Project project, Story story)
+	public void removeStory(String storyId)
 	{
-		if(project.getTeam().userHasRole(user, Role.OWNER))
+		Story story = storyRepository.findByStoryId(storyId);
+		
+		if(story == null)
 		{
-			storyRepository.delete(story);
+			throw new EntityNotFoundException("No story found with that storyId");
 		}
 		
-		throw new PermissionDeniedException("User is not an owner");
+		storyRepository.delete(story);
 	}
 }
