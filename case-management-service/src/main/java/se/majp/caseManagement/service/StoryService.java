@@ -3,20 +3,18 @@ package se.majp.caseManagement.service;
 import java.util.List;
 
 import se.majp.caseManagement.model.Issue;
-import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Status;
 import se.majp.caseManagement.model.Story;
-import se.majp.caseManagement.model.User;
 
 public interface StoryService
 {
-	Story addStoryToBacklog(User user, Project project, Story story);
+	Story addStoryToBacklog(String projectId, Story story);
 
-	Story addStoryToUser(User user, Story story);
+	Story addStoryToUser(String userId, Story story);
 
-	Story addIssue(Story story, Issue issue);
+	Story addIssue(String storyId, Issue issue);
 
-	Story changeStatus(Story story, Status status);
+	Story changeStatus(String storyId, Status status);
 
 	List<Story> findAllStoriesWithIssues();
 
@@ -32,7 +30,5 @@ public interface StoryService
 
 	List<Story> findAllStoriesByUserAndProject(String userId, String projectId);
 
-	void removeStoryFromBacklog(User user, Project project, Story story);
-
-	Story findByStoryId(String storyId);
+	void removeStory(String storyId);
 }

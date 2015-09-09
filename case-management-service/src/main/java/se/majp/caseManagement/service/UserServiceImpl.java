@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService
 	{
 		if (user.getUserId() == null)
 		{
-			if(userRepository.findByFirstNameOrLastNameOrEmail(user.getEmail()) != null)
+			if(userRepository.findByEmail(user.getEmail()) != null)
 			{
 				throw new UniqueConstraintException("User with that email already exists");
 			}
@@ -76,6 +76,19 @@ public class UserServiceImpl implements UserService
 		}
 
 		throw new EntityNotFoundException("No user matching that value");
+	}
+	
+	@Override
+	public User findByEmail(String email)
+	{
+		User user = userRepository.findByEmail(email);
+		
+		if(user == null)
+		{
+			throw new EntityNotFoundException("User with that email does not exist");
+		}
+		
+		return user;
 	}
 
 	@Override

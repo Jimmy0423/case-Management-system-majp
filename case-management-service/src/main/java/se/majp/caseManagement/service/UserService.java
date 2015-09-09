@@ -12,6 +12,8 @@ public interface UserService
 
 	List<User> findByFirstNameOrLastNameOrEmail(String value);
 
+	User findByEmail(String email);
+	
 	User findByUserId(String userId);
 
 	List<User> findByProject(String projectId);
