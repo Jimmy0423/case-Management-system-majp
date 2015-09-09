@@ -72,7 +72,6 @@ public final class UserListJsonMapper implements MessageBodyWriter<ArrayList<Use
 
 	private static final class UserListAdapter implements JsonSerializer<ArrayList<User>>
 	{
-
 		@Override
 		public JsonElement serialize(ArrayList<User> users, Type typeOfSrc, JsonSerializationContext context)
 		{
@@ -98,7 +97,6 @@ public final class UserListJsonMapper implements MessageBodyWriter<ArrayList<Use
 
 			return jsonUsers;
 		}
-
 	}
 
 }

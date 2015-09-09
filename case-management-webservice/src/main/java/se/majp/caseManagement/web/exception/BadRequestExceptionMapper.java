@@ -8,11 +8,9 @@ import se.majp.caseManagement.exception.BadRequestException;
 
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException>
 {
-
 	@Override
 	public Response toResponse(BadRequestException exception)
 	{
 		return Response.status(Status.BAD_REQUEST).entity(exception.getMessage()).build();
 	}
-
 }
