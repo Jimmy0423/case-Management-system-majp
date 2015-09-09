@@ -111,7 +111,6 @@ public final class ProjectListJsonMapper implements MessageBodyWriter<ArrayList<
 
 			return jsonProjects;
 		}
-
 	}
 
 }

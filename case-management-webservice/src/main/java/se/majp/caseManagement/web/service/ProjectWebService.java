@@ -22,8 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.model.TeamMember;
+import se.majp.caseManagement.model.User;
 import se.majp.caseManagement.service.ProjectService;
 import se.majp.caseManagement.service.StoryService;
+import se.majp.caseManagement.service.UserService;
 
 @Path("projects")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -36,6 +38,9 @@ public class ProjectWebService
 	@Autowired
 	private StoryService storyService;
 	
+	@Autowired
+	private UserService userService;
+
 	@Context
 	private UriInfo uriInfo;
 	
@@ -65,6 +70,39 @@ public class ProjectWebService
 		GenericEntity<List<Project>> entity = new GenericEntity<List<Project>>(projects){};
 		
 		return Response.ok(entity).build();
+	}
+
+	@GET
+	@Path("{projectId}")
+	public Response findByProjectId(@PathParam("projectId") final String projectId)
+	{
+		Project project = projectService.findByProjectId(projectId);
+		return Response.ok(project).build();
+	}
+
+	@GET
+	@Path("{projectId}/stories")
+	public Response findAllStoriesInProject(@PathParam("projectId") final String projectId)
+	{
+		List<Story> stories = storyService.findAllStoriesInProject(projectId);
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
+		{
+		};
+
+		return Response.ok(entity).build();
+	}
+
+	@GET
+	@Path("{projectId}/users")
+	public Response findAllUserssInProject(@PathParam("projectId") final String projectId)
+	{
+		List<User> users = userService.findByProject(projectId);
+		GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users)
+		{
+		};
+
+		return Response.ok(entity).build();
+		
 	}
 	
 	@PUT
