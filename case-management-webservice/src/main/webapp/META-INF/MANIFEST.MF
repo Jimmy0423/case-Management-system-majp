@@ -5,15 +5,15 @@ Class-Path: jersey-spring3-2.21.jar jersey-server-2.21.jar jersey-comm
  alliance-repackaged-2.4.0-b31.jar javax.inject-2.4.0-b31.jar hk2-loca
  tor-2.4.0-b31.jar javassist-3.18.1-GA.jar osgi-resource-locator-1.0.1
  .jar jersey-client-2.21.jar jersey-media-jaxb-2.21.jar validation-api
- -1.1.0.Final.jar jersey-container-servlet-core-2.21.jar hk2-2.4.0-b31
- .jar javax.inject-1.jar config-types-2.4.0-b31.jar hk2-config-2.4.0-b
- 31.jar hk2-core-2.4.0-b31.jar tiger-types-1.4.jar bean-validator-2.4.
- 0-b31.jar hk2-runlevel-2.4.0-b31.jar class-model-2.4.0-b31.jar asm-al
- l-repackaged-2.4.0-b31.jar spring-bridge-2.4.0-b31.jar spring-core-4.
- 2.1.RELEASE.jar commons-logging-1.2.jar spring-context-4.2.1.RELEASE.
- jar spring-aop-4.2.1.RELEASE.jar aopalliance-1.0.jar spring-beans-4.2
- .1.RELEASE.jar spring-expression-4.2.1.RELEASE.jar spring-web-4.2.1.R
- ELEASE.jar spring-aspects-4.2.1.RELEASE.jar aspectjweaver-1.8.6.jar g
+ -1.1.0.Final.jar hk2-2.4.0-b31.jar javax.inject-1.jar config-types-2.
+ 4.0-b31.jar hk2-config-2.4.0-b31.jar hk2-core-2.4.0-b31.jar tiger-typ
+ es-1.4.jar bean-validator-2.4.0-b31.jar hk2-runlevel-2.4.0-b31.jar cl
+ ass-model-2.4.0-b31.jar asm-all-repackaged-2.4.0-b31.jar spring-bridg
+ e-2.4.0-b31.jar spring-core-4.2.1.RELEASE.jar commons-logging-1.2.jar
+  spring-context-4.2.1.RELEASE.jar spring-aop-4.2.1.RELEASE.jar aopall
+ iance-1.0.jar spring-beans-4.2.1.RELEASE.jar spring-expression-4.2.1.
+ RELEASE.jar spring-web-4.2.1.RELEASE.jar spring-aspects-4.2.1.RELEASE
+ .jar aspectjweaver-1.8.6.jar jersey-container-servlet-core-2.21.jar g
  son-2.3.1.jar case-management-service-1.0.0-SNAPSHOT.jar spring-data-
  jpa-1.8.2.RELEASE.jar spring-data-commons-1.10.2.RELEASE.jar slf4j-ap
  i-1.7.12.jar jcl-over-slf4j-1.7.12.jar spring-orm-4.0.9.RELEASE.jar s
