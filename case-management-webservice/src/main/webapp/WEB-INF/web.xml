@@ -7,6 +7,10 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
 
 	<context-param>
 		<param-name>contextClass</param-name>
@@ -24,10 +28,6 @@
 		<init-param>
 			<param-name>jersey.config.server.provider.packages</param-name>
 			<param-value>se.majp</param-value>
-		</init-param>
-		<init-param>
-			<param-name>javax.ws.rs.Application</param-name>
-			<param-value>se.majp.caseManagement.web.WebApplication</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
