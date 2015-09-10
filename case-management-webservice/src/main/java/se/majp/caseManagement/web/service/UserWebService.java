@@ -18,7 +18,6 @@ import javax.ws.rs.core.UriInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.context.WebApplicationContext;
 
 import se.majp.caseManagement.model.Project;
 import se.majp.caseManagement.model.Story;
@@ -30,7 +29,7 @@ import se.majp.caseManagement.service.UserService;
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Scope(value = WebApplicationContext.SCOPE_REQUEST)
+@Scope("request")
 public final class UserWebService
 {
 	@Autowired
