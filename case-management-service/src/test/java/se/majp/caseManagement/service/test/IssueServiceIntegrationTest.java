@@ -27,8 +27,10 @@ public class IssueServiceIntegrationTest extends IntegrationTestBaseClass
 	{
 		Issue issue = issueService.addIssue(issueToSave);
 		assertNotNull(issue);
-//		assertNotNull(issue.getIssueId());
 		
+		// Not working
+//		assertNotNull(issue.getId());
+//		
 //		exception.expect(BadRequestException.class);
 //		exception.expectMessage("Issue already added");
 //		issueService.addIssue(issue);
@@ -39,7 +41,7 @@ public class IssueServiceIntegrationTest extends IntegrationTestBaseClass
 	{
 		exception.expect(BadRequestException.class);
 		exception.expectMessage("Issue not added");
-		Issue issue = issueService.addIssue(issueToSave);
+		Issue issue = issueService.updateIssue(issueToSave);
 		
 		assertNull(issue);
 	}
