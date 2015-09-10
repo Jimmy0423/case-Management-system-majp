@@ -39,7 +39,12 @@ public class UserServiceImpl implements UserService
 			
 			user = new User(idGenerator.getNextId(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
 		}
-
+		else
+		{
+			User userFromDb = userRepository.findByUserId(user.getUserId());
+			user.setId(userFromDb.getId());
+		}
+		
 		return userRepository.save(user);
 	}
 

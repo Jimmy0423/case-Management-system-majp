@@ -54,15 +54,6 @@ public final class UserWebService
 		return Response.created(location).build();
 	}
 	
-	@PUT
-	@Path("{userId}/stories")
-	public Response addStoryToUser(@PathParam("userId") final String userId, Story story)
-	{
-		storyService.addStoryToUser(userId, story);
-		
-		return Response.noContent().build();
-	}
-	
 	@GET
 	@Path("{userId}")
 	public Response getUserByUserId(@PathParam("userId") final String userId)
@@ -89,6 +80,22 @@ public final class UserWebService
 		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
 		
 		return Response.ok(entity).build();
+	}
+	
+	@PUT
+	public Response updateUser(User user)
+	{
+		userService.addOrUpdateUser(user);
+		return Response.ok().build();
+	}
+	
+	@PUT
+	@Path("{userId}/stories")
+	public Response addStoryToUser(@PathParam("userId") final String userId, Story story)
+	{
+		storyService.addStoryToUser(userId, story);
+		
+		return Response.noContent().build();
 	}
 	
 	@DELETE
