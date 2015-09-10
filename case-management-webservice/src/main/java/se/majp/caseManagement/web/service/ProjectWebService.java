@@ -55,6 +55,15 @@ public class ProjectWebService
 		return Response.created(location).build();
 	}
 	
+	@PUT
+	public Response updateProject(Project project)
+	{
+		Project projectFromDb = projectService.addOrUpdateProject(project);
+		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
+
+		return Response.created(location).build();
+	}
+
 	@POST
 	@Path("{projectId}/stories")
 	public Response addStoryToProject(@PathParam("projectId") final String projectId, Story story)
