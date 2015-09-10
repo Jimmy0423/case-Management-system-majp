@@ -126,6 +126,16 @@ public class ProjectWebService
 		return Response.ok(entity).build();
 	}
 	
+	@GET
+	@Path("{projectId}/backlog")
+	public Response findBacklogForProject(@PathParam("projectId") final String projectId)
+	{
+		List<Story> stories = storyService.findBacklogForProject(projectId);
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
+		
+		return Response.ok(entity).build();
+	}
+	
 	@PUT
 	@Path("{projectId}/users")
 	public Response addTeamMember(@PathParam("projectId") final String projectId, TeamMember teamMember)
