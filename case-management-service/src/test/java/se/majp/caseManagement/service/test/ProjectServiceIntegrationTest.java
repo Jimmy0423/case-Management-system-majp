@@ -40,7 +40,9 @@ public class ProjectServiceIntegrationTest extends IntegrationTestBaseClass
 		exception.expect(EntityNotFoundException.class);
 		exception.expectMessage("No project found");
 		
-		projectService.addOrUpdateTeamMember("NO MATCH", null);
+		User user = userRepository.findByUserId(USER_USERID);
+		
+		projectService.addOrUpdateTeamMember("NO MATCH", new TeamMember(user, Role.OWNER));
 	}
 	
 	@Test

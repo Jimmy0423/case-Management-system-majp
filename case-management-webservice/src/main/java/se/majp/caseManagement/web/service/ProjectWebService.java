@@ -124,7 +124,7 @@ public class ProjectWebService
 		return Response.ok(project).build();
 	}
 	
-	@PUT
+	@DELETE
 	@Path("{projectId}/users/{userId}")
 	public Response removeTeamMember(@PathParam("projectId") final String projectId, 
 									 @PathParam("userId") final String userId)

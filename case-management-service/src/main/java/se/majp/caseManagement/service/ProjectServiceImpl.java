@@ -75,13 +75,14 @@ public class ProjectServiceImpl implements ProjectService
 	public Project addOrUpdateTeamMember(String projectId, TeamMember teamMember)
 	{
 		Project project = projectRepository.findByProjectId(projectId);
+		User user = userRepository.findByUserId(teamMember.getUser().getUserId());
 		
 		if(project == null)
 		{
 			throw new EntityNotFoundException("No project found with projectId: " + projectId);
 		}
 
-		project.getTeam().addUser(teamMember.getUser(), teamMember.getRole());
+		project.getTeam().addUser(user, teamMember.getRole());
 		return projectRepository.save(project);
 	}
 
