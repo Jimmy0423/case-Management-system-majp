@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService
 
 	@Autowired
 	private ProjectRepository projectRepository;
-	
+
 	private final IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
 
 	@Override
@@ -32,19 +32,25 @@ public class UserServiceImpl implements UserService
 	{
 		if (user.getUserId() == null)
 		{
-			if(userRepository.findByEmail(user.getEmail()) != null)
+			if (userRepository.findByEmail(user.getEmail()) != null)
 			{
 				throw new UniqueConstraintException("User with that email already exists");
 			}
-			
+
 			user = new User(idGenerator.getNextId(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
 		}
 		else
 		{
 			User userFromDb = userRepository.findByUserId(user.getUserId());
+
+			if (userFromDb == null)
+			{
+				throw new EntityNotFoundException("No user with that userId");
+			}
+
 			user.setId(userFromDb.getId());
 		}
-		
+
 		return userRepository.save(user);
 	}
 
@@ -52,12 +58,12 @@ public class UserServiceImpl implements UserService
 	public void removeUser(String userId)
 	{
 		User user = userRepository.findByUserId(userId);
-		
-		if(user == null)
+
+		if (user == null)
 		{
 			throw new EntityNotFoundException("No user found with userId: " + userId);
 		}
-		
+
 		projectRepository.findAllProjectsForUser(user).forEach(project -> {
 			project.getTeam().removeUser(user);
 			projectRepository.save(project);
@@ -82,17 +88,17 @@ public class UserServiceImpl implements UserService
 
 		throw new EntityNotFoundException("No user matching that value");
 	}
-	
+
 	@Override
 	public User findByEmail(String email)
 	{
 		User user = userRepository.findByEmail(email);
-		
-		if(user == null)
+
+		if (user == null)
 		{
 			throw new EntityNotFoundException("User with that email does not exist");
 		}
-		
+
 		return user;
 	}
 
