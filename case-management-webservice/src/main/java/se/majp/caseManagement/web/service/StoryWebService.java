@@ -88,9 +88,11 @@ public class StoryWebService
 	}
 	
 	@PUT
-	@Path("{storyId}/issues")
-	public Response updateIssue(@PathParam("storyId") final String storyId, Issue issue)
+	@Path("{storyId}/issues/{issueId}")
+	public Response updateIssue(@PathParam("storyId") final String storyId,
+								@PathParam("issueId") final String issueId, Issue issue)
 	{
+		issue = new Issue(issueId, issue.getTitle(), issue.getDescription());
 		issueService.updateIssue(issue, storyId);
 		return Response.ok().build();
 	}

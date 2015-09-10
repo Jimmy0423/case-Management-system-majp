@@ -56,8 +56,10 @@ public class ProjectWebService
 	}
 	
 	@PUT
-	public Response updateProject(Project project)
+	@Path("{projectId}")
+	public Response updateProject(@PathParam("projectId") final String projectId, Project project)
 	{
+		project = new Project(projectId, project.getName(), project.getDescription());
 		Project projectFromDb = projectService.addOrUpdateProject(project);
 		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
 

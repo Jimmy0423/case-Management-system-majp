@@ -93,8 +93,10 @@ public final class UserWebService
 	}
 	
 	@PUT
-	public Response updateUser(User user)
+	@Path("{userId}")
+	public Response updateUser(@PathParam("userId") final String userId, User user)
 	{
+		user = new User(userId, user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
 		userService.addOrUpdateUser(user);
 		return Response.ok().build();
 	}
