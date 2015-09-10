@@ -60,9 +60,8 @@ public class ProjectWebService
 	public Response addStoryToProject(@PathParam("projectId") final String projectId, Story story)
 	{
 		story = storyService.addStoryToBacklog(projectId, story);
-		URI location = uriInfo.getAbsolutePathBuilder().path(story.getStoryId()).build();
 		
-		return Response.created(location).build();
+		return Response.noContent().build();
 	}
 	
 	@GET

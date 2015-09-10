@@ -51,6 +51,11 @@ public class Story extends AbstractEntity
 		this.issues = new ArrayList<>();
 	}
 	
+	public Story(String storyId, String name, String description, Status status, Priority priority)
+	{
+		this(storyId, name, description, null, status, priority);
+	}
+	
 	public Story(String name, String description, Status status, Priority priority)
 	{
 		this(null, name, description, null, status, priority);

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.UriInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import se.majp.caseManagement.model.Issue;
 import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.service.StoryService;
 
@@ -33,6 +35,14 @@ public class StoryWebService
 	
 	@Context
 	private UriInfo uriInfo;
+	
+	@POST
+	@Path("{storyId}/issues")
+	public Response addIssueToStory(@PathParam("storyId") final String storyId, Issue issue)
+	{
+		storyService.addIssue(storyId, issue);
+		return Response.noContent().build();
+	}
 	
 	@GET
 	public Response getStoriesByDescription(@DefaultValue("") @QueryParam("description") final String description)

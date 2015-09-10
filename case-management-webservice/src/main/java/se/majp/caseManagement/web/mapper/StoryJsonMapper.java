@@ -1,6 +1,8 @@
 package se.majp.caseManagement.web.mapper;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.annotation.Annotation;
@@ -11,24 +13,30 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import se.majp.caseManagement.model.Story;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonWriter;
 
+import se.majp.caseManagement.model.Priority;
+import se.majp.caseManagement.model.Status;
+import se.majp.caseManagement.model.Story;
+
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Provider
-public class StoryJsonMapper implements MessageBodyWriter<Story>
+public class StoryJsonMapper implements MessageBodyWriter<Story>, MessageBodyReader<Story>
 {
 	private Gson gson;
 	
@@ -48,6 +56,21 @@ public class StoryJsonMapper implements MessageBodyWriter<Story>
 	{
 		return 0;
 	}
+	
+	@Override
+	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
+	{
+		return type.isAssignableFrom(Story.class);
+	}
+
+	@Override
+	public Story readFrom(Class<Story> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders,
+			InputStream entityStream) throws IOException, WebApplicationException
+	{
+		Story story = gson.fromJson(new InputStreamReader(entityStream), Story.class);
+		
+		return story;
+	}
 
 	@Override
 	public void writeTo(Story story, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders,
@@ -58,7 +81,7 @@ public class StoryJsonMapper implements MessageBodyWriter<Story>
 			gson.toJson(story, Story.class, writer);
 		}
 	}
-	private static final class StoryAdapter implements JsonSerializer<Story>
+	private static final class StoryAdapter implements JsonSerializer<Story>, JsonDeserializer<Story>
 
 	{
 		@Override
@@ -72,6 +95,28 @@ public class StoryJsonMapper implements MessageBodyWriter<Story>
 			jsonStory.add("priority", new JsonPrimitive(story.getPriority().toString()));
 
 			return jsonStory;
+		}
+
+		@Override
+		public Story deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+		{
+			JsonObject jsonStory = json.getAsJsonObject();
+			
+			String storyId;
+			String name = jsonStory.get("name").getAsString();
+			String description = jsonStory.get("description").getAsString();
+			String statusString = jsonStory.get("status").getAsString();
+			String priorityString = jsonStory.get("priority").getAsString();
+			Status status = Status.valueOf(statusString);
+			Priority priority = Priority.valueOf(priorityString);
+			
+			if(jsonStory.has("storyId"))
+			{
+				storyId = jsonStory.get("storyId").getAsString();
+				return new Story(storyId, name, description, status, priority);
+			}
+			
+			return new Story(name, description, status, priority);
 		}
 	}
 }
