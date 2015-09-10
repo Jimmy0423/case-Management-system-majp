@@ -21,7 +21,7 @@ public class IssueServiceImpl implements IssueService
 		if(issue.getIssueId() == null)
 		{
 			issue = new Issue(idGenerator.getNextId(), issue.getTitle(), issue.getDescription());
-			issueRepository.save(issue);
+			return issueRepository.save(issue);
 		}
 		
 		throw new BadRequestException("Issue already added, use update instead");

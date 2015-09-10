@@ -3,9 +3,11 @@ package se.majp.caseManagement.web.exception;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 import se.majp.caseManagement.exception.BadRequestException;
 
+@Provider
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException>
 {
 	@Override
