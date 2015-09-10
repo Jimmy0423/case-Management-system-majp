@@ -33,6 +33,12 @@ public class ProjectServiceImpl implements ProjectService
 		else
 		{
 			Project projectFromDb = projectRepository.findByProjectId(project.getProjectId());
+			
+			if (projectFromDb == null)
+			{
+				throw new EntityNotFoundException("No project with that projectId");
+			}
+			
 			project.setId(projectFromDb.getId());
 		}
 		
