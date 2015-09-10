@@ -9,7 +9,6 @@ import se.majp.caseManagement.util.IdGenerator;
 
 public class IssueServiceImpl implements IssueService
 {
-	
 	@Autowired
 	private IssueRepository issueRepository;
 	

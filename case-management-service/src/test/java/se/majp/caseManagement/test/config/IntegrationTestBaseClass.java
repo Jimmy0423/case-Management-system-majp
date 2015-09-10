@@ -48,6 +48,8 @@ public abstract class IntegrationTestBaseClass
 	protected static final String STORY_NAME = "Do stuff";
 	protected static final String STORY_DESCRIPTION = "Make it great!";
 	protected static final Status STORY_STATUS = Status.PENDING;
+	protected static final String ISSUE_NAME = "You got it wrong";
+	protected static final String ISSUE_DESCRIPTION = "Change the constructor";
 	protected static final Priority STORY_PRIORITY = Priority.LOW;
 	
 	@Autowired
