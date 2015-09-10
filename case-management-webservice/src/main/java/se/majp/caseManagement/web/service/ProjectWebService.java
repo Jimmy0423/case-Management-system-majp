@@ -94,7 +94,7 @@ public class ProjectWebService
 
 	@GET
 	@Path("{projectId}/users")
-	public Response findAllUserssInProject(@PathParam("projectId") final String projectId)
+	public Response findAllUsersInProject(@PathParam("projectId") final String projectId)
 	{
 		List<User> users = userService.findByProject(projectId);
 		GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users)
