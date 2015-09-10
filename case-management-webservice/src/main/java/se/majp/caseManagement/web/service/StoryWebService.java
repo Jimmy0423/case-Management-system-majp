@@ -3,6 +3,7 @@ package se.majp.caseManagement.web.service;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -73,11 +74,20 @@ public class StoryWebService
 		return Response.ok(entity).build();
 	}
 	
+	@Consumes(MediaType.TEXT_PLAIN)
 	@PUT
 	@Path("{storyId}")
 	public Response updateStatus(@PathParam("storyId") final String storyId, String status)
 	{
 		Story story = storyService.changeStatus(storyId, status);
 		return Response.ok(story).build();
+	}
+	
+	@DELETE
+	@Path("{storyId}")
+	public Response removeStory(@PathParam("storyId") final String storyId)
+	{
+		storyService.removeStory(storyId);
+		return Response.noContent().build();
 	}
 }
