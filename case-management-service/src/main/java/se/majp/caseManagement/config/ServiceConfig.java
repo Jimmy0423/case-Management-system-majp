@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import se.majp.caseManagement.service.IssueService;
+import se.majp.caseManagement.service.IssueServiceImpl;
 import se.majp.caseManagement.service.ProjectService;
 import se.majp.caseManagement.service.ProjectServiceImpl;
 import se.majp.caseManagement.service.StoryService;
@@ -31,5 +33,11 @@ public class ServiceConfig
 	public StoryService storyService()
 	{
 		return new StoryServiceImpl();
+	}
+	
+	@Bean
+	public IssueService issueService()
+	{
+		return new IssueServiceImpl();
 	}
 }

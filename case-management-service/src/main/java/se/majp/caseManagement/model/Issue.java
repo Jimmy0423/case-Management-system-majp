@@ -1,5 +1,6 @@
 package se.majp.caseManagement.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -8,6 +9,8 @@ import javax.persistence.Table;
 @Table(name = "tbl_issue")
 public class Issue extends AbstractEntity
 {
+	@Column(unique = true)
+	private String issueId;
 	private String title;
 	private String description;
 
@@ -16,16 +19,26 @@ public class Issue extends AbstractEntity
 
 	protected Issue(){}
 
-	public Issue(String title, String description, Story story)
+	public Issue(String issueId, String title, String description, Story story)
 	{
 		this.title = title;
 		this.description = description;
 		this.story = story;
 	}
 	
+	public Issue(String issueId, String title, String description)
+	{
+		this(issueId, title, description, null);
+	}
+	
 	public Issue(String title, String description)
 	{
-		this(title, description, null);
+		this(null, title, description, null);
+	}
+	
+	public String getIssueId()
+	{
+		return issueId;
 	}
 
 	public String getTitle()

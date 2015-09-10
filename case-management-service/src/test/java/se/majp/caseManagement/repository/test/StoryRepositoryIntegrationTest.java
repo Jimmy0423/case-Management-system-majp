@@ -62,7 +62,7 @@ public class StoryRepositoryIntegrationTest extends IntegrationTestBaseClass
 	public void findStoriesWithIssues_Match_shouldReturnListOfSizeOne()
 	{
 		Story story = storyRepository.findByStoryId(STORY_STORYID);
-		Issue issue = new Issue("name", "description", story);
+		Issue issue = new Issue("issueId", "name", "description", story);
 		issueRepository.save(issue);
 		
 		List<Story> stories = storyRepository.findStoriesWithIssues();
