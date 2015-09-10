@@ -105,6 +105,17 @@ public class ProjectWebService
 		
 	}
 	
+	@GET
+	@Path("{projectId}/users/{userId}/stories")
+	public Response findAllStoriesForUserInProject(@PathParam("projectId") final String projectId, 
+												   @PathParam("userId") final String userId)
+	{
+		List<Story> stories = storyService.findAllStoriesByUserAndProject(projectId, userId);
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
+		
+		return Response.ok(entity).build();
+	}
+	
 	@PUT
 	@Path("{projectId}/users")
 	public Response addTeamMember(@PathParam("projectId") final String projectId, TeamMember teamMember)

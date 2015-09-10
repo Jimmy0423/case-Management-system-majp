@@ -232,11 +232,12 @@ public class StoryServiceImpl implements StoryService
 	}
 
 	@Override
-	public List<Story> findAllStoriesByUserAndProject(String userId, String projectId)
+	public List<Story> findAllStoriesByUserAndProject(String projectId, String userId)
 	{
 		if (userRepository.findByUserId(userId) != null)
 		{
 			List<Story> stories = storyRepository.findByUserAndProject(userId, projectId);
+			
 			return stories;
 		}
 
