@@ -99,15 +99,6 @@ public final class UserWebService
 		return Response.ok().build();
 	}
 	
-	@PUT
-	@Path("{userId}/stories")
-	public Response addStoryToUser(@PathParam("userId") final String userId, Story story)
-	{
-		storyService.addStoryToUser(userId, story);
-		
-		return Response.noContent().build();
-	}
-	
 	@DELETE
 	@Path("{userId}")
 	public Response removeUser(@PathParam("userId") final String userId)

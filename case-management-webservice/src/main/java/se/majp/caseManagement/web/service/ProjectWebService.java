@@ -140,8 +140,8 @@ public class ProjectWebService
 	@Path("{projectId}/users")
 	public Response addTeamMember(@PathParam("projectId") final String projectId, TeamMember teamMember)
 	{
-		Project project = projectService.addOrUpdateTeamMember(projectId, teamMember);	
-		return Response.ok(project).build();
+		projectService.addOrUpdateTeamMember(projectId, teamMember);	
+		return Response.ok().build();
 	}
 	
 	@PUT
@@ -149,8 +149,16 @@ public class ProjectWebService
 	public Response removeTeamMember(@PathParam("projectId") final String projectId, 
 									 @PathParam("userId") final String userId)
 	{
-		Project project = projectService.removeTeamMember(projectId, userId);
-		return Response.ok(project).build();
+		projectService.removeTeamMember(projectId, userId);
+		return Response.ok().build();
+	}
+	
+	@PUT
+	@Path("{projectId}/users/{userId}/stories")
+	public Response addStoryToUser(@PathParam("userId") final String userId, Story story)
+	{
+		storyService.addStoryToUser(userId, story);	
+		return Response.noContent().build();
 	}
 	
 	@DELETE
