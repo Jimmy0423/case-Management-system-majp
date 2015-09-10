@@ -52,7 +52,6 @@ public abstract class IntegrationTestBaseClass
 	protected static final String ISSUE_DESCRIPTION = "Change the constructor";
 	protected static final Priority STORY_PRIORITY = Priority.LOW;
 	protected static final String ISSUE_TITLE = "BUG";
-	protected static final String ISSUE_DESCRIPTION = "Not working";
 	
 	@Autowired
 	protected StoryRepository storyRepository;
