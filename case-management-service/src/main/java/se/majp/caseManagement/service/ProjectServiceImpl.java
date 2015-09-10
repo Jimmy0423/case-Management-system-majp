@@ -30,6 +30,11 @@ public class ProjectServiceImpl implements ProjectService
 		{
 			project = new Project(idGenerator.getNextId(), project.getName(), project.getDescription());
 		}
+		else
+		{
+			Project projectFromDb = projectRepository.findByProjectId(project.getProjectId());
+			project.setId(projectFromDb.getId());
+		}
 		
 		return projectRepository.save(project);
 	}
