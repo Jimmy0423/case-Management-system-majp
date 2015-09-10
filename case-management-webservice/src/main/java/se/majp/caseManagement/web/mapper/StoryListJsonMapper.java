@@ -89,6 +89,7 @@ public class StoryListJsonMapper implements MessageBodyWriter<ArrayList<Story>>
 					jsonIssues.add(jsonIssue);
 				});
 				
+				jsonStory.add("storyId", new JsonPrimitive(story.getStoryId()));
 				jsonStory.add("name", new JsonPrimitive(story.getName()));
 				jsonStory.add("description", new JsonPrimitive(story.getDescription()));
 				jsonStory.add("status", new JsonPrimitive(String.valueOf(story.getStatus())));

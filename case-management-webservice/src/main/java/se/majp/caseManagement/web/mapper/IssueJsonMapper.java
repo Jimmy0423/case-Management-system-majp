@@ -55,8 +55,16 @@ public class IssueJsonMapper implements MessageBodyReader<Issue>
 		public Issue deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 		{
 			JsonObject jsonIssue = json.getAsJsonObject();
+			
 			String title = jsonIssue.get("title").getAsString();
 			String description = jsonIssue.get("description").getAsString();
+			
+			if(jsonIssue.has("issueId"))
+			{
+				String issueId = jsonIssue.get("issueId").getAsString();
+				return new Issue(issueId, title, description);
+			}
+			
 			
 			return new Issue(title, description);
 		}

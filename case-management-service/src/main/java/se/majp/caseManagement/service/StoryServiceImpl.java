@@ -72,8 +72,8 @@ public class StoryServiceImpl implements StoryService
 			throw new EntityNotFoundException("No story found with that storyId");
 		}
 
-		Issue issueToSave = new Issue(issue.getIssueId(), issue.getTitle(), issue.getDescription(), story);
-		issueRepository.save(issueToSave);
+		issue = new Issue(idGenerator.getNextId(), issue.getTitle(), issue.getDescription(), story);		
+		issueRepository.save(issue);
 
 		return storyRepository.findByStoryId(storyId);
 	}

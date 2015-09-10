@@ -4,7 +4,5 @@ import se.majp.caseManagement.model.Issue;
 
 public interface IssueService
 {
-	Issue addIssue(Issue issue);
-
-	Issue updateIssue(Issue issue);
+	Issue updateIssue(Issue issue, String storyId);
 }

@@ -49,6 +49,8 @@ public abstract class IntegrationTestBaseClass
 	protected static final String STORY_DESCRIPTION = "Make it great!";
 	protected static final Status STORY_STATUS = Status.PENDING;
 	protected static final Priority STORY_PRIORITY = Priority.LOW;
+	protected static final String ISSUE_TITLE = "BUG";
+	protected static final String ISSUE_DESCRIPTION = "Not working";
 	
 	@Autowired
 	protected StoryRepository storyRepository;
@@ -68,6 +70,7 @@ public abstract class IntegrationTestBaseClass
 		Project project = new Project(PROJECT_PROJECTID, PROJECT_NAME, PROJECT_DESCRIPTION);
 		User user = new User(USER_USERID, USER_EMAIL, USER_PASSWORD, USER_FIRSTNAME, USER_LASTNAME);
 		Story story = new Story(STORY_STORYID, STORY_NAME, STORY_DESCRIPTION, project, STORY_STATUS, STORY_PRIORITY);
+		
 		story.setUser(user);
 		project.getTeam().addUser(user, Role.OWNER);
 

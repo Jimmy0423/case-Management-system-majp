@@ -69,19 +69,18 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 		exception.expect(EntityNotFoundException.class);
 		exception.expectMessage("No story found with that storyId");
 		
-		storyService.addIssue("NO MATCH", new Issue("name", "description"));
+		storyService.addIssue("NO MATCH", new Issue(ISSUE_TITLE, ISSUE_DESCRIPTION));
 	}
 	
 	@Test
 	public void addIssue_shouldReturnStoryWithIssue()
 	{
-		Issue issue = new Issue("title", "description");
-		Story story = storyService.addIssue(STORY_STORYID, issue);
+		Story story = storyService.addIssue(STORY_STORYID, new Issue(ISSUE_TITLE, ISSUE_DESCRIPTION));
 		
 		assertThat(story.getIssues().size(), is(1));
 		assertThat((Issue) story.getIssues().toArray()[0], allOf(
-															hasProperty("title", is("title")),
-															hasProperty("description", is("description"))
+															hasProperty("title", is(ISSUE_TITLE)),
+															hasProperty("description", is(ISSUE_DESCRIPTION))
 															));
 	}
 	

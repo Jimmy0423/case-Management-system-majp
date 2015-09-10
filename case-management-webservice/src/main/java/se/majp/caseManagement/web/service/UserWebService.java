@@ -56,9 +56,8 @@ public final class UserWebService
 	}
 	
 	@GET
-	public Response getUserByEmailOrFirstNameOrLastName(@QueryParam("value") final String value)
+	public Response getUserByEmailOrFirstNameOrLastName(@QueryParam("searchTerm") final String value)
 	{
-		System.out.println(value);
 		List<User> users = userService.findByFirstNameOrLastNameOrEmail(value);
 		GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users){};
 		

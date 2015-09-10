@@ -11,6 +11,7 @@ public class Issue extends AbstractEntity
 {
 	@Column(unique = true)
 	private String issueId;
+	
 	private String title;
 	private String description;
 
@@ -21,6 +22,7 @@ public class Issue extends AbstractEntity
 
 	public Issue(String issueId, String title, String description, Story story)
 	{
+		this.issueId = issueId;
 		this.title = title;
 		this.description = description;
 		this.story = story;

@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Scope;
 
 import se.majp.caseManagement.model.Issue;
 import se.majp.caseManagement.model.Story;
+import se.majp.caseManagement.service.IssueService;
 import se.majp.caseManagement.service.StoryService;
 
 @Path("stories")
@@ -33,6 +34,9 @@ public class StoryWebService
 {	
 	@Autowired
 	private StoryService storyService;
+	
+	@Autowired
+	private IssueService issueService;
 	
 	@Context
 	private UriInfo uriInfo;
@@ -79,8 +83,16 @@ public class StoryWebService
 	@Path("{storyId}")
 	public Response updateStatus(@PathParam("storyId") final String storyId, String status)
 	{
-		Story story = storyService.changeStatus(storyId, status);
-		return Response.ok(story).build();
+		storyService.changeStatus(storyId, status);
+		return Response.ok().build();
+	}
+	
+	@PUT
+	@Path("{storyId}/issues")
+	public Response updateIssue(@PathParam("storyId") final String storyId, Issue issue)
+	{
+		issueService.updateIssue(issue, storyId);
+		return Response.ok().build();
 	}
 	
 	@DELETE

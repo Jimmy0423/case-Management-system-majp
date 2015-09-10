@@ -4,38 +4,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.caseManagement.exception.BadRequestException;
 import se.majp.caseManagement.model.Issue;
+import se.majp.caseManagement.model.Story;
 import se.majp.caseManagement.repository.IssueRepository;
-import se.majp.caseManagement.util.IdGenerator;
+import se.majp.caseManagement.repository.StoryRepository;
 
 public class IssueServiceImpl implements IssueService
 {
-	
 	@Autowired
 	private IssueRepository issueRepository;
 	
-	private IdGenerator idGenerator = IdGenerator.getBuilder().length(8).characters('0', 'z').build();
+	@Autowired
+	private StoryRepository storyRepository;
 
 	@Override
-	public Issue addIssue(Issue issue)
+	public Issue updateIssue(Issue issue, String storyId)
 	{
-		if(issue.getIssueId() == null)
-		{
-			issue = new Issue(idGenerator.getNextId(), issue.getTitle(), issue.getDescription());
-			return issueRepository.save(issue);
-		}
+		Story story = storyRepository.findByStoryId(storyId);
 		
-		throw new BadRequestException("Issue already added, use update instead");
-	}
-
-	@Override
-	public Issue updateIssue(Issue issue)
-	{
 		if(issue.getIssueId() == null)
 		{
 			throw new BadRequestException("Issue not added, use add instead");
 		}
 		
 		Issue issueFromDb = issueRepository.findByIssueId(issue.getIssueId());
+		issue = new Issue(issue.getIssueId(), issue.getTitle(), issue.getDescription(), story);
 		issue.setId(issueFromDb.getId());
 		
 		return issueRepository.save(issue);
