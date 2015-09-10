@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -51,6 +52,15 @@ public final class UserWebService
 		final URI location = uriInfo.getAbsolutePathBuilder().path(userFromDb.getUserId()).build();
 		
 		return Response.created(location).build();
+	}
+	
+	@PUT
+	@Path("{userId}/stories")
+	public Response addStoryToUser(@PathParam("userId") final String userId, Story story)
+	{
+		storyService.addStoryToUser(userId, story);
+		
+		return Response.noContent().build();
 	}
 	
 	@GET

@@ -113,6 +113,7 @@ public class StoryJsonMapper implements MessageBodyWriter<Story>, MessageBodyRea
 			if(jsonStory.has("storyId"))
 			{
 				storyId = jsonStory.get("storyId").getAsString();
+				
 				return new Story(storyId, name, description, status, priority);
 			}
 			

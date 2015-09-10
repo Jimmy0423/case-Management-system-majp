@@ -51,6 +51,7 @@ public class StoryServiceImpl implements StoryService
 	public Story addStoryToUser(String userId, Story story)
 	{
 		User user = userRepository.findByUserId(userId);
+		story = storyRepository.findByStoryId(story.getStoryId());
 		
 		if(user == null)
 		{

@@ -58,7 +58,7 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 	@Test
 	public void addStoryToUser_shouldReturnStoryWithUser()
 	{
-		Story story = storyService.addStoryToUser(USER_USERID, storyToSave);
+		Story story = storyService.addStoryToUser(USER_USERID, new Story(STORY_STORYID, STORY_NAME, STORY_DESCRIPTION, STORY_STATUS, STORY_PRIORITY));
 		User user = userRepository.findByUserId(USER_USERID);
 		assertThat(story.getUser(), is(user));
 	}
