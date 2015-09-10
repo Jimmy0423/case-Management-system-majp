@@ -85,14 +85,9 @@ public class ProjectJsonMapper implements MessageBodyReader<Project>, MessageBod
 		public Project deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 		{
 			final JsonObject jsonProject = json.getAsJsonObject();
-			String projectId;
 			String name = jsonProject.get("name").getAsString();
 			String description = jsonProject.get("description").getAsString();
-			if (jsonProject.has("projectId"))
-			{
-				projectId = jsonProject.get("projectId").getAsString();
-				return new Project(projectId, name, description);
-			}
+			
 			return new Project(name, description);
 		}
 

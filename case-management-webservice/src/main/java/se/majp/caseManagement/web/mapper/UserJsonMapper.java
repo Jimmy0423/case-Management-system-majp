@@ -87,18 +87,10 @@ public final class UserJsonMapper implements MessageBodyReader<User>, MessageBod
 		{
 			final JsonObject jsonUser = json.getAsJsonObject();
 
-			String userId;
 			String email = jsonUser.get("email").getAsString();
 			String password = jsonUser.get("password").getAsString();
 			String firstName = jsonUser.get("firstName").getAsString();
 			String lastName = jsonUser.get("lastName").getAsString();
-			
-			if(jsonUser.has("userId"))
-			{
-				userId = jsonUser.get("userId").getAsString();
-				
-				return new User(userId, email, password, firstName, lastName);
-			}
 			
 			return new User(email, password, firstName, lastName);
 		}

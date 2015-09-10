@@ -102,20 +102,12 @@ public class StoryJsonMapper implements MessageBodyWriter<Story>, MessageBodyRea
 		{
 			JsonObject jsonStory = json.getAsJsonObject();
 			
-			String storyId;
 			String name = jsonStory.get("name").getAsString();
 			String description = jsonStory.get("description").getAsString();
 			String statusString = jsonStory.get("status").getAsString();
 			String priorityString = jsonStory.get("priority").getAsString();
 			Status status = Status.valueOf(statusString);
 			Priority priority = Priority.valueOf(priorityString);
-			
-			if(jsonStory.has("storyId"))
-			{
-				storyId = jsonStory.get("storyId").getAsString();
-				
-				return new Story(storyId, name, description, status, priority);
-			}
 			
 			return new Story(name, description, status, priority);
 		}
