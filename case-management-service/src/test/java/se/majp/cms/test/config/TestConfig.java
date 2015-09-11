@@ -24,7 +24,7 @@ public class TestConfig
 	{
 		HikariConfig config = new HikariConfig();
 		config.setDriverClassName("org.h2.Driver");
-		config.setJdbcUrl("jdbc:h2:mem:user");
+		config.setJdbcUrl("jdbc:h2:mem:majp");
 		config.setUsername("sa");
 		config.setPassword("");
 
