@@ -39,7 +39,7 @@ import se.majp.caseManagement.model.Story;
 public class StoryJsonMapper implements MessageBodyWriter<Story>, MessageBodyReader<Story>
 {
 	private Gson gson;
-	
+
 	public StoryJsonMapper()
 	{
 		gson = new GsonBuilder().registerTypeAdapter(Story.class, new StoryAdapter()).create();
@@ -56,7 +56,7 @@ public class StoryJsonMapper implements MessageBodyWriter<Story>, MessageBodyRea
 	{
 		return 0;
 	}
-	
+
 	@Override
 	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
@@ -68,7 +68,7 @@ public class StoryJsonMapper implements MessageBodyWriter<Story>, MessageBodyRea
 			InputStream entityStream) throws IOException, WebApplicationException
 	{
 		Story story = gson.fromJson(new InputStreamReader(entityStream), Story.class);
-		
+
 		return story;
 	}
 
@@ -81,6 +81,7 @@ public class StoryJsonMapper implements MessageBodyWriter<Story>, MessageBodyRea
 			gson.toJson(story, Story.class, writer);
 		}
 	}
+
 	private static final class StoryAdapter implements JsonSerializer<Story>, JsonDeserializer<Story>
 
 	{
@@ -101,14 +102,14 @@ public class StoryJsonMapper implements MessageBodyWriter<Story>, MessageBodyRea
 		public Story deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 		{
 			JsonObject jsonStory = json.getAsJsonObject();
-			
+
 			String name = jsonStory.get("name").getAsString();
 			String description = jsonStory.get("description").getAsString();
 			String statusString = jsonStory.get("status").getAsString();
 			String priorityString = jsonStory.get("priority").getAsString();
 			Status status = Status.valueOf(statusString);
 			Priority priority = Priority.valueOf(priorityString);
-			
+
 			return new Story(name, description, status, priority);
 		}
 	}

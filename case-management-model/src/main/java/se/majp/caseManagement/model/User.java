@@ -15,18 +15,20 @@ public class User extends AbstractEntity
 {
 	@Column(unique = true)
 	private String userId;
-	
+
 	@Column(unique = true)
 	private String email;
 
 	private String password;
 	private String firstName;
 	private String lastName;
-	
+
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private Collection<Story> stories = new ArrayList<>();
 
-	protected User(){}
+	protected User()
+	{
+	}
 
 	public User(String userId, String email, String password, String firstName, String lastName)
 	{
@@ -36,17 +38,17 @@ public class User extends AbstractEntity
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-	
-	public User(String email, String password, String firstName, String lastName) 
+
+	public User(String email, String password, String firstName, String lastName)
 	{
 		this(null, email, password, firstName, lastName);
 	}
-	
+
 	public User(String email, String password)
 	{
 		this(null, email, password, null, null);
 	}
-	
+
 	public String getUserId()
 	{
 		return userId;
@@ -71,7 +73,7 @@ public class User extends AbstractEntity
 	{
 		return lastName;
 	}
-	
+
 	public Collection<Story> getStories()
 	{
 		return stories;

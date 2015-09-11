@@ -37,12 +37,12 @@ public class StoryServiceImpl implements StoryService
 	public Story addStoryToBacklog(String projectId, Story story)
 	{
 		Project project = projectRepository.findByProjectId(projectId);
-		
-		if(project == null)
+
+		if (project == null)
 		{
 			throw new EntityNotFoundException("No project found with that id");
 		}
-		
+
 		story = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
 		return storyRepository.save(story);
 	}
@@ -52,12 +52,12 @@ public class StoryServiceImpl implements StoryService
 	{
 		User user = userRepository.findByUserId(userId);
 		story = storyRepository.findByStoryId(story.getStoryId());
-		
-		if(user == null)
+
+		if (user == null)
 		{
 			throw new EntityNotFoundException("No user found with that id");
 		}
-		
+
 		story.setUser(user);
 		return storyRepository.save(story);
 	}
@@ -72,7 +72,7 @@ public class StoryServiceImpl implements StoryService
 			throw new EntityNotFoundException("No story found with that storyId");
 		}
 
-		issue = new Issue(idGenerator.getNextId(), issue.getTitle(), issue.getDescription(), story);		
+		issue = new Issue(idGenerator.getNextId(), issue.getTitle(), issue.getDescription(), story);
 		issueRepository.save(issue);
 
 		return storyRepository.findByStoryId(storyId);
@@ -88,7 +88,7 @@ public class StoryServiceImpl implements StoryService
 		{
 			throw new EntityNotFoundException("No story found with that storyId");
 		}
-		
+
 		if (isValidStatus(stringStatus))
 		{
 			status = Status.valueOf(stringStatus);
@@ -214,9 +214,9 @@ public class StoryServiceImpl implements StoryService
 	{
 		if (isValidStatus(status))
 		{
-			return storyRepository.findByStatus(Status.valueOf(status));			
+			return storyRepository.findByStatus(Status.valueOf(status));
 		}
-		
+
 		throw new BadRequestException("Not a valid status");
 	}
 
@@ -238,7 +238,7 @@ public class StoryServiceImpl implements StoryService
 		if (userRepository.findByUserId(userId) != null)
 		{
 			List<Story> stories = storyRepository.findByUserAndProject(userId, projectId);
-			
+
 			return stories;
 		}
 
@@ -249,15 +249,15 @@ public class StoryServiceImpl implements StoryService
 	public void removeStory(String storyId)
 	{
 		Story story = storyRepository.findByStoryId(storyId);
-		
-		if(story == null)
+
+		if (story == null)
 		{
 			throw new EntityNotFoundException("No story found with that storyId");
 		}
-		
+
 		storyRepository.delete(story);
 	}
-	
+
 	private boolean isValidStatus(String stringStatus)
 	{
 		for (Status status : Status.values())
@@ -267,7 +267,7 @@ public class StoryServiceImpl implements StoryService
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }

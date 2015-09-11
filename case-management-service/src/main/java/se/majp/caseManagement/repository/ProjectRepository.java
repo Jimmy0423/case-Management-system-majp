@@ -12,7 +12,7 @@ public interface ProjectRepository extends CrudRepository<Project, Long>
 {
 	@Query("select p from Project p where ?1 in indices(p.team.users)")
 	List<Project> findAllProjectsForUser(User user);
-	
+
 	@Query("select p from Project p where p.projectId = ?1")
 	Project findByProjectId(String projectId);
 }

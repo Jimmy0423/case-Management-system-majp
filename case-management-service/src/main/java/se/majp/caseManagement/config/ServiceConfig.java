@@ -28,13 +28,13 @@ public class ServiceConfig
 	{
 		return new ProjectServiceImpl();
 	}
-	
+
 	@Bean
 	public StoryService storyService()
 	{
 		return new StoryServiceImpl();
 	}
-	
+
 	@Bean
 	public IssueService issueService()
 	{

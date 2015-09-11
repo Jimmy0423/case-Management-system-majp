@@ -27,17 +27,17 @@ import com.google.gson.JsonParseException;
 
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
-public class TeamMemberJsonMapper implements MessageBodyReader<TeamMember> 
+public class TeamMemberJsonMapper implements MessageBodyReader<TeamMember>
 {
 	private Gson gson;
 
-	public TeamMemberJsonMapper() 
+	public TeamMemberJsonMapper()
 	{
 		gson = new GsonBuilder().registerTypeAdapter(TeamMember.class, new TeamMemberAdapter()).create();
 	}
 
 	@Override
-	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) 
+	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
 
 		return type.isAssignableFrom(TeamMember.class);
@@ -46,17 +46,17 @@ public class TeamMemberJsonMapper implements MessageBodyReader<TeamMember>
 	@Override
 	public TeamMember readFrom(Class<TeamMember> type, Type genericType, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-					throws IOException, WebApplicationException 
+					throws IOException, WebApplicationException
 	{
 		TeamMember teamMember = gson.fromJson(new InputStreamReader(entityStream), TeamMember.class);
 		return teamMember;
 	}
 
-	private static final class TeamMemberAdapter implements JsonDeserializer<TeamMember> 
+	private static final class TeamMemberAdapter implements JsonDeserializer<TeamMember>
 	{
 		@Override
 		public TeamMember deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-				throws JsonParseException 
+				throws JsonParseException
 		{
 			JsonObject jsonTeamMember = json.getAsJsonObject();
 			JsonObject jsonUser = jsonTeamMember.get("user").getAsJsonObject();

@@ -9,10 +9,10 @@ import se.majp.caseManagement.service.test.StoryServiceIntegrationTest;
 import se.majp.caseManagement.service.test.UserServiceIntegrationTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ProjectServiceIntegrationTest.class,
-			   UserServiceIntegrationTest.class,
-			   StoryServiceIntegrationTest.class
-			 })
+@SuiteClasses({ ProjectServiceIntegrationTest.class,
+		UserServiceIntegrationTest.class,
+		StoryServiceIntegrationTest.class
+})
 public class ServiceSuite
 {
 }

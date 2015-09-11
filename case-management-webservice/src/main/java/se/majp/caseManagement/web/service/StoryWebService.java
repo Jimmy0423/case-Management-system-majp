@@ -31,16 +31,16 @@ import se.majp.caseManagement.service.StoryService;
 @Produces(MediaType.APPLICATION_JSON)
 @Scope("request")
 public class StoryWebService
-{	
+{
 	@Autowired
 	private StoryService storyService;
-	
+
 	@Autowired
 	private IssueService issueService;
-	
+
 	@Context
 	private UriInfo uriInfo;
-	
+
 	@POST
 	@Path("{storyId}/issues")
 	public Response addIssueToStory(@PathParam("storyId") final String storyId, Issue issue)
@@ -48,36 +48,42 @@ public class StoryWebService
 		storyService.addIssue(storyId, issue);
 		return Response.noContent().build();
 	}
-	
+
 	@GET
 	public Response getStoriesByDescription(@DefaultValue("") @QueryParam("description") final String description)
 	{
 		List<Story> stories = storyService.findByDescriptionContaining(description);
-		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
-		
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
+		{
+		};
+
 		return Response.ok(entity).build();
 	}
-	
+
 	@Path("status/{status}")
 	@GET
 	public Response getStoriesByStatus(@PathParam("status") final String status)
 	{
 		List<Story> stories = storyService.findAllStoriesByStatus(status);
-		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
-		
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
+		{
+		};
+
 		return Response.ok(entity).build();
 	}
-	
+
 	@GET
 	@Path("issues")
 	public Response getAllStoriesWithIssues()
 	{
 		List<Story> stories = storyService.findAllStoriesWithIssues();
-		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
-		
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
+		{
+		};
+
 		return Response.ok(entity).build();
 	}
-	
+
 	@Consumes(MediaType.TEXT_PLAIN)
 	@PUT
 	@Path("{storyId}")
@@ -86,17 +92,17 @@ public class StoryWebService
 		storyService.changeStatus(storyId, status);
 		return Response.ok().build();
 	}
-	
+
 	@PUT
 	@Path("{storyId}/issues/{issueId}")
 	public Response updateIssue(@PathParam("storyId") final String storyId,
-								@PathParam("issueId") final String issueId, Issue issue)
+			@PathParam("issueId") final String issueId, Issue issue)
 	{
 		issue = new Issue(issueId, issue.getTitle(), issue.getDescription());
 		issueService.updateIssue(issue, storyId);
 		return Response.ok().build();
 	}
-	
+
 	@DELETE
 	@Path("{storyId}")
 	public Response removeStory(@PathParam("storyId") final String storyId)

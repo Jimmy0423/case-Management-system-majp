@@ -36,34 +36,36 @@ public final class UserWebService
 {
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private ProjectService projectService;
-	
+
 	@Autowired
 	private StoryService storyService;
-	
+
 	@Context
 	private UriInfo uriInfo;
-	
+
 	@POST
 	public Response addUser(final User user)
 	{
 		final User userFromDb = userService.addOrUpdateUser(user);
 		final URI location = uriInfo.getAbsolutePathBuilder().path(userFromDb.getUserId()).build();
-		
+
 		return Response.created(location).build();
 	}
-	
+
 	@GET
 	public Response getUserByEmailOrFirstNameOrLastName(@QueryParam("searchTerm") final String value)
 	{
 		List<User> users = userService.findByFirstNameOrLastNameOrEmail(value);
-		GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users){};
-		
+		GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users)
+		{
+		};
+
 		return Response.ok(entity).build();
 	}
-	
+
 	@GET
 	@Path("{userId}")
 	public Response getUserByUserId(@PathParam("userId") final String userId)
@@ -71,27 +73,31 @@ public final class UserWebService
 		User user = userService.findByUserId(userId);
 		return Response.ok(user).build();
 	}
-	
+
 	@GET
 	@Path("{userId}/projects")
 	public Response getAllProjectsForUser(@PathParam("userId") final String userId)
 	{
 		List<Project> projects = projectService.findAllProjectsByUser(userId);
-		GenericEntity<List<Project>> entity = new GenericEntity<List<Project>>(projects){};
-		
+		GenericEntity<List<Project>> entity = new GenericEntity<List<Project>>(projects)
+		{
+		};
+
 		return Response.ok(entity).build();
 	}
-	
+
 	@GET
 	@Path("{userId}/stories")
 	public Response getAllStoriesForUser(@PathParam("userId") final String userId)
 	{
 		List<Story> stories = storyService.findAllStoriesAssignedToUser(userId);
-		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
-		
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
+		{
+		};
+
 		return Response.ok(entity).build();
 	}
-	
+
 	@PUT
 	@Path("{userId}")
 	public Response updateUser(@PathParam("userId") final String userId, User user)
@@ -100,7 +106,7 @@ public final class UserWebService
 		userService.addOrUpdateUser(user);
 		return Response.ok().build();
 	}
-	
+
 	@DELETE
 	@Path("{userId}")
 	public Response removeUser(@PathParam("userId") final String userId)

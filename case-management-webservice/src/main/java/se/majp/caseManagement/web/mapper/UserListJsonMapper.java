@@ -32,6 +32,7 @@ import com.google.gson.stream.JsonWriter;
 public final class UserListJsonMapper implements MessageBodyWriter<ArrayList<User>>
 {
 	private Gson gson;
+
 	public UserListJsonMapper()
 	{
 		gson = new GsonBuilder().registerTypeAdapter(ArrayList.class, new UserListAdapter()).create();

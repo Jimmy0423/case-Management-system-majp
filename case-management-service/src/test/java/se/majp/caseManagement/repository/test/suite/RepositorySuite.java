@@ -9,11 +9,11 @@ import se.majp.caseManagement.repository.test.StoryRepositoryIntegrationTest;
 import se.majp.caseManagement.repository.test.UserRepositoryIntegrationTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ 
-	ProjectRepositoryIntegrationTest.class, 
-	UserRepositoryIntegrationTest.class,
-	StoryRepositoryIntegrationTest.class
-	})
+@SuiteClasses({
+		ProjectRepositoryIntegrationTest.class,
+		UserRepositoryIntegrationTest.class,
+		StoryRepositoryIntegrationTest.class
+})
 public class RepositorySuite
 {
 

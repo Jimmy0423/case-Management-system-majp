@@ -28,12 +28,12 @@ import se.majp.caseManagement.model.Issue;
 public class IssueJsonMapper implements MessageBodyReader<Issue>
 {
 	private Gson gson;
-	
+
 	public IssueJsonMapper()
 	{
 		gson = new GsonBuilder().registerTypeAdapter(Issue.class, new IssueAdapter()).create();
 	}
-	
+
 	@Override
 	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
@@ -45,20 +45,20 @@ public class IssueJsonMapper implements MessageBodyReader<Issue>
 			InputStream entityStream) throws IOException, WebApplicationException
 	{
 		Issue issue = gson.fromJson(new InputStreamReader(entityStream), Issue.class);
-		
+
 		return issue;
 	}
-	
+
 	private static final class IssueAdapter implements JsonDeserializer<Issue>
 	{
 		@Override
 		public Issue deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 		{
 			JsonObject jsonIssue = json.getAsJsonObject();
-			
+
 			String title = jsonIssue.get("title").getAsString();
 			String description = jsonIssue.get("description").getAsString();
-			
+
 			return new Issue(title, description);
 		}
 	}

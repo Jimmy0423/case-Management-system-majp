@@ -87,7 +87,7 @@ public class ProjectJsonMapper implements MessageBodyReader<Project>, MessageBod
 			final JsonObject jsonProject = json.getAsJsonObject();
 			String name = jsonProject.get("name").getAsString();
 			String description = jsonProject.get("description").getAsString();
-			
+
 			return new Project(name, description);
 		}
 

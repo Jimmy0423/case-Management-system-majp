@@ -8,12 +8,12 @@ public class BadRequestException extends RuntimeException
 	{
 		super(message, throwable);
 	}
-	
+
 	public BadRequestException(String message)
 	{
 		super(message);
 	}
-	
+
 	public BadRequestException()
 	{
 		super();

@@ -19,26 +19,28 @@ public class Story extends AbstractEntity
 {
 	@Column(unique = true)
 	private String storyId;
-	
+
 	private String name;
 	private String description;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Status status;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Priority priority;
 
 	@ManyToOne
 	private Project project;
-	
+
 	@ManyToOne
 	private User user;
 
 	@OneToMany(mappedBy = "story", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Collection<Issue> issues;
 
-	protected Story(){}
+	protected Story()
+	{
+	}
 
 	public Story(String storyId, String name, String description, Project project, Status status, Priority priority)
 	{
@@ -50,17 +52,17 @@ public class Story extends AbstractEntity
 		this.priority = priority;
 		this.issues = new ArrayList<>();
 	}
-	
+
 	public Story(String storyId, String name, String description, Status status, Priority priority)
 	{
 		this(storyId, name, description, null, status, priority);
 	}
-	
+
 	public Story(String name, String description, Status status, Priority priority)
 	{
 		this(null, name, description, null, status, priority);
 	}
-	
+
 	public String getStoryId()
 	{
 		return storyId;
@@ -75,7 +77,7 @@ public class Story extends AbstractEntity
 	{
 		return description;
 	}
-	
+
 	public Project getProject()
 	{
 		return project;
@@ -85,13 +87,13 @@ public class Story extends AbstractEntity
 	{
 		return status;
 	}
-	
+
 	public Story changeStatus(Status status)
 	{
 		this.status = status;
 		return this;
 	}
-	
+
 	public Priority getPriority()
 	{
 		return priority;
@@ -101,12 +103,12 @@ public class Story extends AbstractEntity
 	{
 		return issues;
 	}
-	
+
 	public User getUser()
 	{
 		return user;
 	}
-	
+
 	public void setUser(User user)
 	{
 		this.user = user;

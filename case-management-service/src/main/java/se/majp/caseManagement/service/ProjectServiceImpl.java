@@ -26,22 +26,22 @@ public class ProjectServiceImpl implements ProjectService
 	@Override
 	public Project addOrUpdateProject(Project project)
 	{
-		if(project.getProjectId() == null)
+		if (project.getProjectId() == null)
 		{
 			project = new Project(idGenerator.getNextId(), project.getName(), project.getDescription());
 		}
 		else
 		{
 			Project projectFromDb = projectRepository.findByProjectId(project.getProjectId());
-			
+
 			if (projectFromDb == null)
 			{
 				throw new EntityNotFoundException("No project with that projectId");
 			}
-			
+
 			project.setId(projectFromDb.getId());
 		}
-		
+
 		return projectRepository.save(project);
 	}
 
@@ -87,8 +87,8 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		Project project = projectRepository.findByProjectId(projectId);
 		User user = userRepository.findByUserId(teamMember.getUser().getUserId());
-		
-		if(project == null)
+
+		if (project == null)
 		{
 			throw new EntityNotFoundException("No project found with projectId: " + projectId);
 		}
@@ -102,7 +102,7 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		Project project = projectRepository.findByProjectId(projectId);
 		User user = userRepository.findByUserId(userId);
-		
+
 		if (project == null || user == null)
 		{
 			throw new EntityNotFoundException("Project or user not found");

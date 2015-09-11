@@ -36,25 +36,25 @@ public class ProjectWebService
 {
 	@Autowired
 	private ProjectService projectService;
-	
+
 	@Autowired
 	private StoryService storyService;
-	
+
 	@Autowired
 	private UserService userService;
 
 	@Context
 	private UriInfo uriInfo;
-	
+
 	@POST
 	public Response addProject(Project project)
 	{
 		Project projectFromDb = projectService.addOrUpdateProject(project);
 		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
-		
+
 		return Response.created(location).build();
 	}
-	
+
 	@PUT
 	@Path("{projectId}")
 	public Response updateProject(@PathParam("projectId") final String projectId, Project project)
@@ -71,16 +71,18 @@ public class ProjectWebService
 	public Response addStoryToProject(@PathParam("projectId") final String projectId, Story story)
 	{
 		story = storyService.addStoryToBacklog(projectId, story);
-		
+
 		return Response.noContent().build();
 	}
-	
+
 	@GET
 	public Response getAllProjects()
 	{
 		List<Project> projects = projectService.findAllProjects();
-		GenericEntity<List<Project>> entity = new GenericEntity<List<Project>>(projects){};
-		
+		GenericEntity<List<Project>> entity = new GenericEntity<List<Project>>(projects)
+		{
+		};
+
 		return Response.ok(entity).build();
 	}
 
@@ -114,55 +116,59 @@ public class ProjectWebService
 		};
 
 		return Response.ok(entity).build();
-		
+
 	}
-	
+
 	@GET
 	@Path("{projectId}/users/{userId}/stories")
-	public Response findAllStoriesForUserInProject(@PathParam("projectId") final String projectId, 
-												   @PathParam("userId") final String userId)
+	public Response findAllStoriesForUserInProject(@PathParam("projectId") final String projectId,
+			@PathParam("userId") final String userId)
 	{
 		List<Story> stories = storyService.findAllStoriesByUserAndProject(projectId, userId);
-		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
-		
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
+		{
+		};
+
 		return Response.ok(entity).build();
 	}
-	
+
 	@GET
 	@Path("{projectId}/backlog")
 	public Response findBacklogForProject(@PathParam("projectId") final String projectId)
 	{
 		List<Story> stories = storyService.findBacklogForProject(projectId);
-		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories){};
-		
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
+		{
+		};
+
 		return Response.ok(entity).build();
 	}
-	
+
 	@PUT
 	@Path("{projectId}/users")
 	public Response addTeamMember(@PathParam("projectId") final String projectId, TeamMember teamMember)
 	{
-		projectService.addOrUpdateTeamMember(projectId, teamMember);	
+		projectService.addOrUpdateTeamMember(projectId, teamMember);
 		return Response.ok().build();
 	}
-	
+
 	@PUT
 	@Path("{projectId}/users/{userId}")
-	public Response removeTeamMember(@PathParam("projectId") final String projectId, 
-									 @PathParam("userId") final String userId)
+	public Response removeTeamMember(@PathParam("projectId") final String projectId,
+			@PathParam("userId") final String userId)
 	{
 		projectService.removeTeamMember(projectId, userId);
 		return Response.ok().build();
 	}
-	
+
 	@PUT
 	@Path("{projectId}/users/{userId}/stories")
 	public Response addStoryToUser(@PathParam("userId") final String userId, Story story)
 	{
-		storyService.addStoryToUser(userId, story);	
+		storyService.addStoryToUser(userId, story);
 		return Response.noContent().build();
 	}
-	
+
 	@DELETE
 	@Path("{projectId}")
 	public Response removeProject(@PathParam("projectId") final String projectId)

@@ -23,7 +23,9 @@ public class Project extends AbstractEntity
 	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Collection<Story> backlog;
 
-	protected Project(){}
+	protected Project()
+	{
+	}
 
 	public Project(String projectId, String name, String description)
 	{
@@ -33,7 +35,7 @@ public class Project extends AbstractEntity
 		this.team = new Team();
 		this.backlog = new ArrayList<>();
 	}
-	
+
 	public Project(String name, String description)
 	{
 		this(null, name, description);
@@ -43,7 +45,7 @@ public class Project extends AbstractEntity
 	{
 		return projectId;
 	}
-	
+
 	public void setProjectId(String projectId)
 	{
 		this.projectId = projectId;

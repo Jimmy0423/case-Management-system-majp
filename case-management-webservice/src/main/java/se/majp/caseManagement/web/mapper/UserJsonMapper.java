@@ -37,7 +37,7 @@ import se.majp.caseManagement.model.User;
 public final class UserJsonMapper implements MessageBodyReader<User>, MessageBodyWriter<User>
 {
 	private Gson gson;
-	
+
 	public UserJsonMapper()
 	{
 		gson = new GsonBuilder().registerTypeAdapter(User.class, new UserAdapter()).create();
@@ -59,7 +59,7 @@ public final class UserJsonMapper implements MessageBodyReader<User>, MessageBod
 	public void writeTo(User user, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders,
 			OutputStream entityStream) throws IOException, WebApplicationException
 	{
-		try(JsonWriter writer = new JsonWriter(new OutputStreamWriter(entityStream)))
+		try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(entityStream)))
 		{
 			gson.toJson(user, User.class, writer);
 		}
@@ -76,10 +76,10 @@ public final class UserJsonMapper implements MessageBodyReader<User>, MessageBod
 			InputStream entityStream) throws IOException, WebApplicationException
 	{
 		User user = gson.fromJson(new InputStreamReader(entityStream), User.class);
-		
+
 		return user;
 	}
-	
+
 	private static final class UserAdapter implements JsonSerializer<User>, JsonDeserializer<User>
 	{
 		@Override
@@ -91,7 +91,7 @@ public final class UserJsonMapper implements MessageBodyReader<User>, MessageBod
 			String password = jsonUser.get("password").getAsString();
 			String firstName = jsonUser.get("firstName").getAsString();
 			String lastName = jsonUser.get("lastName").getAsString();
-			
+
 			return new User(email, password, firstName, lastName);
 		}
 
@@ -104,10 +104,10 @@ public final class UserJsonMapper implements MessageBodyReader<User>, MessageBod
 			jsonUser.add("password", new JsonPrimitive(user.getPassword()));
 			jsonUser.add("firstName", new JsonPrimitive(user.getFirstName()));
 			jsonUser.add("lastName", new JsonPrimitive(user.getLastName()));
-			
+
 			return jsonUser;
 		}
-		
+
 	}
 
 }

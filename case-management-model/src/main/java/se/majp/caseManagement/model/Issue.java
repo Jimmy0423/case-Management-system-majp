@@ -11,14 +11,16 @@ public class Issue extends AbstractEntity
 {
 	@Column(unique = true)
 	private String issueId;
-	
+
 	private String title;
 	private String description;
 
 	@ManyToOne
 	private Story story;
 
-	protected Issue(){}
+	protected Issue()
+	{
+	}
 
 	public Issue(String issueId, String title, String description, Story story)
 	{
@@ -27,17 +29,17 @@ public class Issue extends AbstractEntity
 		this.description = description;
 		this.story = story;
 	}
-	
+
 	public Issue(String issueId, String title, String description)
 	{
 		this(issueId, title, description, null);
 	}
-	
+
 	public Issue(String title, String description)
 	{
 		this(null, title, description, null);
 	}
-	
+
 	public String getIssueId()
 	{
 		return issueId;

@@ -18,7 +18,7 @@ public class Team
 {
 	@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
 	@MapKeyJoinColumn(name = "user_id")
-	@CollectionTable(name = "tbl_project_user", joinColumns = @JoinColumn(name = "project_id"))
+	@CollectionTable(name = "tbl_project_user", joinColumns = @JoinColumn(name = "project_id") )
 	@Column(name = "role")
 	@Enumerated(EnumType.STRING)
 	private Map<User, Role> users = new HashMap<>();
@@ -48,7 +48,7 @@ public class Team
 	{
 		return users.get(user);
 	}
-	
+
 	public boolean userHasRole(User user, Role role)
 	{
 		return users.get(user).equals(role);
