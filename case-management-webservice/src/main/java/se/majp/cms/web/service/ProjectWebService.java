@@ -60,10 +60,9 @@ public class ProjectWebService
 	public Response updateProject(@PathParam("projectId") final String projectId, Project project)
 	{
 		project = new Project(projectId, project.getName(), project.getDescription());
-		Project projectFromDb = projectService.addOrUpdateProject(project);
-		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
+		projectService.addOrUpdateProject(project);
 
-		return Response.created(location).build();
+		return Response.ok().build();
 	}
 
 	@POST
