@@ -3,6 +3,8 @@ package se.majp.cms.service;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import se.majp.cms.exception.BadRequestException;
 import se.majp.cms.model.Issue;
@@ -37,5 +39,16 @@ public class IssueServiceImpl implements IssueService
 		issueFromDb.setDescription(issue.getDescription());
 
 		return issueRepository.save(issueFromDb);
+	}
+
+	@Override
+	public Slice<Issue> findAllIssues(Pageable pageable)
+	{
+		if (pageable == null)
+		{
+			throw new BadRequestException("Page number and size must be specified");
+		}
+		
+		return issueRepository.findAll(pageable);
 	}
 }

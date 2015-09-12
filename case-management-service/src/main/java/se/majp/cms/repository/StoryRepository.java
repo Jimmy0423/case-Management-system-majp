@@ -2,6 +2,8 @@ package se.majp.cms.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -33,4 +35,6 @@ public interface StoryRepository extends CrudRepository<Story, Long>
 	List<Story> findByStatusAndProject(Status status, Project project);
 
 	Story findByStoryId(String storyId);
+	
+	Slice<Story> findAll(Pageable pageable);
 }

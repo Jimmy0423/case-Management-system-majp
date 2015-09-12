@@ -2,6 +2,8 @@ package se.majp.cms.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -18,4 +20,7 @@ public interface UserRepository extends CrudRepository<User, Long>
 	List<User> findByProject(String projectId);
 
 	User findByEmail(String email);
+	
+	// Get all users with paging
+	Slice<User> findAll(Pageable pageable);
 }

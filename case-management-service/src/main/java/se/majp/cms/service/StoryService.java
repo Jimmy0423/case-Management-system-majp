@@ -2,6 +2,9 @@ package se.majp.cms.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+
 import se.majp.cms.model.Issue;
 import se.majp.cms.model.Story;
 
@@ -30,4 +33,6 @@ public interface StoryService
 	List<Story> findAllStoriesByUserAndProject(String userId, String projectId);
 
 	void removeStory(String storyId);
+	
+	Slice<Story> findAllStories(Pageable pageable);
 }

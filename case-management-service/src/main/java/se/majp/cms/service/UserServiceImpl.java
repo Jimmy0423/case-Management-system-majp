@@ -3,7 +3,11 @@ package se.majp.cms.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
+import se.majp.cms.exception.BadRequestException;
 import se.majp.cms.exception.EntityNotFoundException;
 import se.majp.cms.exception.UniqueConstraintException;
 import se.majp.cms.model.Project;
@@ -139,5 +143,16 @@ public class UserServiceImpl implements UserService
 
 		story.setUser(null);
 		storyRepository.save(story);
+	}
+
+	@Override
+	public Slice<User> findAllUsers(Pageable pageable)
+	{
+		if (pageable == null)
+		{
+			throw new BadRequestException("Page number and size must be specified");
+		}
+		
+		return userRepository.findAll(pageable);
 	}
 }

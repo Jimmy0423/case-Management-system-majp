@@ -2,6 +2,9 @@ package se.majp.cms.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+
 import se.majp.cms.model.User;
 
 public interface UserService
@@ -17,4 +20,6 @@ public interface UserService
 	User findByUserId(String userId);
 
 	List<User> findByProject(String projectId);
+	
+	Slice<User> findAllUsers(Pageable pageable);
 }

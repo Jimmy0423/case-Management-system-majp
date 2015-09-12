@@ -3,6 +3,8 @@ package se.majp.cms.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import se.majp.cms.exception.BadRequestException;
 import se.majp.cms.exception.EntityNotFoundException;
@@ -269,5 +271,16 @@ public class StoryServiceImpl implements StoryService
 		}
 
 		return false;
+	}
+
+	@Override
+	public Slice<Story> findAllStories(Pageable pageable)
+	{
+		if (pageable == null)
+		{
+			throw new BadRequestException("Page number and size must be specified");
+		}
+		
+		return storyRepository.findAll(pageable);
 	}
 }
