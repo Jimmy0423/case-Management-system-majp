@@ -178,12 +178,12 @@ public class StoryServiceImpl implements StoryService
 	}
 
 	@Override
-	public List<Story> findByDescriptionContaining(String description)
+	public Slice<Story> findByDescriptionContaining(String description, Pageable pageable)
 	{
-		List<Story> stories = storyRepository.findByDescriptionContaining(description);
-		if (stories.isEmpty())
+		Slice<Story> stories = storyRepository.findByDescriptionContaining(description, pageable);
+		if (stories.getContent().isEmpty())
 		{
-			throw new EntityNotFoundException("No stories matching description");
+			throw new EntityNotFoundException("No stories matching description in current page");
 		}
 
 		return stories;

@@ -20,7 +20,7 @@ public interface StoryService
 
 	List<Story> findAllStoriesWithIssues();
 
-	List<Story> findByDescriptionContaining(String description);
+	Slice<Story> findByDescriptionContaining(String description, Pageable pageable);
 
 	List<Story> findBacklogForProject(String projectId);
 

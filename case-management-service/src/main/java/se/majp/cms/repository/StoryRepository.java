@@ -28,7 +28,7 @@ public interface StoryRepository extends CrudRepository<Story, Long>
 	@Query("select s from Story s where s.project.projectId = ?1 and s.user is null")
 	List<Story> findBacklogForProject(String projectId);
 
-	List<Story> findByDescriptionContaining(String description);
+	Slice<Story> findByDescriptionContaining(String description, Pageable pageable);
 
 	List<Story> findByStatus(Status status);
 
