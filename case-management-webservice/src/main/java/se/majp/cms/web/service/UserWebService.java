@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -20,6 +21,9 @@ import javax.ws.rs.core.UriInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort.Direction;
 
 import se.majp.cms.model.Project;
 import se.majp.cms.model.Story;
@@ -55,6 +59,20 @@ public final class UserWebService
 		return Response.created(location).build();
 	}
 
+	@GET
+	public Response getAllUsers(@DefaultValue("0") @QueryParam("page") final int page,
+			@DefaultValue("10") @QueryParam("size") final int size,
+			@DefaultValue("DESC") @QueryParam("order") final String order)
+	{
+		Slice<User> users = userService.findAllUsers(new PageRequest(page, size, Direction.fromStringOrNull(order)));
+		
+		GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users.getContent())
+		{
+		};
+		
+		return Response.ok(entity).build();
+	}
+	
 	@GET
 	public Response getUserByEmailOrFirstNameOrLastName(@QueryParam("searchTerm") final String value)
 	{

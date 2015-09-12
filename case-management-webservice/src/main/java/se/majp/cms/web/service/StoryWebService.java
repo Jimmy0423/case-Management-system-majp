@@ -53,7 +53,7 @@ public class StoryWebService
 	}
 
 	@GET
-	public Response getStoriesByDescription(@DefaultValue("") @QueryParam("description") final String description,
+	public Response findAllStoriesByPaging(@DefaultValue("") @QueryParam("description") final String description,
 			@DefaultValue("0") @QueryParam("page") final int page,
 			@DefaultValue("10") @QueryParam("size") final int size,
 			@DefaultValue("DESC") @QueryParam("order") final String order)
