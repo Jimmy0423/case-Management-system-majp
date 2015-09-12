@@ -20,6 +20,9 @@ import javax.ws.rs.core.UriInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort.Direction;
 
 import se.majp.cms.model.Issue;
 import se.majp.cms.model.Story;
@@ -50,10 +53,14 @@ public class StoryWebService
 	}
 
 	@GET
-	public Response getStoriesByDescription(@DefaultValue("") @QueryParam("description") final String description)
+	public Response getStoriesByDescription(@DefaultValue("") @QueryParam("description") final String description,
+			@DefaultValue("0") @QueryParam("page") final int page,
+			@DefaultValue("10") @QueryParam("size") final int size,
+			@DefaultValue("DESC") @QueryParam("order") final String order)
 	{
-		List<Story> stories = storyService.findByDescriptionContaining(description);
-		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
+		Slice<Story> stories = storyService.findByDescriptionContaining(description, 
+				new PageRequest(page, size, Direction.fromStringOrNull(order)));
+		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories.getContent())
 		{
 		};
 
