@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.LastModifiedDate;
+
 @Entity
 @Table(name = "tbl_story")
 public class Story extends AbstractEntity
@@ -30,6 +32,7 @@ public class Story extends AbstractEntity
 	@Enumerated(EnumType.STRING)
 	private Priority priority;
 	
+	@LastModifiedDate
 	private Date lastModified;
 
 	@ManyToOne

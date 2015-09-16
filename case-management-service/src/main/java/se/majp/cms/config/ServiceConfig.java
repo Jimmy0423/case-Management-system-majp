@@ -2,6 +2,7 @@ package se.majp.cms.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import se.majp.cms.service.IssueService;
@@ -15,6 +16,7 @@ import se.majp.cms.service.UserServiceImpl;
 
 @Configuration
 @EnableJpaRepositories("se.majp.cms.repository")
+@EnableJpaAuditing
 public class ServiceConfig
 {	
 	@Bean

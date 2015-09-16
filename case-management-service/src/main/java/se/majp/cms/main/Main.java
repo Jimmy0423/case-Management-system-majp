@@ -3,8 +3,11 @@ package se.majp.cms.main;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.domain.PageRequest;
 
+import se.majp.cms.model.Status;
 import se.majp.cms.repository.StoryRepository;
 import se.majp.cms.repository.UserRepository;
+import se.majp.cms.service.ProjectService;
+import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
 
 public class Main
@@ -19,9 +22,14 @@ public class Main
 
 			UserService userService = context.getBean(UserService.class);
 			UserRepository userRepo = context.getBean(UserRepository.class);
+			ProjectService projectService = context.getBean(ProjectService.class);
+			StoryService storyService = context.getBean(StoryService.class);
+			
+			storyService.changeStatus("YFm29qCE", "TEST");
 			
 			StoryRepository storyRepository = context.getBean(StoryRepository.class);
 			storyRepository.findByDescriptionContaining("", new PageRequest(0, 1)).forEach(System.out::println);
+			
 
 //			Slice<User> users = userRepo.findAll(new PageRequest(9, 10));
 //
