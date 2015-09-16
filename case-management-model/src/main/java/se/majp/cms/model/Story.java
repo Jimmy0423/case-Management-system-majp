@@ -18,7 +18,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "tbl_story")
-@EntityListeners(AuditingEntityListener.class)
 public class Story extends AbstractEntity
 {
 	@Column(unique = true)
