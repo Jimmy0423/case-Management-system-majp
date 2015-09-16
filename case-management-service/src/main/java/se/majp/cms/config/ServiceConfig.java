@@ -16,7 +16,7 @@ import se.majp.cms.service.UserServiceImpl;
 @Configuration
 @EnableJpaRepositories("se.majp.cms.repository")
 public class ServiceConfig
-{
+{	
 	@Bean
 	public UserService userService()
 	{

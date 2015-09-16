@@ -1,5 +1,6 @@
 package se.majp.cms.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -28,6 +29,8 @@ public class Story extends AbstractEntity
 
 	@Enumerated(EnumType.STRING)
 	private Priority priority;
+	
+	private Date lastModified;
 
 	@ManyToOne
 	private Project project;

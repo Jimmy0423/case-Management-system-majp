@@ -2,9 +2,7 @@ package se.majp.cms.main;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 
-import se.majp.cms.model.User;
 import se.majp.cms.repository.StoryRepository;
 import se.majp.cms.repository.UserRepository;
 import se.majp.cms.service.UserService;

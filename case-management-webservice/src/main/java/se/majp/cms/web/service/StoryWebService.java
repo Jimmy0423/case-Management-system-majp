@@ -58,8 +58,9 @@ public class StoryWebService
 			@DefaultValue("10") @QueryParam("size") final int size,
 			@DefaultValue("DESC") @QueryParam("order") final String order)
 	{
-		Slice<Story> stories = storyService.findByDescriptionContaining(description, 
+		Slice<Story> stories = storyService.findByDescriptionContaining(description,
 				new PageRequest(page, size, Direction.fromStringOrNull(order)));
+
 		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories.getContent())
 		{
 		};
