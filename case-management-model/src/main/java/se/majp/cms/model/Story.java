@@ -1,12 +1,12 @@
 package se.majp.cms.model;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -14,10 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "tbl_story")
+@EntityListeners(AuditingEntityListener.class)
 public class Story extends AbstractEntity
 {
 	@Column(unique = true)
@@ -31,9 +32,6 @@ public class Story extends AbstractEntity
 
 	@Enumerated(EnumType.STRING)
 	private Priority priority;
-	
-	@LastModifiedDate
-	private Date lastModified;
 
 	@ManyToOne
 	private Project project;

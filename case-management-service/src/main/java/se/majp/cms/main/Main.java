@@ -25,7 +25,7 @@ public class Main
 			ProjectService projectService = context.getBean(ProjectService.class);
 			StoryService storyService = context.getBean(StoryService.class);
 			
-			storyService.changeStatus("YFm29qCE", "TEST");
+			storyService.changeStatus("YFm29qCE", "ISSUED");
 			
 			StoryRepository storyRepository = context.getBean(StoryRepository.class);
 			storyRepository.findByDescriptionContaining("", new PageRequest(0, 1)).forEach(System.out::println);
