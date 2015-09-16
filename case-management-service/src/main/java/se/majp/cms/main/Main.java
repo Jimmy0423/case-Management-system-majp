@@ -4,6 +4,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.data.domain.PageRequest;
 
 import se.majp.cms.model.Status;
+import se.majp.cms.model.Story;
 import se.majp.cms.repository.StoryRepository;
 import se.majp.cms.repository.UserRepository;
 import se.majp.cms.service.ProjectService;
@@ -25,11 +26,13 @@ public class Main
 			ProjectService projectService = context.getBean(ProjectService.class);
 			StoryService storyService = context.getBean(StoryService.class);
 			
-			storyService.changeStatus("YFm29qCE", "ISSUED");
+//			storyService.changeStatus("YFm29qCE", "ISSUED");
 			
 			StoryRepository storyRepository = context.getBean(StoryRepository.class);
-			storyRepository.findByDescriptionContaining("", new PageRequest(0, 1)).forEach(System.out::println);
+//			storyRepository.findByDescriptionContaining("", new PageRequest(0, 1)).forEach(System.out::println);
 			
+			Story story = storyRepository.findByStoryId("YFm29qCE");
+			System.out.println(story.getModificationTime());
 
 //			Slice<User> users = userRepo.findAll(new PageRequest(9, 10));
 //

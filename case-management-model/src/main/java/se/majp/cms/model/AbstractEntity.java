@@ -1,7 +1,7 @@
 package se.majp.cms.model;
 
+import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,13 +26,13 @@ public class AbstractEntity
 	@PrePersist
 	public void prePersist()
 	{
-		modificationTime = GregorianCalendar.getInstance().getTime();
+		modificationTime = Calendar.getInstance().getTime();
 	}
 	
 	@PreUpdate
 	public void preUpdate()
 	{
-		modificationTime = GregorianCalendar.getInstance().getTime();
+		modificationTime = Calendar.getInstance().getTime();
 	}
 
 	public Long getId()
