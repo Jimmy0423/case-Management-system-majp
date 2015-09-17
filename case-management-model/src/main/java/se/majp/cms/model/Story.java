@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.CreatedBy;
+
 @Entity
 @Table(name = "tbl_story")
 public class Story extends AbstractEntity
@@ -34,6 +36,10 @@ public class Story extends AbstractEntity
 
 	@ManyToOne
 	private User user;
+	
+	@CreatedBy
+	private String userId;
+	
 
 	@OneToMany(mappedBy = "story", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Collection<Issue> issues;
