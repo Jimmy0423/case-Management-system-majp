@@ -1,5 +1,7 @@
 package se.majp.cms.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,11 +214,18 @@ public class StoryServiceImpl implements StoryService
 	}
 
 	@Override
-	public List<Story> findAllStoriesByStatus(String status)
-	{
+	public List<Story> findAllStoriesByStatusAndDate(String status, String fromDate, String toDate)
+	{		
+		Calendar fromDateCalendar = getCalendar(fromDate);
+		Calendar toDateCalendar = getCalendar(toDate);
+		
+		System.out.println("From: " + fromDateCalendar.getTime());
+		System.out.println("To: " + toDateCalendar.getTime());
+		
 		if (isValidStatus(status))
 		{
-			return storyRepository.findByStatus(Status.valueOf(status));
+			return storyRepository.findByStatusAndDate(Status.valueOf(status), 
+					fromDateCalendar.getTime(), toDateCalendar.getTime());
 		}
 
 		throw new BadRequestException("Not a valid status");
@@ -260,18 +269,6 @@ public class StoryServiceImpl implements StoryService
 		storyRepository.delete(story);
 	}
 
-	private boolean isValidStatus(String stringStatus)
-	{
-		for (Status status : Status.values())
-		{
-			if (status.toString().equals(stringStatus))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	@Override
 	public Slice<Story> findAllStories(Pageable pageable)
@@ -282,5 +279,49 @@ public class StoryServiceImpl implements StoryService
 		}
 		
 		return storyRepository.findAll(pageable);
+	}
+	
+	private boolean isValidStatus(String stringStatus)
+	{
+		for (Status status : Status.values())
+		{
+			if (status.toString().equals(stringStatus))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private Calendar getCalendar(String dateString)
+	{
+		if (dateString == null || dateString.split("-").length != 3)
+		{
+			throw new BadRequestException("Date parameters not valid");
+		}
+		
+		String[] dateArray = dateString.split("-");
+		Calendar calendar;
+		Calendar.Builder builder = new Calendar.Builder();
+		try
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				if (dateArray[i].startsWith("0"))
+				{
+					throw new BadRequestException("Year, month or day can not start with a zero");
+				}
+			}
+			
+			calendar = builder.setDate(Integer.parseInt(dateArray[0]), Integer.parseInt(dateArray[1]) - 1,
+					Integer.parseInt(dateArray[2])).build();
+		}
+		catch (NumberFormatException e)
+		{
+			throw new BadRequestException("Date parameters not valid, only numbers is allowed");
+		}
+		
+		return calendar;
 	}
 }

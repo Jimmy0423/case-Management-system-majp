@@ -70,9 +70,11 @@ public class StoryWebService
 
 	@Path("status/{status}")
 	@GET
-	public Response getStoriesByStatus(@PathParam("status") final String status)
+	public Response getStoriesByStatus(@PathParam("status") final String status, 
+			@QueryParam("from") final String fromDateString,
+			@QueryParam("to") final String toDateString)
 	{
-		List<Story> stories = storyService.findAllStoriesByStatus(status);
+		List<Story> stories = storyService.findAllStoriesByStatus(status /*, fromDateString, toDateString */);
 		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
 		{
 		};

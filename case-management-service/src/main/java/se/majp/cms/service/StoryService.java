@@ -26,7 +26,7 @@ public interface StoryService
 
 	List<Story> findAllStoriesInProject(String projectId);
 
-	List<Story> findAllStoriesByStatus(String status);
+	List<Story> findAllStoriesByStatusAndDate(String status, String fromDate, String toDate);
 
 	List<Story> findAllStoriesAssignedToUser(String userId);
 

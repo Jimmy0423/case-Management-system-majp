@@ -1,5 +1,6 @@
 package se.majp.cms.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,9 @@ public interface StoryRepository extends CrudRepository<Story, Long>
 
 	@Query("select s from Story s where s.project.projectId = ?1 and s.user is null")
 	List<Story> findBacklogForProject(String projectId);
+	
+	@Query("select s from Story s where s.status = ?1 and s.modificationTime between ?2 and ?3")
+	List<Story> findByStatusAndDate(Status status, Date fromDate, Date toDate);
 
 	Slice<Story> findByDescriptionContaining(String description, Pageable pageable);
 
