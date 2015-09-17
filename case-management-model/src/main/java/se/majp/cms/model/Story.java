@@ -37,9 +37,9 @@ public class Story extends AbstractEntity
 	@ManyToOne
 	private User user;
 	
-	@CreatedBy
-	private String userId;
-	
+	@Column(name = "created_by_user", nullable = false)
+    @CreatedBy
+    private String createdByUser;
 
 	@OneToMany(mappedBy = "story", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Collection<Issue> issues;

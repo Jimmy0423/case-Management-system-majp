@@ -19,7 +19,7 @@ public class SpringSecurityAuditorAware implements AuditorAware<String>
 			return null;
 		}
 		
-		return ((User) authentication.getPrincipal()).getUserId();
+		return ((User) authentication.getPrincipal()).getEmail();
 	}
 
 }

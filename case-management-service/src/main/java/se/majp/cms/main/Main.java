@@ -1,8 +1,5 @@
 package se.majp.cms.main;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import se.majp.cms.model.Priority;
@@ -37,6 +34,7 @@ public class Main
 //			Story story = storyRepository.findByStoryId("YFm29qCE");
 //			System.out.println(story.getModificationTime());
 			
+			storyService.addStoryToBacklog("di9LAu45", new Story("Test story", "Description", Status.INPROGRESS, Priority.VERYHIGH));
 			storyService.findAllStoriesByStatusAndDate("INPROGRESS", "2015-9-16", "2015-9-18").forEach(System.out::println);
 			
 //			Calendar testDate = Calendar.getInstance();
