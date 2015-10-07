@@ -1,10 +1,9 @@
 package se.majp.cms.service;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.cms.exception.BadRequestException;
+import se.majp.cms.exception.EntityNotFoundException;
 import se.majp.cms.model.Issue;
 import se.majp.cms.model.Story;
 import se.majp.cms.repository.IssueRepository;

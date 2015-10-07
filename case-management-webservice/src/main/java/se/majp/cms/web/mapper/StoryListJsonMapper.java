@@ -87,6 +87,7 @@ public class StoryListJsonMapper implements MessageBodyWriter<ArrayList<Story>>
 
 				story.getIssues().forEach(issue -> {
 					JsonObject jsonIssue = new JsonObject();
+					jsonIssue.add("issueId", new JsonPrimitive(issue.getIssueId()));
 					jsonIssue.add("title", new JsonPrimitive(issue.getTitle()));
 					jsonIssue.add("description", new JsonPrimitive(issue.getDescription()));
 					jsonIssues.add(jsonIssue);
