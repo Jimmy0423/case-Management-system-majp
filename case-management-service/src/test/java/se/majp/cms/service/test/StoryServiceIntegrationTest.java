@@ -11,10 +11,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import se.majp.cms.exception.BadRequestException;
 import se.majp.cms.exception.EntityNotFoundException;
 import se.majp.cms.model.Issue;
-import se.majp.cms.model.Status;
 import se.majp.cms.model.Story;
 import se.majp.cms.model.User;
 import se.majp.cms.service.StoryService;
@@ -81,40 +79,5 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 		assertThat((Issue) story.getIssues().toArray()[0], allOf(
 				hasProperty("title", is(ISSUE_TITLE)),
 				hasProperty("description", is(ISSUE_DESCRIPTION))));
-	}
-
-	@Test
-	public void changeStatus_shouldThrowBadRequestException()
-	{
-		exception.expect(BadRequestException.class);
-		exception.expectMessage("Not a valid status");
-
-		storyService.changeStatus(STORY_STORYID, "NO MATCH");
-	}
-
-	@Test
-	public void changeStatus_shouldThrowEntityNotFoundException()
-	{
-		exception.expect(EntityNotFoundException.class);
-		exception.expectMessage("No story found with that storyId");
-
-		storyService.changeStatus("NO MATCH", "INPROGRESS");
-	}
-
-	@Test
-	public void changeStatus_shouldThrowIllegalArgumentException()
-	{
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("status can only be changed");
-
-		storyService.changeStatus(STORY_STORYID, "TEST");
-	}
-
-	@Test
-	public void changeStatus_shouldReturnStoryWithNewStatus()
-	{
-		Story story = storyService.changeStatus(STORY_STORYID, "INPROGRESS");
-
-		assertThat(story.getStatus(), is(Status.INPROGRESS));
 	}
 }

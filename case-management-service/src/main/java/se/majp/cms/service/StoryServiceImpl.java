@@ -46,6 +46,23 @@ public class StoryServiceImpl implements StoryService
 		story = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
 		return storyRepository.save(story);
 	}
+	
+	@Override
+	public Story updateStory(String storyId, Story story)
+	{
+		Story storyToUpdate = storyRepository.findByStoryId(storyId);
+
+		if (storyToUpdate == null)
+		{
+			throw new EntityNotFoundException("No story found with that id");
+		}
+
+		storyToUpdate.setName(story.getName());
+		storyToUpdate.setDescription(story.getDescription());
+		storyToUpdate.changeStatus(story.getStatus());
+		storyToUpdate.setPriority(story.getPriority());
+		return storyRepository.save(storyToUpdate);
+	}
 
 	@Override
 	public Story addStoryToUser(String userId, Story story)
@@ -76,97 +93,6 @@ public class StoryServiceImpl implements StoryService
 		issueRepository.save(issue);
 
 		return storyRepository.findByStoryId(storyId);
-	}
-
-	@Override
-	public Story changeStatus(String storyId, String stringStatus)
-	{
-		Story story = storyRepository.findByStoryId(storyId);
-		Status status = null;
-
-		if (story == null)
-		{
-			throw new EntityNotFoundException("No story found with that storyId");
-		}
-
-		if (isValidStatus(stringStatus))
-		{
-			status = Status.valueOf(stringStatus);
-		}
-		else
-		{
-			throw new BadRequestException("Not a valid status");
-		}
-
-		switch (story.getStatus())
-		{
-		case PENDING:
-			switch (status)
-			{
-			case INPROGRESS:
-				story.changeStatus(status);
-				break;
-			default:
-				throw new IllegalArgumentException("status can only be changed to INPROGRESS");
-			}
-			break;
-
-		case ISSUED:
-			switch (status)
-			{
-			case TEST:
-				story.setUser(null);
-				story.changeStatus(status);
-				break;
-			default:
-				throw new IllegalArgumentException("Status can only be changed to TEST");
-			}
-			break;
-
-		case INPROGRESS:
-			switch (status)
-			{
-			case TEST:
-				story.setUser(null);
-				story.changeStatus(status);
-				break;
-			default:
-				throw new IllegalArgumentException("Status can only be changed to TEST");
-			}
-			break;
-
-		case TEST:
-			switch (status)
-			{
-			case DONE:
-				story.setUser(null);
-				story.changeStatus(status);
-				break;
-			case ISSUED:
-				story.setUser(null);
-				story.changeStatus(status);
-				break;
-			default:
-				throw new IllegalArgumentException("Status can only be changed to TEST or ISSUED");
-			}
-			break;
-
-		case DONE:
-			switch (status)
-			{
-			case ISSUED:
-				story.changeStatus(status);
-				break;
-			default:
-				throw new IllegalArgumentException("Status can only be changed to ISSUED");
-			}
-			break;
-
-		default:
-			throw new IllegalArgumentException("Not a valid status");
-		}
-
-		return storyRepository.save(story);
 	}
 
 	@Override

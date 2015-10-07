@@ -84,12 +84,11 @@ public class StoryWebService
 		return Response.ok(entity).build();
 	}
 
-	@Consumes(MediaType.TEXT_PLAIN)
 	@PUT
 	@Path("{storyId}")
-	public Response updateStatus(@PathParam("storyId") final String storyId, String status)
+	public Response updateStory(@PathParam("storyId") final String storyId, Story story)
 	{
-		storyService.changeStatus(storyId, status);
+		storyService.updateStory(storyId, story);
 		return Response.ok().build();
 	}
 

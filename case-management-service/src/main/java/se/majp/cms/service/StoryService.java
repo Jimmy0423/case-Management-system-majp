@@ -9,11 +9,11 @@ public interface StoryService
 {
 	Story addStoryToBacklog(String projectId, Story story);
 
+	Story updateStory(String storyId, Story story);
+	
 	Story addStoryToUser(String userId, Story story);
 
 	Story addIssue(String storyId, Issue issue);
-
-	Story changeStatus(String storyId, String status);
 
 	List<Story> findAllStoriesWithIssues();
 
