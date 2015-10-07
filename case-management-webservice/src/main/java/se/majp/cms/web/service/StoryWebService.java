@@ -64,7 +64,7 @@ public class StoryWebService
 	@GET
 	public Response getStoriesByStatus(@PathParam("status") final String status)
 	{
-		List<Story> stories = storyService.findAllStoriesByStatus(status);
+		List<Story> stories = storyService.findAllStoriesByStatus(status.toUpperCase());
 		GenericEntity<List<Story>> entity = new GenericEntity<List<Story>>(stories)
 		{
 		};
@@ -99,6 +99,15 @@ public class StoryWebService
 	{
 		issue = new Issue(issueId, issue.getTitle(), issue.getDescription());
 		issueService.updateIssue(issue, storyId);
+		return Response.ok().build();
+	}
+	
+	@DELETE
+	@Path("{storyId}/issues/{issueId}")
+	public Response removeIssue(@PathParam("storyId") final String storyId, 
+								@PathParam("issueId") final String issueId)
+	{
+		issueService.removeIssue(issueId);
 		return Response.ok().build();
 	}
 

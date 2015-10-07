@@ -38,4 +38,17 @@ public class IssueServiceImpl implements IssueService
 
 		return issueRepository.save(issueFromDb);
 	}
+	
+	@Override
+	public void removeIssue(String issueId) 
+	{	
+		Issue issueToRemove = issueRepository.findByIssueId(issueId);
+		
+		if(issueToRemove == null)
+		{
+			throw new EntityNotFoundException("No issue found with that id");
+		}
+		
+		issueRepository.delete(issueToRemove);
+	}
 }

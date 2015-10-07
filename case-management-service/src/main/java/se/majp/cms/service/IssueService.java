@@ -5,4 +5,6 @@ import se.majp.cms.model.Issue;
 public interface IssueService
 {
 	Issue updateIssue(Issue issue, String storyId);
+	
+	void removeIssue(String issueId);
 }
