@@ -26,6 +26,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonWriter;
 
 import se.majp.cms.model.Story;
+import se.majp.cms.model.User;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
@@ -82,6 +83,7 @@ public class StoryListJsonMapper implements MessageBodyWriter<ArrayList<Story>>
 			stories.forEach(story -> {
 				JsonObject jsonStory = new JsonObject();
 				JsonArray jsonIssues = new JsonArray();
+				JsonObject jsonUser = new JsonObject();
 
 				story.getIssues().forEach(issue -> {
 					JsonObject jsonIssue = new JsonObject();
@@ -89,13 +91,22 @@ public class StoryListJsonMapper implements MessageBodyWriter<ArrayList<Story>>
 					jsonIssue.add("description", new JsonPrimitive(issue.getDescription()));
 					jsonIssues.add(jsonIssue);
 				});
-
+				
+				if(story.getUser() != null)
+				{
+					User user = story.getUser();
+					jsonUser.add("firstname", new JsonPrimitive(user.getFirstName()));
+					jsonUser.add("lastname", new JsonPrimitive(user.getLastName()));
+					jsonUser.add("email", new JsonPrimitive(user.getEmail()));
+				}
+				
 				jsonStory.add("storyId", new JsonPrimitive(story.getStoryId()));
 				jsonStory.add("name", new JsonPrimitive(story.getName()));
 				jsonStory.add("description", new JsonPrimitive(story.getDescription()));
 				jsonStory.add("status", new JsonPrimitive(String.valueOf(story.getStatus())));
 				jsonStory.add("priority", new JsonPrimitive(String.valueOf(story.getPriority())));
 				jsonStory.add("issues", jsonIssues);
+				jsonStory.add("user", jsonUser);
 
 				jsonStories.add(jsonStory);
 			});
