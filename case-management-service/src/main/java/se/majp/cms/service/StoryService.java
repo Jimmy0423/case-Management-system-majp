@@ -11,7 +11,7 @@ public interface StoryService
 
 	Story updateStory(String storyId, Story story);
 	
-	Story addStoryToUser(String userId, Story story);
+	Story addStoryToUser(String userId, String storyId);
 
 	Story addIssue(String storyId, Issue issue);
 

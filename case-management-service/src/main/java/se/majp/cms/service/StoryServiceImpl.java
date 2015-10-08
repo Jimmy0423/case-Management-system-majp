@@ -65,10 +65,10 @@ public class StoryServiceImpl implements StoryService
 	}
 
 	@Override
-	public Story addStoryToUser(String userId, Story story)
+	public Story addStoryToUser(String userId, String storyId)
 	{
 		User user = userRepository.findByUserId(userId);
-		story = storyRepository.findByStoryId(story.getStoryId());
+		Story story = storyRepository.findByStoryId(storyId);
 
 		if (user == null)
 		{

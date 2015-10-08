@@ -45,32 +45,6 @@ public class StoryServiceIntegrationTest extends IntegrationTestBaseClass
 	}
 
 	@Test
-	public void addStoryToUser_shouldThrowEntityNotFoundException()
-	{
-		exception.expect(EntityNotFoundException.class);
-		exception.expectMessage("No user found with that id");
-
-		storyService.addStoryToUser("NO MATCH", storyToSave);
-	}
-
-	@Test
-	public void addStoryToUser_shouldReturnStoryWithUser()
-	{
-		Story story = storyService.addStoryToUser(USER_USERID, new Story(STORY_STORYID, STORY_NAME, STORY_DESCRIPTION, STORY_STATUS, STORY_PRIORITY));
-		User user = userRepository.findByUserId(USER_USERID);
-		assertThat(story.getUser(), is(user));
-	}
-
-	@Test
-	public void addIssue_shouldThrowEntityNotFoundException()
-	{
-		exception.expect(EntityNotFoundException.class);
-		exception.expectMessage("No story found with that storyId");
-
-		storyService.addIssue("NO MATCH", new Issue(ISSUE_TITLE, ISSUE_DESCRIPTION));
-	}
-
-	@Test
 	public void addIssue_shouldReturnStoryWithIssue()
 	{
 		Story story = storyService.addIssue(STORY_STORYID, new Issue(ISSUE_TITLE, ISSUE_DESCRIPTION));

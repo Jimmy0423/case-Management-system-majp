@@ -162,9 +162,9 @@ public class ProjectWebService
 
 	@PUT
 	@Path("{projectId}/users/{userId}/stories")
-	public Response addStoryToUser(@PathParam("userId") final String userId, Story story)
+	public Response addStoryToUser(@PathParam("userId") final String userId, String storyId)
 	{
-		storyService.addStoryToUser(userId, story);
+		storyService.addStoryToUser(userId, storyId);
 		return Response.noContent().build();
 	}
 
