@@ -7,6 +7,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -27,6 +29,7 @@ import com.google.gson.stream.JsonWriter;
 
 import se.majp.cms.model.Story;
 import se.majp.cms.model.User;
+import se.majp.cms.model.Issue;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
@@ -84,8 +87,10 @@ public class StoryListJsonMapper implements MessageBodyWriter<ArrayList<Story>>
 				JsonObject jsonStory = new JsonObject();
 				JsonArray jsonIssues = new JsonArray();
 				JsonObject jsonUser = new JsonObject();
+				Set<Issue> issues = new HashSet<>();
+				issues.addAll(story.getIssues());
 
-				story.getIssues().forEach(issue -> {
+				issues.forEach(issue -> {
 					JsonObject jsonIssue = new JsonObject();
 					jsonIssue.add("issueId", new JsonPrimitive(issue.getIssueId()));
 					jsonIssue.add("title", new JsonPrimitive(issue.getTitle()));
