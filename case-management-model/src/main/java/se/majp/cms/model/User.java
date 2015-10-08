@@ -48,6 +48,11 @@ public class User extends AbstractEntity
 	{
 		this(null, email, password, null, null);
 	}
+	
+	public User(String email)
+	{
+		this(null, email, null, null, null);
+	}
 
 	public String getUserId()
 	{

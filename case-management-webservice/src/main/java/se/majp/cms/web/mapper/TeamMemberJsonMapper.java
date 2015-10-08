@@ -61,15 +61,11 @@ public class TeamMemberJsonMapper implements MessageBodyReader<TeamMember>
 			JsonObject jsonTeamMember = json.getAsJsonObject();
 			JsonObject jsonUser = jsonTeamMember.get("user").getAsJsonObject();
 
-			String userId = jsonUser.get("userId").getAsString();
 			String email = jsonUser.get("email").getAsString();
-			String password = jsonUser.get("password").getAsString();
-			String firstName = jsonUser.get("firstName").getAsString();
-			String lastName = jsonUser.get("lastName").getAsString();
 			String roleString = jsonTeamMember.get("role").getAsString();
 			Role role = Role.valueOf(roleString);
 
-			return new TeamMember(new User(userId, email, password, firstName, lastName), role);
+			return new TeamMember(new User(email), role);
 		}
 	}
 
