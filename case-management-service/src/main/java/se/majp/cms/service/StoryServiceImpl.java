@@ -46,7 +46,7 @@ public class StoryServiceImpl implements StoryService
 		story = new Story(idGenerator.getNextId(), story.getName(), story.getDescription(), project, story.getStatus(), story.getPriority());
 		return storyRepository.save(story);
 	}
-	
+
 	@Override
 	public Story updateStory(String storyId, Story story)
 	{
