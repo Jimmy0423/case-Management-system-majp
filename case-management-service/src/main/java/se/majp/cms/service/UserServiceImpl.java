@@ -143,9 +143,8 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
-	public String authenticate(Credential credential)
+	public User authenticate(Credential credential)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

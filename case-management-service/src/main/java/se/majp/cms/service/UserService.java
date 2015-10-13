@@ -19,5 +19,5 @@ public interface UserService
 
 	List<User> findByProject(String projectId);
 	
-	String authenticate(Credential credential);
+	User authenticate(Credential credential);
 }
