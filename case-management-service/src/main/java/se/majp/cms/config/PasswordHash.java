@@ -1,4 +1,4 @@
-package se.majp.cms.web.filter;
+package se.majp.cms.config;
 
 /* 
  * Password Hashing With PBKDF2 (http://crackstation.net/hashing-security.htm).

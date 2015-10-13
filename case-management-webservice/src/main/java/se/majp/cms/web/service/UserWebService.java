@@ -1,8 +1,6 @@
 package se.majp.cms.web.service;
 
 import java.net.URI;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -29,7 +27,6 @@ import se.majp.cms.model.User;
 import se.majp.cms.service.ProjectService;
 import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
-import se.majp.cms.web.filter.PasswordHash;
 
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -50,9 +47,9 @@ public final class UserWebService
 	private UriInfo uriInfo;
 
 	@POST
-	public Response addUser(final User user) throws NoSuchAlgorithmException, InvalidKeySpecException
+	public Response addUser(final User user)
 	{
-		User hashed = new User(user.getEmail(), PasswordHash.createHash(user.getPassword()), user.getFirstName(), user.getLastName());
+		User hashed = new User(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
 		final User userFromDb = userService.addOrUpdateUser(hashed);
 		final URI location = uriInfo.getAbsolutePathBuilder().path(userFromDb.getUserId()).build();
 
@@ -104,9 +101,9 @@ public final class UserWebService
 
 	@PUT
 	@Path("{userId}")
-	public Response updateUser(@PathParam("userId") final String userId, User user) throws NoSuchAlgorithmException, InvalidKeySpecException
+	public Response updateUser(@PathParam("userId") final String userId, User user)
 	{
-		user = new User(userId, user.getEmail(), PasswordHash.createHash(user.getPassword()), user.getFirstName(), user.getLastName());
+		user = new User(userId, user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
 		userService.addOrUpdateUser(user);
 		return Response.ok().build();
 	}

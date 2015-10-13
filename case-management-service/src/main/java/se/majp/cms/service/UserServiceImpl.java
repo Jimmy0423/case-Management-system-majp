@@ -1,9 +1,12 @@
 package se.majp.cms.service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import se.majp.cms.config.PasswordHash;
 import se.majp.cms.exception.EntityNotFoundException;
 import se.majp.cms.exception.UniqueConstraintException;
 import se.majp.cms.model.Project;
@@ -37,7 +40,14 @@ public class UserServiceImpl implements UserService
 				throw new UniqueConstraintException("User with that email already exists");
 			}
 
-			user = new User(idGenerator.getNextId(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
+			try
+			{
+				user = new User(idGenerator.getNextId(), user.getEmail(), PasswordHash.createHash(user.getPassword()), user.getFirstName(), user.getLastName());
+			}
+			catch (NoSuchAlgorithmException | InvalidKeySpecException e)
+			{
+				e.printStackTrace();
+			}
 			return userRepository.save(user);
 		}
 
