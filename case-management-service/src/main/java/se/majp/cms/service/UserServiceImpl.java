@@ -1,12 +1,11 @@
 package se.majp.cms.service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.cms.config.PasswordHash;
+import se.majp.cms.exception.AuthorizationException;
 import se.majp.cms.exception.EntityNotFoundException;
 import se.majp.cms.exception.UniqueConstraintException;
 import se.majp.cms.model.Credential;
@@ -41,14 +40,7 @@ public class UserServiceImpl implements UserService
 				throw new UniqueConstraintException("User with that email already exists");
 			}
 
-			try
-			{
-				user = new User(idGenerator.getNextId(), user.getEmail(), PasswordHash.createHash(user.getPassword()), user.getFirstName(), user.getLastName());
-			}
-			catch (NoSuchAlgorithmException | InvalidKeySpecException e)
-			{
-				e.printStackTrace();
-			}
+			user = new User(idGenerator.getNextId(), user.getEmail(), PasswordHash.createHash(user.getPassword()), user.getFirstName(), user.getLastName());
 			return userRepository.save(user);
 		}
 
@@ -63,7 +55,7 @@ public class UserServiceImpl implements UserService
 		userFromDb.setPassword(user.getPassword());
 		userFromDb.setFirstName(user.getFirstName());
 		userFromDb.setLastName(user.getLastName());
-		
+
 		return userRepository.save(userFromDb);
 	}
 
@@ -155,6 +147,13 @@ public class UserServiceImpl implements UserService
 	@Override
 	public User authenticate(Credential credential)
 	{
-		return null;
+		User user = findByEmail(credential.getEmail());
+
+		if (PasswordHash.validatePassword(credential.getPassword(), user.getPassword()))
+		{
+			return user;
+		}
+
+		throw new AuthorizationException("Wrong username or password");
 	}
 }

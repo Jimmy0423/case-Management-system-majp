@@ -62,7 +62,6 @@ public class PasswordHash
 	 * @return a salted PBKDF2 hash of the password
 	 */
 	public static String createHash(String password)
-			throws NoSuchAlgorithmException, InvalidKeySpecException
 	{
 		return createHash(password.toCharArray());
 	}
@@ -75,7 +74,6 @@ public class PasswordHash
 	 * @return a salted PBKDF2 hash of the password
 	 */
 	public static String createHash(char[] password)
-			throws NoSuchAlgorithmException, InvalidKeySpecException
 	{
 		// Generate a random salt
 		SecureRandom random = new SecureRandom();
@@ -98,7 +96,6 @@ public class PasswordHash
 	 * @return true if the password is correct, false if not
 	 */
 	public static boolean validatePassword(String password, String correctHash)
-			throws NoSuchAlgorithmException, InvalidKeySpecException
 	{
 		return validatePassword(password.toCharArray(), correctHash);
 	}
@@ -113,7 +110,6 @@ public class PasswordHash
 	 * @return true if the password is correct, false if not
 	 */
 	public static boolean validatePassword(char[] password, String correctHash)
-			throws NoSuchAlgorithmException, InvalidKeySpecException
 	{
 		// Decode the hash into its parameters
 		String[] params = correctHash.split(":");
@@ -161,11 +157,19 @@ public class PasswordHash
 	 * @return the PBDKF2 hash of the password
 	 */
 	private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int bytes)
-			throws NoSuchAlgorithmException, InvalidKeySpecException
 	{
 		PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, bytes * 8);
-		SecretKeyFactory skf = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
-		return skf.generateSecret(spec).getEncoded();
+		SecretKeyFactory skf;
+		
+		try
+		{
+			skf = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
+			return skf.generateSecret(spec).getEncoded();
+		}
+		catch (NoSuchAlgorithmException | InvalidKeySpecException e)
+		{
+			throw new IllegalArgumentException("Server error");
+		}
 	}
 
 	/**
@@ -202,56 +206,5 @@ public class PasswordHash
 		else
 			return hex;
 	}
-
-	/**
-	 * Tests the basic functionality of the PasswordHash class
-	 *
-	 * @param args
-	 *            ignored
-	 */
-	public static void main(String[] args)
-	{
-		try
-		{
-			// Print out 10 hashes
-			for (int i = 0; i < 10; i++)
-				System.out.println(PasswordHash.createHash("p\r\nassw0Rd!"));
-
-			// Test password validation
-			boolean failure = false;
-			System.out.println("Running tests...");
-			for (int i = 0; i < 100; i++)
-			{
-				String password = "" + i;
-				String hash = createHash(password);
-				String secondHash = createHash(password);
-				if (hash.equals(secondHash))
-				{
-					System.out.println("FAILURE: TWO HASHES ARE EQUAL!");
-					failure = true;
-				}
-				String wrongPassword = "" + (i + 1);
-				if (validatePassword(wrongPassword, hash))
-				{
-					System.out.println("FAILURE: WRONG PASSWORD ACCEPTED!");
-					failure = true;
-				}
-				if (!validatePassword(password, hash))
-				{
-					System.out.println("FAILURE: GOOD PASSWORD NOT ACCEPTED!");
-					failure = true;
-				}
-			}
-			if (failure)
-				System.out.println("TESTS FAILED!");
-			else
-				System.out.println("TESTS PASSED!");
-		}
-		catch (Exception ex)
-		{
-			System.out.println("ERROR: " + ex);
-		}
-	}
-
 }
 
