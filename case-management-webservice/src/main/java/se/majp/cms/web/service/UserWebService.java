@@ -27,10 +27,12 @@ import se.majp.cms.model.User;
 import se.majp.cms.service.ProjectService;
 import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
+import se.majp.cms.web.auth.Authorize;
 
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Authorize
 @Scope("request")
 public final class UserWebService
 {

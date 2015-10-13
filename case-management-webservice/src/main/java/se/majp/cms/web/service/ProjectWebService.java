@@ -27,11 +27,13 @@ import se.majp.cms.model.User;
 import se.majp.cms.service.ProjectService;
 import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
+import se.majp.cms.web.auth.Authorize;
 
 @Path("projects")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Scope("request")
+@Authorize
 public class ProjectWebService
 {
 	@Autowired

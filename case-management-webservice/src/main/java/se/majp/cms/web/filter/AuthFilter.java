@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.majp.cms.exception.AuthorizationException;
 import se.majp.cms.service.UserService;
 import se.majp.cms.web.auth.AuthProvider;
+import se.majp.cms.web.auth.Authorize;
 
 @Provider
+@Authorize
 public class AuthFilter implements ContainerRequestFilter
 {
 	@Autowired
@@ -42,7 +44,7 @@ public class AuthFilter implements ContainerRequestFilter
 		{
 			String userId = provider.getUserIdFromToken(token);
 
-			if (userService.isMemberOfProject())
+			if (userService.isMemberOfProject(userId, projectId))
 			{
 				return;
 			}

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.cms.config.PasswordHash;
 import se.majp.cms.exception.AuthorizationException;
+import se.majp.cms.exception.BadRequestException;
 import se.majp.cms.exception.EntityNotFoundException;
 import se.majp.cms.exception.UniqueConstraintException;
 import se.majp.cms.model.Credential;
@@ -155,5 +156,19 @@ public class UserServiceImpl implements UserService
 		}
 
 		throw new AuthorizationException("Wrong username or password");
+	}
+
+	@Override
+	public boolean isMemberOfProject(String userId, String projectId)
+	{
+		User user = userRepository.findByUserId(userId);
+		Project project = projectRepository.findByProjectId(projectId);
+		
+		if(user == null || project == null)
+		{
+			throw new BadRequestException("Project or user does not exist");
+		}
+		
+		return project.getTeam().getUsers().containsKey(user);
 	}
 }

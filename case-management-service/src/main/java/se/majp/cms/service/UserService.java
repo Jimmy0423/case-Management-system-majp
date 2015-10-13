@@ -20,4 +20,6 @@ public interface UserService
 	List<User> findByProject(String projectId);
 	
 	User authenticate(Credential credential);
+	
+	boolean isMemberOfProject(String userId, String projectId);
 }
