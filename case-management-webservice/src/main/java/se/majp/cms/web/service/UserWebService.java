@@ -49,7 +49,8 @@ public final class UserWebService
 	@POST
 	public Response addUser(final User user)
 	{
-		final User userFromDb = userService.addOrUpdateUser(user);
+		User hashed = new User(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
+		final User userFromDb = userService.addOrUpdateUser(hashed);
 		final URI location = uriInfo.getAbsolutePathBuilder().path(userFromDb.getUserId()).build();
 
 		return Response.created(location).build();
