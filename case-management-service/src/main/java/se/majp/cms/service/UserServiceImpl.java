@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.cms.exception.EntityNotFoundException;
 import se.majp.cms.exception.UniqueConstraintException;
+import se.majp.cms.model.Credential;
 import se.majp.cms.model.Project;
 import se.majp.cms.model.Story;
 import se.majp.cms.model.User;
@@ -139,5 +140,12 @@ public class UserServiceImpl implements UserService
 
 		story.setUser(null);
 		storyRepository.save(story);
+	}
+
+	@Override
+	public String authenticate(Credential credential)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
