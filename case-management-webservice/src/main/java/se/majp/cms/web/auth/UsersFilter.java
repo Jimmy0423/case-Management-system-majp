@@ -26,7 +26,7 @@ public final class UsersFilter implements ContainerRequestFilter
 		
 		if(token == null)
 		{
-			throw new AuthorizationException("user not signed in");
+			throw new AuthorizationException();
 		}
 		
 		if(uriInfo.getPathParameters().containsKey("userId"))
@@ -39,6 +39,6 @@ public final class UsersFilter implements ContainerRequestFilter
 			}
 		}
 		
-		throw new AuthorizationException("User not authorized");
+		throw new AuthorizationException();
 	}
 }
