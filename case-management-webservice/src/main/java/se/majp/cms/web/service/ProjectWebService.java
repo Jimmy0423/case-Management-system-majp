@@ -33,6 +33,7 @@ import se.majp.cms.web.auth.SecureProjects;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Scope("request")
+@SecureProjects
 public class ProjectWebService
 {
 	@Autowired
@@ -58,7 +59,6 @@ public class ProjectWebService
 
 	@POST
 	@Path("{projectId}/stories")
-	@SecureProjects
 	public Response addStoryToProject(@PathParam("projectId") final String projectId, Story story)
 	{
 		story = storyService.addStoryToBacklog(projectId, story);
@@ -79,7 +79,6 @@ public class ProjectWebService
 
 	@GET
 	@Path("{projectId}")
-	@SecureProjects
 	public Response findByProjectId(@PathParam("projectId") final String projectId)
 	{
 		Project project = projectService.findByProjectId(projectId);
@@ -88,7 +87,6 @@ public class ProjectWebService
 
 	@GET
 	@Path("{projectId}/stories")
-	@SecureProjects
 	public Response findAllStoriesInProject(@PathParam("projectId") final String projectId)
 	{
 		List<Story> stories = storyService.findAllStoriesInProject(projectId);
@@ -101,7 +99,6 @@ public class ProjectWebService
 
 	@GET
 	@Path("{projectId}/users")
-	@SecureProjects
 	public Response findAllUsersInProject(@PathParam("projectId") final String projectId)
 	{
 		List<User> users = userService.findByProject(projectId);
@@ -115,7 +112,6 @@ public class ProjectWebService
 
 	@GET
 	@Path("{projectId}/users/{userId}/stories")
-	@SecureProjects
 	public Response findAllStoriesForUserInProject(@PathParam("projectId") final String projectId,
 			@PathParam("userId") final String userId)
 	{
@@ -129,7 +125,6 @@ public class ProjectWebService
 
 	@GET
 	@Path("{projectId}/backlog")
-	@SecureProjects
 	public Response findBacklogForProject(@PathParam("projectId") final String projectId)
 	{
 		List<Story> stories = storyService.findBacklogForProject(projectId);
@@ -142,7 +137,6 @@ public class ProjectWebService
 
 	@PUT
 	@Path("{projectId}/users")
-	@SecureProjects
 	public Response addTeamMember(@PathParam("projectId") final String projectId, TeamMember teamMember)
 	{
 		projectService.addOrUpdateTeamMember(projectId, teamMember);
@@ -151,7 +145,6 @@ public class ProjectWebService
 
 	@PUT
 	@Path("{projectId}/users/{userId}")
-	@SecureProjects
 	public Response removeTeamMember(@PathParam("projectId") final String projectId,
 			@PathParam("userId") final String userId)
 	{
@@ -161,7 +154,6 @@ public class ProjectWebService
 
 	@PUT
 	@Path("{projectId}/users/{userId}/stories")
-	@SecureProjects
 	public Response addStoryToUser(@PathParam("userId") final String userId, String storyId)
 	{
 		storyService.addStoryToUser(userId, storyId);
@@ -170,7 +162,6 @@ public class ProjectWebService
 	
 	@PUT
 	@Path("{projectId}")
-	@SecureProjects
 	public Response updateProject(@PathParam("projectId") final String projectId, Project project)
 	{
 		project = new Project(projectId, project.getName(), project.getDescription());
@@ -181,7 +172,6 @@ public class ProjectWebService
 
 	@DELETE
 	@Path("{projectId}")
-	@SecureProjects
 	public Response removeProject(@PathParam("projectId") final String projectId)
 	{
 		projectService.removeProject(projectId);

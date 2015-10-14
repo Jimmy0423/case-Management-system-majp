@@ -101,7 +101,6 @@ public final class UserJsonMapper implements MessageBodyReader<User>, MessageBod
 			JsonObject jsonUser = new JsonObject();
 			jsonUser.add("userId", new JsonPrimitive(user.getUserId()));
 			jsonUser.add("email", new JsonPrimitive(user.getEmail()));
-			jsonUser.add("password", new JsonPrimitive(user.getPassword()));
 			jsonUser.add("firstName", new JsonPrimitive(user.getFirstName()));
 			jsonUser.add("lastName", new JsonPrimitive(user.getLastName()));
 

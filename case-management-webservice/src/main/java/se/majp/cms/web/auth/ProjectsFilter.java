@@ -29,18 +29,17 @@ public class ProjectsFilter implements ContainerRequestFilter
 	{
 		String token = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 		AuthProvider provider = new AuthProvider();
-		
+
 		if (token == null)
 		{
 			throw new AuthorizationException("User not signed in");
 		}
-		
-		if(uriInfo.getPathParameters().containsKey("projectId"))
+
+		if (provider.hasToken(token))
 		{
-			String projectId = uriInfo.getPathParameters().get("projectId").get(0);
-			
-			if (provider.hasToken(token))
+			if (uriInfo.getPathParameters().containsKey("projectId"))
 			{
+				String projectId = uriInfo.getPathParameters().get("projectId").get(0);
 				String userId = provider.getUserIdFromToken(token);
 
 				if (userService.isMemberOfProject(userId, projectId))
@@ -48,8 +47,12 @@ public class ProjectsFilter implements ContainerRequestFilter
 					return;
 				}
 			}
+			else
+			{
+				return;
+			}
 		}
-		
-		throw new AuthorizationException();
+
+		throw new AuthorizationException("User not allowed on that url");
 	}
 }

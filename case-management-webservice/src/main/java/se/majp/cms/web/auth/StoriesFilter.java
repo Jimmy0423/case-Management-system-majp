@@ -57,7 +57,7 @@ public class StoriesFilter implements ContainerRequestFilter
 			}
 		}
 		
-		throw new AuthorizationException();
+		throw new AuthorizationException("User not signed in");
 	}
 
 }

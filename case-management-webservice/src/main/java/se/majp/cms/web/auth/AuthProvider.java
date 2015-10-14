@@ -16,7 +16,7 @@ public final class AuthProvider
 	{
 		if (tokens.values().contains(userId))
 		{
-			removeToken(userId);
+			removeTokenByUserId(userId);
 		}
 
 		Random random = new SecureRandom();
@@ -50,8 +50,13 @@ public final class AuthProvider
 
 		throw new AuthorizationException("User not logged in");
 	}
+	
+	public void removeToken(String token)
+	{
+		tokens.remove(token);
+	}
 
-	private void removeToken(String userId)
+	private void removeTokenByUserId(String userId)
 	{
 		for(String token : tokens.keySet())
 		{
