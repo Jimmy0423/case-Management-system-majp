@@ -30,6 +30,16 @@ public final class AuthProvider
 	{
 		return tokens.containsKey(token);
 	}
+	
+	public boolean hasToken(String token, String userId)
+	{
+		if(tokens.containsKey(token))
+		{
+			return userId.equals(tokens.get(token));
+		}
+		
+		return false;
+	}
 
 	public String getUserIdFromToken(String token)
 	{
