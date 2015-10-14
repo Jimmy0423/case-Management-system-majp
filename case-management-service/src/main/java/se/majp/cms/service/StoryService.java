@@ -14,6 +14,8 @@ public interface StoryService
 	Story addStoryToUser(String userId, String storyId);
 
 	Story addIssue(String storyId, Issue issue);
+	
+	Story findStoryById(String storyId);
 
 	List<Story> findAllStoriesWithIssues();
 

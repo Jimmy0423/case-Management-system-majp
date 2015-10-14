@@ -94,6 +94,19 @@ public class StoryServiceImpl implements StoryService
 
 		return storyRepository.findByStoryId(storyId);
 	}
+	
+	@Override
+	public Story findStoryById(String storyId)
+	{
+		Story story = storyRepository.findByStoryId(storyId);
+		
+		if (story == null)
+		{
+			throw new EntityNotFoundException("No story found with that storyId");
+		}
+		
+		return story;
+	}
 
 	@Override
 	public List<Story> findAllStoriesWithIssues()
