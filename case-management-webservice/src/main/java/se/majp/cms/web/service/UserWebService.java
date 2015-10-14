@@ -27,6 +27,7 @@ import se.majp.cms.model.User;
 import se.majp.cms.service.ProjectService;
 import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
+import se.majp.cms.web.auth.SecureUsers;
 
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -68,6 +69,7 @@ public final class UserWebService
 
 	@GET
 	@Path("{userId}")
+	@SecureUsers
 	public Response getUserByUserId(@PathParam("userId") final String userId)
 	{
 		User user = userService.findByUserId(userId);
@@ -76,6 +78,7 @@ public final class UserWebService
 
 	@GET
 	@Path("{userId}/projects")
+	@SecureUsers
 	public Response getAllProjectsForUser(@PathParam("userId") final String userId)
 	{
 		List<Project> projects = projectService.findAllProjectsByUser(userId);
@@ -88,6 +91,7 @@ public final class UserWebService
 
 	@GET
 	@Path("{userId}/stories")
+	@SecureUsers
 	public Response getAllStoriesForUser(@PathParam("userId") final String userId)
 	{
 		List<Story> stories = storyService.findAllStoriesAssignedToUser(userId);
@@ -100,6 +104,7 @@ public final class UserWebService
 
 	@PUT
 	@Path("{userId}")
+	@SecureUsers
 	public Response updateUser(@PathParam("userId") final String userId, User user)
 	{
 		user = new User(userId, user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
@@ -109,6 +114,7 @@ public final class UserWebService
 
 	@DELETE
 	@Path("{userId}")
+	@SecureUsers
 	public Response removeUser(@PathParam("userId") final String userId)
 	{
 		userService.removeUser(userId);
