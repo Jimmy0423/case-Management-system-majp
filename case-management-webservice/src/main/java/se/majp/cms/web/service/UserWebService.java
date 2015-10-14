@@ -27,7 +27,6 @@ import se.majp.cms.model.User;
 import se.majp.cms.service.ProjectService;
 import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
-import se.majp.cms.web.auth.Authorize;
 
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -57,7 +56,6 @@ public final class UserWebService
 	}
 
 	@GET
-	@Authorize
 	public Response getUserByEmailOrFirstNameOrLastName(@QueryParam("searchTerm") final String value)
 	{
 		List<User> users = userService.findByFirstNameOrLastNameOrEmail(value);
@@ -69,7 +67,6 @@ public final class UserWebService
 	}
 
 	@GET
-	@Authorize
 	@Path("{userId}")
 	public Response getUserByUserId(@PathParam("userId") final String userId)
 	{
@@ -78,7 +75,6 @@ public final class UserWebService
 	}
 
 	@GET
-	@Authorize
 	@Path("{userId}/projects")
 	public Response getAllProjectsForUser(@PathParam("userId") final String userId)
 	{
@@ -91,7 +87,6 @@ public final class UserWebService
 	}
 
 	@GET
-	@Authorize
 	@Path("{userId}/stories")
 	public Response getAllStoriesForUser(@PathParam("userId") final String userId)
 	{
@@ -104,7 +99,6 @@ public final class UserWebService
 	}
 
 	@PUT
-	@Authorize
 	@Path("{userId}")
 	public Response updateUser(@PathParam("userId") final String userId, User user)
 	{
@@ -114,7 +108,6 @@ public final class UserWebService
 	}
 
 	@DELETE
-	@Authorize
 	@Path("{userId}")
 	public Response removeUser(@PathParam("userId") final String userId)
 	{

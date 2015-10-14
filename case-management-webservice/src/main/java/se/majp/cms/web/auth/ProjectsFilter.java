@@ -15,8 +15,8 @@ import se.majp.cms.exception.AuthorizationException;
 import se.majp.cms.service.UserService;
 
 @Provider
-@Authorize
-public class AuthFilter implements ContainerRequestFilter
+@SecureProjects
+public class ProjectsFilter implements ContainerRequestFilter
 {
 	@Autowired
 	private UserService userService;
@@ -28,24 +28,28 @@ public class AuthFilter implements ContainerRequestFilter
 	public void filter(ContainerRequestContext requestContext) throws IOException
 	{
 		String token = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-		String projectId = uriInfo.getPathParameters().get("projectId").get(0);
 		AuthProvider provider = new AuthProvider();
-
+		
 		if (token == null)
 		{
 			throw new AuthorizationException("User not signed in");
 		}
-
-		if (provider.hasToken(token))
+		
+		if(uriInfo.getPathParameters().containsKey("projectId"))
 		{
-			String userId = provider.getUserIdFromToken(token);
-
-			if (userService.isMemberOfProject(userId, projectId))
+			String projectId = uriInfo.getPathParameters().get("projectId").get(0);
+			
+			if (provider.hasToken(token))
 			{
-				return;
+				String userId = provider.getUserIdFromToken(token);
+
+				if (userService.isMemberOfProject(userId, projectId))
+				{
+					return;
+				}
 			}
 		}
-
+		
 		throw new AuthorizationException();
 	}
 }

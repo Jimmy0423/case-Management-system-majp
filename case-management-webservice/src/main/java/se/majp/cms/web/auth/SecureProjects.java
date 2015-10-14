@@ -7,6 +7,6 @@ import javax.ws.rs.NameBinding;
 
 @NameBinding
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Authorize
+public @interface SecureProjects
 {
 }

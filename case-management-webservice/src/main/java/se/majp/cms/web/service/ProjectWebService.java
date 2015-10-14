@@ -27,13 +27,13 @@ import se.majp.cms.model.User;
 import se.majp.cms.service.ProjectService;
 import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
-import se.majp.cms.web.auth.Authorize;
+import se.majp.cms.web.auth.SecureProjects;
 
 @Path("projects")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Scope("request")
-@Authorize
+@SecureProjects
 public class ProjectWebService
 {
 	@Autowired
@@ -55,16 +55,6 @@ public class ProjectWebService
 		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
 
 		return Response.created(location).build();
-	}
-
-	@PUT
-	@Path("{projectId}")
-	public Response updateProject(@PathParam("projectId") final String projectId, Project project)
-	{
-		project = new Project(projectId, project.getName(), project.getDescription());
-		projectService.addOrUpdateProject(project);
-
-		return Response.ok().build();
 	}
 
 	@POST
@@ -168,6 +158,16 @@ public class ProjectWebService
 	{
 		storyService.addStoryToUser(userId, storyId);
 		return Response.noContent().build();
+	}
+	
+	@PUT
+	@Path("{projectId}")
+	public Response updateProject(@PathParam("projectId") final String projectId, Project project)
+	{
+		project = new Project(projectId, project.getName(), project.getDescription());
+		projectService.addOrUpdateProject(project);
+
+		return Response.ok().build();
 	}
 
 	@DELETE
