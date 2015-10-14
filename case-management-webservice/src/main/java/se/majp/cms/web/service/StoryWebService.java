@@ -108,7 +108,7 @@ public class StoryWebService
 								@PathParam("issueId") final String issueId)
 	{
 		issueService.removeIssue(issueId);
-		return Response.ok().build();
+		return Response.noContent().build();
 	}
 
 	@DELETE

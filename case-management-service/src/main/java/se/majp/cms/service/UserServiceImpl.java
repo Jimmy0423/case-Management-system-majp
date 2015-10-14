@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import se.majp.cms.config.PasswordHash;
 import se.majp.cms.exception.AuthorizationException;
 import se.majp.cms.exception.BadRequestException;
 import se.majp.cms.exception.EntityNotFoundException;
@@ -17,6 +16,7 @@ import se.majp.cms.repository.ProjectRepository;
 import se.majp.cms.repository.StoryRepository;
 import se.majp.cms.repository.UserRepository;
 import se.majp.cms.util.IdGenerator;
+import se.majp.cms.util.PBKDF2Hash;
 
 public class UserServiceImpl implements UserService
 {
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService
 				throw new UniqueConstraintException("User with that email already exists");
 			}
 
-			user = new User(idGenerator.getNextId(), user.getEmail(), PasswordHash.createHash(user.getPassword()), user.getFirstName(), user.getLastName());
+			user = new User(idGenerator.getNextId(), user.getEmail(), PBKDF2Hash.createHash(user.getPassword()), user.getFirstName(), user.getLastName());
 			return userRepository.save(user);
 		}
 
@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService
 	{
 		User user = findByEmail(credential.getEmail());
 
-		if (PasswordHash.validatePassword(credential.getPassword(), user.getPassword()))
+		if (PBKDF2Hash.validatePassword(credential.getPassword(), user.getPassword()))
 		{
 			return user;
 		}

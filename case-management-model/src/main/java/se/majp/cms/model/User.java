@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,7 +19,8 @@ public class User extends AbstractEntity
 
 	@Column(unique = true)
 	private String email;
-
+	
+	@Lob
 	private String password;
 	private String firstName;
 	private String lastName;

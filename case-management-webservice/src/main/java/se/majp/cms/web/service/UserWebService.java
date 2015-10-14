@@ -32,7 +32,6 @@ import se.majp.cms.web.auth.Authorize;
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Authorize
 @Scope("request")
 public final class UserWebService
 {
@@ -51,14 +50,14 @@ public final class UserWebService
 	@POST
 	public Response addUser(final User user)
 	{
-		User hashed = new User(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName());
-		final User userFromDb = userService.addOrUpdateUser(hashed);
+		final User userFromDb = userService.addOrUpdateUser(user);
 		final URI location = uriInfo.getAbsolutePathBuilder().path(userFromDb.getUserId()).build();
 
 		return Response.created(location).build();
 	}
 
 	@GET
+	@Authorize
 	public Response getUserByEmailOrFirstNameOrLastName(@QueryParam("searchTerm") final String value)
 	{
 		List<User> users = userService.findByFirstNameOrLastNameOrEmail(value);
@@ -70,6 +69,7 @@ public final class UserWebService
 	}
 
 	@GET
+	@Authorize
 	@Path("{userId}")
 	public Response getUserByUserId(@PathParam("userId") final String userId)
 	{
@@ -78,6 +78,7 @@ public final class UserWebService
 	}
 
 	@GET
+	@Authorize
 	@Path("{userId}/projects")
 	public Response getAllProjectsForUser(@PathParam("userId") final String userId)
 	{
@@ -90,6 +91,7 @@ public final class UserWebService
 	}
 
 	@GET
+	@Authorize
 	@Path("{userId}/stories")
 	public Response getAllStoriesForUser(@PathParam("userId") final String userId)
 	{
@@ -102,6 +104,7 @@ public final class UserWebService
 	}
 
 	@PUT
+	@Authorize
 	@Path("{userId}")
 	public Response updateUser(@PathParam("userId") final String userId, User user)
 	{
@@ -111,6 +114,7 @@ public final class UserWebService
 	}
 
 	@DELETE
+	@Authorize
 	@Path("{userId}")
 	public Response removeUser(@PathParam("userId") final String userId)
 	{

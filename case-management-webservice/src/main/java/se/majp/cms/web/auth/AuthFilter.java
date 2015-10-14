@@ -1,4 +1,4 @@
-package se.majp.cms.web.filter;
+package se.majp.cms.web.auth;
 
 import java.io.IOException;
 
@@ -6,8 +6,6 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 
@@ -15,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import se.majp.cms.exception.AuthorizationException;
 import se.majp.cms.service.UserService;
-import se.majp.cms.web.auth.AuthProvider;
-import se.majp.cms.web.auth.Authorize;
 
 @Provider
 @Authorize
@@ -50,7 +46,6 @@ public class AuthFilter implements ContainerRequestFilter
 			}
 		}
 
-		requestContext.abortWith(Response.status(Status.UNAUTHORIZED).build());
+		throw new AuthorizationException();
 	}
-
 }

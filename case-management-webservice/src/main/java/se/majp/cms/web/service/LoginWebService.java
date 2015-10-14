@@ -6,37 +6,27 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import se.majp.cms.exception.AuthorizationException;
 import se.majp.cms.model.Credential;
 import se.majp.cms.model.User;
 import se.majp.cms.service.UserService;
 import se.majp.cms.web.auth.AuthProvider;
 
-@Path("authentication")
+@Path("login")
 @Consumes(MediaType.APPLICATION_JSON)
-public class AuthenticationWebService
+public class LoginWebService
 {
 	@Autowired
 	private UserService userService;
-	
+
 	@POST
 	public Response authenticateUser(Credential credential)
 	{
 		AuthProvider provider = new AuthProvider();
-		
-		try
-		{
-			User authenticatedUser = userService.authenticate(credential);
-			return Response.ok().header(HttpHeaders.AUTHORIZATION, provider.generateToken(authenticatedUser.getUserId())).build();
-		}
-		catch (AuthorizationException e)
-		{
-			return Response.status(Status.UNAUTHORIZED).build();
-		}
-		
+
+		User authenticatedUser = userService.authenticate(credential);
+		return Response.ok().header(HttpHeaders.AUTHORIZATION, provider.generateToken(authenticatedUser.getUserId())).build();
 	}
 }
