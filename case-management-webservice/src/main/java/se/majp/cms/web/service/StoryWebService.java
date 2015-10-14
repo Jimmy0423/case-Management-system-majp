@@ -25,6 +25,7 @@ import se.majp.cms.model.Issue;
 import se.majp.cms.model.Story;
 import se.majp.cms.service.IssueService;
 import se.majp.cms.service.StoryService;
+import se.majp.cms.web.auth.SecureStories;
 
 @Path("stories")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,6 +44,7 @@ public class StoryWebService
 
 	@POST
 	@Path("{storyId}/issues")
+	@SecureStories
 	public Response addIssueToStory(@PathParam("storyId") final String storyId, Issue issue)
 	{
 		storyService.addIssue(storyId, issue);
@@ -86,6 +88,7 @@ public class StoryWebService
 
 	@PUT
 	@Path("{storyId}")
+	@SecureStories
 	public Response updateStory(@PathParam("storyId") final String storyId, Story story)
 	{
 		storyService.updateStory(storyId, story);
@@ -94,6 +97,7 @@ public class StoryWebService
 
 	@PUT
 	@Path("{storyId}/issues/{issueId}")
+	@SecureStories
 	public Response updateIssue(@PathParam("storyId") final String storyId,
 			@PathParam("issueId") final String issueId, Issue issue)
 	{
@@ -104,6 +108,7 @@ public class StoryWebService
 	
 	@DELETE
 	@Path("{storyId}/issues/{issueId}")
+	@SecureStories
 	public Response removeIssue(@PathParam("storyId") final String storyId, 
 								@PathParam("issueId") final String issueId)
 	{
@@ -113,6 +118,7 @@ public class StoryWebService
 
 	@DELETE
 	@Path("{storyId}")
+	@SecureStories
 	public Response removeStory(@PathParam("storyId") final String storyId)
 	{
 		storyService.removeStory(storyId);
