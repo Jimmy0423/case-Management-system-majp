@@ -32,7 +32,7 @@ public class ProjectsFilter implements ContainerRequestFilter
 
 		if (token == null)
 		{
-			throw new AuthorizationException("User not signed in");
+			throw new AuthorizationException();
 		}
 
 		if (provider.hasToken(token))
