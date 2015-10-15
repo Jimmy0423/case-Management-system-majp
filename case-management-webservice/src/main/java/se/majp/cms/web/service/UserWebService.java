@@ -27,6 +27,7 @@ import se.majp.cms.model.User;
 import se.majp.cms.service.ProjectService;
 import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
+import se.majp.cms.web.auth.AuthProvider;
 import se.majp.cms.web.auth.SecureUsers;
 
 @Path("users")
@@ -77,10 +78,13 @@ public final class UserWebService
 	}
 
 	@GET
-	@Path("{userId}/projects")
+	@Path("{token}/projects")
 	@SecureUsers
-	public Response getAllProjectsForUser(@PathParam("userId") final String userId)
+	public Response getAllProjectsForUser(@PathParam("token") final String token)
 	{
+		AuthProvider provider = new AuthProvider();
+		final String userId = provider.getUserIdFromToken(token);
+				
 		List<Project> projects = projectService.findAllProjectsByUser(userId);
 		GenericEntity<List<Project>> entity = new GenericEntity<List<Project>>(projects)
 		{

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import se.majp.cms.exception.EntityNotFoundException;
 import se.majp.cms.model.Project;
+import se.majp.cms.model.Role;
 import se.majp.cms.model.TeamMember;
 import se.majp.cms.model.User;
 import se.majp.cms.repository.ProjectRepository;
@@ -31,6 +33,32 @@ public class ProjectServiceImpl implements ProjectService
 			project = new Project(idGenerator.getNextId(), project.getName(), project.getDescription());
 
 			return projectRepository.save(project);
+		}
+
+		Project projectFromDb = projectRepository.findByProjectId(project.getProjectId());
+
+		if (projectFromDb == null)
+		{
+			throw new EntityNotFoundException("No project with that projectId");
+		}
+
+		projectFromDb.setName(project.getName());
+		projectFromDb.setDescription(project.getDescription());
+
+		return projectRepository.save(projectFromDb);
+	}
+	
+	@Override
+	@Transactional
+	public Project addOrUpdateProject(Project project, String userId)
+	{
+		if (project.getProjectId() == null)
+		{
+			project = new Project(idGenerator.getNextId(), project.getName(), project.getDescription());
+			Project projectFromDb = projectRepository.save(project);
+			projectFromDb = addOwner(projectFromDb.getProjectId(), userId);
+			
+			return projectFromDb;
 		}
 
 		Project projectFromDb = projectRepository.findByProjectId(project.getProjectId());
@@ -95,6 +123,21 @@ public class ProjectServiceImpl implements ProjectService
 		}
 
 		project.getTeam().addUser(user, teamMember.getRole());
+		return projectRepository.save(project);
+	}
+	
+	@Override
+	public Project addOwner(String projectId, String userId)
+	{
+		Project project = projectRepository.findByProjectId(projectId);
+		User user = userRepository.findByUserId(userId);
+
+		if (project == null)
+		{
+			throw new EntityNotFoundException("No project found with projectId: " + projectId);
+		}
+
+		project.getTeam().addUser(user, Role.OWNER);
 		return projectRepository.save(project);
 	}
 

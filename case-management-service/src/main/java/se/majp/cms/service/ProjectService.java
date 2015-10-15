@@ -8,6 +8,8 @@ import se.majp.cms.model.TeamMember;
 public interface ProjectService
 {
 	Project addOrUpdateProject(Project project);
+	
+	Project addOrUpdateProject(Project project, String userId);
 
 	Project findByProjectId(String projectId);
 
@@ -16,6 +18,8 @@ public interface ProjectService
 	List<Project> findAllProjects();
 
 	Project addOrUpdateTeamMember(String projectId, TeamMember teamMember);
+	
+	Project addOwner(String projectId, String userId);
 
 	Project removeTeamMember(String projectId, String userId);
 

@@ -39,6 +39,16 @@ public final class UsersFilter implements ContainerRequestFilter
 			}
 		}
 		
+		if (uriInfo.getPathParameters().containsKey("token"))
+		{
+			String pathToken = uriInfo.getPathParameters().getFirst("token");
+			
+			if (provider.hasToken(pathToken) && pathToken.equals(token));
+			{
+				return;
+			}
+		}
+		
 		throw new AuthorizationException();
 	}
 }
