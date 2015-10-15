@@ -90,7 +90,6 @@ public final class UserListJsonMapper implements MessageBodyWriter<ArrayList<Use
 				});
 				jsonUser.add("userId", new JsonPrimitive(user.getUserId()));
 				jsonUser.add("email", new JsonPrimitive(user.getEmail()));
-				jsonUser.add("password", new JsonPrimitive(user.getPassword()));
 				jsonUser.add("firstName", new JsonPrimitive(user.getFirstName()));
 				jsonUser.add("lastName", new JsonPrimitive(user.getLastName()));
 				jsonUsers.add(jsonUser);
