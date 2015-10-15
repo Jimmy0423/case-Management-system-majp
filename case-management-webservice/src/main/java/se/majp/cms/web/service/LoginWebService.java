@@ -9,6 +9,8 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import se.majp.cms.exception.AuthorizationException;
+import se.majp.cms.exception.EntityNotFoundException;
 import se.majp.cms.model.Credential;
 import se.majp.cms.model.User;
 import se.majp.cms.service.UserService;
@@ -26,7 +28,14 @@ public class LoginWebService
 	{
 		AuthProvider provider = new AuthProvider();
 
-		User authenticatedUser = userService.authenticate(credential);
-		return Response.ok().header(HttpHeaders.AUTHORIZATION, provider.generateToken(authenticatedUser.getUserId())).build();
+		try
+		{
+			User authenticatedUser = userService.authenticate(credential);
+			return Response.ok().header(HttpHeaders.AUTHORIZATION, provider.generateToken(authenticatedUser.getUserId())).build();
+		}
+		catch (EntityNotFoundException e)
+		{
+			throw new AuthorizationException("Wrong username or password");
+		}
 	}
 }
