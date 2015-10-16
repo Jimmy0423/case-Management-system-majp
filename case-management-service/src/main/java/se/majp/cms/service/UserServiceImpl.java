@@ -94,6 +94,12 @@ public class UserServiceImpl implements UserService
 
 		throw new EntityNotFoundException("No user matching that value");
 	}
+	
+	@Override
+	public List<User> searchByNameOrEmail(String value)
+	{
+		return userRepository.searchByNameOrEmail(value);
+	}
 
 	@Override
 	public User findByEmail(String email)

@@ -12,6 +12,8 @@ public interface UserService
 	void removeUser(String userId);
 
 	List<User> findByFirstNameOrLastNameOrEmail(String value);
+	
+	List<User> searchByNameOrEmail(String value);
 
 	User findByEmail(String email);
 

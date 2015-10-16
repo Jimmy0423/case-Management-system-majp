@@ -18,4 +18,7 @@ public interface UserRepository extends CrudRepository<User, Long>
 	List<User> findByProject(String projectId);
 
 	User findByEmail(String email);
+	
+	@Query("select u from User u where firstName like %?1% or lastName like %?1% or email like %?1%")
+	List<User> searchByNameOrEmail(String value);
 }
