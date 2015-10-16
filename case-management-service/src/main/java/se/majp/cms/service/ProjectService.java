@@ -18,8 +18,6 @@ public interface ProjectService
 	List<Project> findAllProjects();
 
 	Project addOrUpdateTeamMember(String projectId, TeamMember teamMember);
-	
-	Project addOwner(String projectId, String userId);
 
 	Project removeTeamMember(String projectId, String userId);
 

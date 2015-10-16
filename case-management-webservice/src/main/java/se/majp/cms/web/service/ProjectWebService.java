@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -27,6 +28,7 @@ import se.majp.cms.model.User;
 import se.majp.cms.service.ProjectService;
 import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
+import se.majp.cms.web.auth.AuthProvider;
 import se.majp.cms.web.auth.SecureProjects;
 
 @Path("projects")
@@ -49,9 +51,11 @@ public class ProjectWebService
 	private UriInfo uriInfo;
 
 	@POST
-	public Response addProject(Project project)
+	public Response addProject(@HeaderParam("Authorization") final String token, Project project)
 	{
-		Project projectFromDb = projectService.addOrUpdateProject(project);
+		AuthProvider provider = new AuthProvider();
+		String userId = provider.getUserIdFromToken(token);
+		Project projectFromDb = projectService.addOrUpdateProject(project, userId);
 		final URI location = uriInfo.getAbsolutePathBuilder().path(projectFromDb.getProjectId()).build();
 
 		return Response.created(location).build();

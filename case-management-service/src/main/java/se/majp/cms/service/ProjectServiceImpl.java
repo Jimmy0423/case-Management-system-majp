@@ -125,21 +125,6 @@ public class ProjectServiceImpl implements ProjectService
 		project.getTeam().addUser(user, teamMember.getRole());
 		return projectRepository.save(project);
 	}
-	
-	@Override
-	public Project addOwner(String projectId, String userId)
-	{
-		Project project = projectRepository.findByProjectId(projectId);
-		User user = userRepository.findByUserId(userId);
-
-		if (project == null)
-		{
-			throw new EntityNotFoundException("No project found with projectId: " + projectId);
-		}
-
-		project.getTeam().addUser(user, Role.OWNER);
-		return projectRepository.save(project);
-	}
 
 	@Override
 	public Project removeTeamMember(String projectId, String userId)
@@ -161,5 +146,19 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		Project project = projectRepository.findByProjectId(projectId);
 		projectRepository.delete(project);
+	}
+	
+	private Project addOwner(String projectId, String userId)
+	{
+		Project project = projectRepository.findByProjectId(projectId);
+		User user = userRepository.findByUserId(userId);
+
+		if (project == null)
+		{
+			throw new EntityNotFoundException("No project found with projectId: " + projectId);
+		}
+
+		project.getTeam().addUser(user, Role.OWNER);
+		return projectRepository.save(project);
 	}
 }
