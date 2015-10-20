@@ -71,9 +71,12 @@ public class ProjectWebService
 	}
 
 	@GET
-	public Response getAllProjects()
+	public Response getAllProjects(@HeaderParam("Authorization") final String token)
 	{
-		List<Project> projects = projectService.findAllProjects();
+		AuthProvider provider = new AuthProvider();
+		final String userId = provider.getUserIdFromToken(token);
+		
+		List<Project> projects = projectService.findAllProjectsByUser(userId);
 		GenericEntity<List<Project>> entity = new GenericEntity<List<Project>>(projects)
 		{
 		};

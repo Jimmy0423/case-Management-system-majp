@@ -21,13 +21,10 @@ import javax.ws.rs.core.UriInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import se.majp.cms.model.Project;
 import se.majp.cms.model.Story;
 import se.majp.cms.model.User;
-import se.majp.cms.service.ProjectService;
 import se.majp.cms.service.StoryService;
 import se.majp.cms.service.UserService;
-import se.majp.cms.web.auth.AuthProvider;
 import se.majp.cms.web.auth.SecureUsers;
 
 @Path("users")
@@ -38,9 +35,6 @@ public final class UserWebService
 {
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private ProjectService projectService;
 
 	@Autowired
 	private StoryService storyService;
@@ -60,7 +54,7 @@ public final class UserWebService
 	@GET
 	public Response getUserByEmailOrFirstNameOrLastName(@QueryParam("searchTerm") final String value)
 	{
-		List<User> users = userService.findByFirstNameOrLastNameOrEmail(value);
+		List<User> users = userService.searchByNameOrEmail(value);
 		GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users)
 		{
 		};
@@ -75,22 +69,6 @@ public final class UserWebService
 	{
 		User user = userService.findByUserId(userId);
 		return Response.ok(user).build();
-	}
-
-	@GET
-	@Path("{token}/projects")
-	@SecureUsers
-	public Response getAllProjectsForUser(@PathParam("token") final String token)
-	{
-		AuthProvider provider = new AuthProvider();
-		final String userId = provider.getUserIdFromToken(token);
-				
-		List<Project> projects = projectService.findAllProjectsByUser(userId);
-		GenericEntity<List<Project>> entity = new GenericEntity<List<Project>>(projects)
-		{
-		};
-
-		return Response.ok(entity).build();
 	}
 
 	@GET
